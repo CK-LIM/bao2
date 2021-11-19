@@ -1,63 +1,135 @@
 import React, { Component } from 'react'
-import fx_token from '../fx_token.png'
-import Identicon from 'identicon.js';
+// import Navbar from 'react-bootstrap/Navbar'
+// import Identicon from 'identicon.js';
+import Button from 'react-bootstrap/Button';
+import DropdownButton from 'react-bootstrap/DropdownButton'
+import Dropdown from 'react-bootstrap/Dropdown'
+import baklava from '../baklava.png'
+import discord from '../discord.png'
+import twitter from '../twitter.png'
+import medium from '../medium.png'
+import git from '../git.png'
+import gitbook from '../gitbook.png'
+import './App.css'
 import {
-  Nav,
-  NavLink,
-  Bars,
-  NavMenu,
-  NavBtn,
-  NavBtnLink0,
-  NavBtnLink1,
-  NavBtnLink2,
+  // Nav,
+  NavLink
+  // Bars,
+  // NavMenu,
+  // NavBtn
 } from './NavMenu'
 
 
-class Navbar extends Component {
+class Navb extends Component {
   render() {
-      return (
-        <nav className="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+    return (
+      <nav className="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 ">
+
         <a
           className="navbar-brand col-sm-3 col-md-2 mr-0"
-          href="https://www.pundix.com/"
+          href="https://twitter.com/baklavaspace"
           target="_blank"
           rel="noopener noreferrer"
         >
-          <img src={fx_token} width="30" height="30" className="d-inline-block align-top" alt="" />
-          &nbsp; Restaking Farm
+          <img src={baklava} width="30" height="30" alt="" />
+          &nbsp; Baklava
         </a>
-        <NavBtnLink0 to='/Deposit' activeStyle>
-              Deposit
-              </NavBtnLink0>
-              <NavBtnLink1 to='/Withdraw' activeStyle>
-                Withdraw
-              </NavBtnLink1>
-              <NavBtnLink2 to='/Owner' activeStyle>
-                  Owner
-              </NavBtnLink2>
+
+
+        <span>
           <ul className="navbar-nav px-3">
-          <li className="nav-item text-nowrap d-none d-sm-none d-sm-block">
-            <small className="text-secondary">
-              <small id="account">{this.props.account}</small>
-            </small>
-          
-            { this.props.account
-              ? <img
-                className="ml-2"
-                width='30'
-                height='30'
-                src={`data:image/png;base64,${new Identicon(this.props.account).toString()}`}
-                alt=""
-              />
-              : <span></span>
-            }
-          </li>
-        </ul>
+            <li className="nav-item text-nowrap-small d-none d-sm-none d-sm-block">
+              <div className="text-light rowC">
+                <div>
+                  <NavLink to='/home' >Home</NavLink>
+                </div>&nbsp;&nbsp;
+                <div>
+                  <NavLink to='/menu' >Menu</NavLink>
+                </div>&nbsp;&nbsp;
+                <div>
+                  <Button variant="info" size="sm" onClick={() => {
+                  }}>{this.props.networkName}
+                  </Button>
+                </div>&nbsp;
+                <div>
+                  {this.props.wallet ?
+                    <DropdownButton
+                      id="dropdown-menu-align-end"
+                      variant="secondary"
+                      menuvariant="secondary"
+                      size="sm"
+                      align="start"
+                      title={`${this.props.first4Account}...${this.props.last4Account}`}
+                    >
+                      <Dropdown.Item onClick={() => {
+                        window.open(`https://cchain.explorer.avax-test.network/address/${this.props.account}`, '_blank')
+                      }}>Wallet</Dropdown.Item>
+                      <Dropdown.Divider />
+                      <Dropdown.Item variant="secondary" onClick={() => {
+                        this.props.setWalletTrigger(false)
+                      }}>Disconnect</Dropdown.Item>
+                    </DropdownButton>
+                    : <DropdownButton                    
+                      id="dropdown-menu-align-end"
+                      variant="secondary"
+                      menuvariant="secondary"
+                      size="sm"
+                      align="end"
+                      title="Connect Wallet"
+                    >
+                      <Dropdown.Item variant="secondary" onClick={async () => {
+                        await this.props.connectWallet()
+                      }
+                      }>Metamask</Dropdown.Item>
+                    </DropdownButton>}
+                </div>&nbsp;
+                <div>
+                  <DropdownButton
+                    id="dropdown-menu-align-end"
+                    variant="secondary"
+                    size="sm"
+                    align="end"
+                    title="..."
+                  ><Dropdown.Item onClick={() => {
+                    window.open(`https://baklavaspace.gitbook.io/`, '_blank')
+                  }
+                  }>Docs
+                      <img src={gitbook} width="25" height="25" align="right" alt="" />
+                    </Dropdown.Item>
+                    <Dropdown.Item onClick={() => {
+                      window.open(`https://twitter.com/baklavaspace`, '_blank')
+                    }
+                    }>Twitter
+                      <img src={twitter} width="25" height="25" align="right" alt="" />
+                    </Dropdown.Item>
+                    <Dropdown.Item onClick={() => {
+                      window.open(`https://medium.com/@baklavaspace`, '_blank')
+                    }
+                    }>Medium
+                      <img src={medium} width="25" height="25" align="right" alt="" />
+                    </Dropdown.Item>
+                    <Dropdown.Item onClick={() => {
+                      window.open(`https://github.com/baklavaspace`, '_blank')
+                    }
+                    }>Github
+                      <img src={git} width="25" height="25" align="right" alt="" />
+                    </Dropdown.Item>
+                    <Dropdown.Item onClick={() => {
+                      window.open(`https://discord.gg/tNCV9wR7y`, '_blank')
+                    }
+                    }>Discord
+                      <img src={discord} width="25" height="25" align="right" alt="" />
+                    </Dropdown.Item>
+                  </DropdownButton>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </span>
       </nav>
 
-      );
-   
+    );
   }
 }
 
-export default Navbar;
+export default Navb;
