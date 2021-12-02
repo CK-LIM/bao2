@@ -5,9 +5,10 @@ pragma solidity ^0.8.0;
 import "./Ownable.sol";
 import "./IERC20.sol";
 import "./SafeERC20.sol";
-import "./IStakingRewards.sol";
 import "./IRouter.sol";
 import "./IPair.sol";
+import "./IStakingRewards.sol";
+import "./IRouter.sol";
 
 interface IMigratorToBavaSwap {
     // Perform LP token migration from legacy UniswapV2 to BavaSwap.
@@ -19,7 +20,7 @@ interface IMigratorToBavaSwap {
     // BavaSwap must mint EXACTLY the same amount of BavaSwap LP tokens or
     // else something bad will happen. Traditional UniswapV2 does not
     // do that so be careful!
-    function migrate(IERC20 token) external returns (IERC20);
+    function migrate(IERC20 token) external returns (IERC20, IERC20);
 }
 
 interface IBavaToken {
@@ -84,7 +85,9 @@ contract BavaMasterFarmer is Ownable, Authorizable {
         uint256 lastRewardBlock;    // Last block number that Bavas distribution occurs.
         uint256 accBavaPerShare;    // Accumulated Bavas per share, times 1e12. See below.
         uint256 depositAmount;      // Total deposit amount
-        uint256 lendAmount;         // Restaking borrow amount
+        uint256 supplyAmount;       // Total user calculated "supply" amount
+        // uint256 lendAmount;         // Restaking borrow amount
+        bool deposits_enabled;
     }
 
     IStakingRewards public stakingContract;
@@ -114,6 +117,7 @@ contract BavaMasterFarmer is Ownable, Authorizable {
     uint256 public userDepFee;
     uint256 public devDepFee;
     uint256 constant internal MAX_UINT = type(uint256).max;
+    
 
     // The block number when Bava mining starts.
     uint256 public START_BLOCK;
@@ -140,8 +144,10 @@ contract BavaMasterFarmer is Ownable, Authorizable {
     event Withdraw(address indexed user, uint256 indexed pid, uint256 amount);
     event EmergencyWithdraw(address indexed user, uint256 indexed pid, uint256 amount);
     event SendBavaReward(address indexed user, uint256 indexed pid, uint256 amount, uint256 lockAmount);
-    event Reinvest(address indexed user, uint256 indexed pid, uint256 lendAmount);
+    // event Reinvest(address indexed user, uint256 indexed pid, uint256 lendAmount);
     event ReturnReinvest(address indexed user, uint256 indexed pid, uint256 lendAmount);
+    event Reinvest(uint pid, uint newTotalDeposits, uint newTotalSupply);
+    event DepositsEnabled(uint pid, bool newValue);
 
     constructor(
         IBavaToken _IBava,
@@ -166,8 +172,7 @@ contract BavaMasterFarmer is Ownable, Authorizable {
 	    blockDeltaStartStage = _blockDeltaStartStage;
 	    blockDeltaEndStage = _blockDeltaEndStage;
 	    userFeeStage = _userFeeStage;
-	    devFeeStage = _devFeeStage;
-        
+	    devFeeStage = _devFeeStage;        
     }
 
     function initPool(uint256 _rewardPerBlock, uint256 _startBlock,uint256 _halvingAfterBlock) public onlyOwner {
@@ -201,7 +206,8 @@ contract BavaMasterFarmer is Ownable, Authorizable {
             lastRewardBlock: lastRewardBlock,
             accBavaPerShare: 0,
             depositAmount: 0,
-            lendAmount: 0
+            supplyAmount: 0,
+            deposits_enabled: true
         }));
         _lpToken.approve(address(stakingContract), MAX_UINT);
         _rewardToken.approve(address(router), MAX_UINT);
@@ -233,9 +239,14 @@ contract BavaMasterFarmer is Ownable, Authorizable {
         // uint256 bal = lpToken.balanceOf(address(this));
         lpToken.safeApprove(address(migrator), bal);
         pool.depositAmount -= bal;
-        IERC20 newLpToken = migrator.migrate(lpToken);        
+        (IERC20 newLpToken, IERC20 newRewardToken) = migrator.migrate(lpToken);
         require(bal == newLpToken.balanceOf(address(this)), "bad");
         pool.lpToken = newLpToken;
+
+        newLpToken.approve(address(stakingContract), MAX_UINT);
+        newRewardToken.approve(address(router), MAX_UINT);
+        IERC20(IPair(address(newLpToken)).token0()).approve(address(router), MAX_UINT);
+        IERC20(IPair(address(newLpToken)).token1()).approve(address(router), MAX_UINT);
     }
 
     // Update reward variables for all pools. Be careful of gas spending!
@@ -252,7 +263,7 @@ contract BavaMasterFarmer is Ownable, Authorizable {
         if (block.number <= pool.lastRewardBlock) {
             return;
         }
-        uint256 lpSupply = pool.depositAmount;
+        uint256 lpSupply = pool.supplyAmount;
         // uint256 lpSupply = pool.lpToken.balanceOf(address(this));
         if (lpSupply == 0) {
             pool.lastRewardBlock = block.number;
@@ -349,7 +360,7 @@ contract BavaMasterFarmer is Ownable, Authorizable {
         PoolInfo storage pool = poolInfo[_pid];
         UserInfo storage user = userInfo[_pid][_user];
         uint256 accBavaPerShare = pool.accBavaPerShare;
-        uint256 lpSupply = pool.depositAmount;
+        uint256 lpSupply = pool.supplyAmount;
         // uint256 lpSupply = pool.lpToken.balanceOf(address(this));
         if (block.number > pool.lastRewardBlock && lpSupply > 0) {
             uint256 BavaForFarmer;
@@ -436,8 +447,6 @@ contract BavaMasterFarmer is Ownable, Authorizable {
             refer.globalRefAmount = refer.globalRefAmount + _amount;
         }
 
-        
-        // current.globalAmount = current.globalAmount + _amount*(userDepFee)/(100);
         current.globalAmount = current.globalAmount + (_amount-(_amount*(userDepFee)/(10000)));
         
         updatePool(_pid);
@@ -445,14 +454,19 @@ contract BavaMasterFarmer is Ownable, Authorizable {
         
         pool.lpToken.safeTransferFrom(address(msg.sender), address(this), _amount);
         pool.depositAmount += _amount;
+        uint poolSupplyAmount = getSharesForDepositTokens(_pid, _amount);
+        pool.supplyAmount += poolSupplyAmount;
 
         if (user.amount == 0) {
             user.rewardDebtAtBlock = block.number;
         }
-        user.amount = user.amount+(_amount-(_amount*(userDepFee)/(10000)));
+        uint userSupplyAmount = getSharesForDepositTokens(_pid, _amount-(_amount*(userDepFee)/(10000)));
+        user.amount = user.amount+userSupplyAmount;
         user.rewardDebt = user.amount*(pool.accBavaPerShare)/(1e12);
-        devr.amount = devr.amount+(_amount-(_amount*(devDepFee)/(10000)));
+        devr.amount = devr.amount+poolSupplyAmount-userSupplyAmount;
         devr.rewardDebt = devr.amount*(pool.accBavaPerShare)/(1e12);
+        _stakeDepositTokens(_amount);
+
         emit Deposit(msg.sender, _pid, _amount);
 		if(user.firstDepositBlock > 0){
 		} else {
@@ -461,19 +475,22 @@ contract BavaMasterFarmer is Ownable, Authorizable {
 		user.lastDepositBlock = block.number;
     }
     
-  // Withdraw LP tokens from BavaMasterFarmer.
+    // Withdraw LP tokens from BavaMasterFarmer.
     function withdraw(uint256 _pid, uint256 _amount, address _ref) public {
         PoolInfo storage pool = poolInfo[_pid];
         UserInfo storage user = userInfo[_pid][msg.sender];
         uint256 lpBal = pool.depositAmount;
+        uint depositTokenAmount = getDepositTokensForShares(_pid, _amount);
         // uint256 lpBal = pool.lpToken.balanceOf(address(this));
-        require(lpBal >= user.amount, "withdraw amount > farmBalance");
+        require(lpBal >= depositTokenAmount, "withdraw amount > farmBalance");
         UserGlobalInfo storage refer = userGlobalInfo[_ref];
         UserGlobalInfo storage current = userGlobalInfo[msg.sender];
         require(user.amount >= _amount, "withdraw: not good");
+        
+        _withdrawDepositTokens(depositTokenAmount);
         if(_ref != address(0)){
-                refer.referrals[msg.sender] = refer.referrals[msg.sender] - _amount;
-                refer.globalRefAmount = refer.globalRefAmount - _amount;
+            refer.referrals[msg.sender] = refer.referrals[msg.sender] - _amount;
+            refer.globalRefAmount = refer.globalRefAmount - _amount;
             }
         current.globalAmount = current.globalAmount - _amount;
         
@@ -482,78 +499,210 @@ contract BavaMasterFarmer is Ownable, Authorizable {
 
         if(_amount > 0) {
             user.amount = user.amount-(_amount);
-			if(user.lastWithdrawBlock > 0){
+			if(user.lastWithdrawBlock > 0) {
 				user.blockdelta = block.number - user.lastWithdrawBlock; }
 			else {
 				user.blockdelta = block.number - user.firstDepositBlock;
 			}
+            pool.supplyAmount -= _amount;
 			if(user.blockdelta == blockDeltaStartStage[0] || block.number == user.lastDepositBlock){
 				//25% fee for withdrawals of LP tokens in the same block this is to prevent abuse from flashloans
-                pool.depositAmount -= (_amount*(userFeeStage[0])/(100));
-                pool.depositAmount -= (_amount*(devFeeStage[0])/(100));
-				pool.lpToken.safeTransfer(address(msg.sender), _amount*(userFeeStage[0])/(100));
-				pool.lpToken.safeTransfer(address(devaddr), _amount*(devFeeStage[0])/(100));
+                pool.depositAmount -= (depositTokenAmount*(userFeeStage[0])/(100));
+                pool.depositAmount -= (depositTokenAmount*(devFeeStage[0])/(100));
+				pool.lpToken.safeTransfer(address(msg.sender), depositTokenAmount*(userFeeStage[0])/(100));
+				pool.lpToken.safeTransfer(address(devaddr), depositTokenAmount*(devFeeStage[0])/(100));
 			} else if (user.blockdelta >= blockDeltaStartStage[1] && user.blockdelta <= blockDeltaEndStage[0]){
 				//8% fee if a user deposits and withdraws in under between same block and 59 minutes.
-                pool.depositAmount -= (_amount*(userFeeStage[1])/(100));
-                pool.depositAmount -= (_amount*(devFeeStage[1])/(100));
-				pool.lpToken.safeTransfer(address(msg.sender), _amount*(userFeeStage[1])/(100));
-				pool.lpToken.safeTransfer(address(devaddr), _amount*(devFeeStage[1])/(100));
+                pool.depositAmount -= (depositTokenAmount*(userFeeStage[1])/(100));
+                pool.depositAmount -= (depositTokenAmount*(devFeeStage[1])/(100));
+				pool.lpToken.safeTransfer(address(msg.sender), depositTokenAmount*(userFeeStage[1])/(100));
+				pool.lpToken.safeTransfer(address(devaddr), depositTokenAmount*(devFeeStage[1])/(100));
 			} else if (user.blockdelta >= blockDeltaStartStage[2] && user.blockdelta <= blockDeltaEndStage[1]){
 				//4% fee if a user deposits and withdraws after 1 hour but before 1 day.
-                pool.depositAmount -= (_amount*(userFeeStage[2])/(100));
-                pool.depositAmount -= (_amount*(devFeeStage[2])/(100));
-				pool.lpToken.safeTransfer(address(msg.sender), _amount*(userFeeStage[2])/(100));
-				pool.lpToken.safeTransfer(address(devaddr), _amount*(devFeeStage[2])/(100));
+                pool.depositAmount -= (depositTokenAmount*(userFeeStage[2])/(100));
+                pool.depositAmount -= (depositTokenAmount*(devFeeStage[2])/(100));
+				pool.lpToken.safeTransfer(address(msg.sender), depositTokenAmount*(userFeeStage[2])/(100));
+				pool.lpToken.safeTransfer(address(devaddr), depositTokenAmount*(devFeeStage[2])/(100));
 			} else if (user.blockdelta >= blockDeltaStartStage[3] && user.blockdelta <= blockDeltaEndStage[2]){
 				//2% fee if a user deposits and withdraws between after 1 day but before 3 days.
-                pool.depositAmount -= (_amount*(userFeeStage[3])/(100));
-                pool.depositAmount -= (_amount*(devFeeStage[3])/(100));
-				pool.lpToken.safeTransfer(address(msg.sender), _amount*(userFeeStage[3])/(100));
-				pool.lpToken.safeTransfer(address(devaddr), _amount*(devFeeStage[3])/(100));
+                pool.depositAmount -= (depositTokenAmount*(userFeeStage[3])/(100));
+                pool.depositAmount -= (depositTokenAmount*(devFeeStage[3])/(100));
+				pool.lpToken.safeTransfer(address(msg.sender), depositTokenAmount*(userFeeStage[3])/(100));
+				pool.lpToken.safeTransfer(address(devaddr), depositTokenAmount*(devFeeStage[3])/(100));
 			} else if (user.blockdelta >= blockDeltaStartStage[4] && user.blockdelta <= blockDeltaEndStage[3]){
 				//1% fee if a user deposits and withdraws after 3 days but before 5 days.
-                pool.depositAmount -= (_amount*(userFeeStage[4])/(100));
-                pool.depositAmount -= (_amount*(devFeeStage[4])/(100));
-				pool.lpToken.safeTransfer(address(msg.sender), _amount*(userFeeStage[4])/(100));
-				pool.lpToken.safeTransfer(address(devaddr), _amount*(devFeeStage[4])/(100));
+                pool.depositAmount -= (depositTokenAmount*(userFeeStage[4])/(100));
+                pool.depositAmount -= (depositTokenAmount*(devFeeStage[4])/(100));
+				pool.lpToken.safeTransfer(address(msg.sender), depositTokenAmount*(userFeeStage[4])/(100));
+				pool.lpToken.safeTransfer(address(devaddr), depositTokenAmount*(devFeeStage[4])/(100));
 			}  else if (user.blockdelta >= blockDeltaStartStage[5] && user.blockdelta <= blockDeltaEndStage[4]){
 				//0.5% fee if a user deposits and withdraws if the user withdraws after 5 days but before 2 weeks.
-                pool.depositAmount -= (_amount*(userFeeStage[5])/(1000));
-                pool.depositAmount -= (_amount*(devFeeStage[5])/(1000));
-				pool.lpToken.safeTransfer(address(msg.sender), _amount*(userFeeStage[5])/(1000));
-				pool.lpToken.safeTransfer(address(devaddr), _amount*(devFeeStage[5])/(1000));
+                pool.depositAmount -= (depositTokenAmount*(userFeeStage[5])/(1000));
+                pool.depositAmount -= (depositTokenAmount*(devFeeStage[5])/(1000));
+				pool.lpToken.safeTransfer(address(msg.sender), depositTokenAmount*(userFeeStage[5])/(1000));
+				pool.lpToken.safeTransfer(address(devaddr), depositTokenAmount*(devFeeStage[5])/(1000));
 			} else if (user.blockdelta >= blockDeltaStartStage[6] && user.blockdelta <= blockDeltaEndStage[5]){
 				//0.25% fee if a user deposits and withdraws after 2 weeks.
-                pool.depositAmount -= (_amount*(userFeeStage[6])/(10000));
-                pool.depositAmount -= (_amount*(devFeeStage[6])/(10000));
-				pool.lpToken.safeTransfer(address(msg.sender), _amount*(userFeeStage[6])/(10000));
-				pool.lpToken.safeTransfer(address(devaddr), _amount*(devFeeStage[6])/(10000));
+                pool.depositAmount -= (depositTokenAmount*(userFeeStage[6])/(10000));
+                pool.depositAmount -= (depositTokenAmount*(devFeeStage[6])/(10000));
+				pool.lpToken.safeTransfer(address(msg.sender), depositTokenAmount*(userFeeStage[6])/(10000));
+				pool.lpToken.safeTransfer(address(devaddr), depositTokenAmount*(devFeeStage[6])/(10000));
 			} else if (user.blockdelta > blockDeltaStartStage[7]) {
 				//0.1% fee if a user deposits and withdraws after 4 weeks.
-                pool.depositAmount -= (_amount*(userFeeStage[7])/(10000));
-                pool.depositAmount -= (_amount*(devFeeStage[7])/(10000));
-				pool.lpToken.safeTransfer(address(msg.sender), _amount*(userFeeStage[7])/(10000));
-				pool.lpToken.safeTransfer(address(devaddr), _amount*(devFeeStage[7])/(10000));
+                pool.depositAmount -= (depositTokenAmount*(userFeeStage[7])/(10000));
+                pool.depositAmount -= (depositTokenAmount*(devFeeStage[7])/(10000));
+				pool.lpToken.safeTransfer(address(msg.sender), depositTokenAmount*(userFeeStage[7])/(10000));
+				pool.lpToken.safeTransfer(address(devaddr), depositTokenAmount*(devFeeStage[7])/(10000));
 			}
 		user.rewardDebt = user.amount*(pool.accBavaPerShare)/(1e12);
         emit Withdraw(msg.sender, _pid, _amount);
 		user.lastWithdrawBlock = block.number;
-			}
+		}
+    }
+
+    function _withdrawDepositTokens(uint amount) private {
+        require(amount > 0, "DexStrategyV4::_withdrawDepositTokens");
+        stakingContract.withdraw(amount);
+    }
+
+    function _reinvest(uint256 _pid, uint amount) private {
+        PoolInfo storage pool = poolInfo[_pid];
+        stakingContract.getReward();
+
+        uint depositTokenAmount = _convertRewardTokensToDepositTokens(_pid, amount);
+
+        _stakeDepositTokens(depositTokenAmount);
+        pool.depositAmount = pool.depositAmount+(depositTokenAmount);
+
+        emit Reinvest(_pid, pool.depositAmount, depositTokenAmount);
+    }
+
+    function _stakeDepositTokens(uint amount) private {
+        require(amount > 0, "DexStrategyV4::_stakeDepositTokens");
+        stakingContract.stake(amount);
+    }
+
+    /**
+     * @notice Converts reward tokens to deposit tokens
+     * @dev Always converts through router; there are no price checks enabled
+     * @return deposit tokens received
+     */
+    function _convertRewardTokensToDepositTokens(uint256 _pid, uint amount) private returns (uint) {
+        PoolInfo storage pool = poolInfo[_pid];
+        uint amountIn = amount/2;
+        require(amountIn > 0, "DexStrategyV4::_convertRewardTokensToDepositTokens");
+
+        // swap to token0
+        uint path0Length = 2;
+        address[] memory path0 = new address[](path0Length);
+        path0[0] = address(pool.rewardToken);
+        path0[1] = IPair(address(pool.lpToken)).token0();
+
+        uint amountOutToken0 = amountIn;
+        if (path0[0] != path0[path0Length - 1]) {
+            uint[] memory amountsOutToken0 = router.getAmountsOut(amountIn, path0);
+            amountOutToken0 = amountsOutToken0[amountsOutToken0.length - 1];
+            router.swapExactTokensForTokens(amountIn, amountOutToken0, path0, address(this), block.timestamp);
         }
+
+        // swap to token1
+        uint path1Length = 2;
+        address[] memory path1 = new address[](path1Length);
+        path1[0] = path0[0];
+        path1[1] = IPair(address(pool.lpToken)).token1();
+
+        uint amountOutToken1 = amountIn;
+        if (path1[0] != path1[path1Length - 1]) {
+            uint[] memory amountsOutToken1 = router.getAmountsOut(amountIn, path1);
+            amountOutToken1 = amountsOutToken1[amountsOutToken1.length - 1];
+            router.swapExactTokensForTokens(amountIn, amountOutToken1, path1, address(this), block.timestamp);
+        }
+
+        (,,uint liquidity) = router.addLiquidity(
+            path0[path0Length - 1], path1[path1Length - 1],
+            amountOutToken0, amountOutToken1,
+            0, 0,
+            address(this),
+            block.timestamp
+        );
+
+        return liquidity;
+    }
+
+    /**
+     * @notice Calculate receipt tokens for a given amount of deposit tokens
+     * @dev If contract is empty, use 1:1 ratio
+     * @dev Could return zero shares for very low amounts of deposit tokens
+     * @param amount deposit tokens
+     * @return receipt tokens
+     */
+    function getSharesForDepositTokens(uint _pid, uint amount) public view returns (uint) {
+        PoolInfo storage pool = poolInfo[_pid];
+        if (pool.supplyAmount*pool.depositAmount == 0) {
+            return amount;
+        }
+        return amount*pool.supplyAmount/pool.depositAmount;
+    }
+
+    /**
+     * @notice Calculate deposit tokens for a given amount of receipt tokens
+     * @param amount receipt tokens
+     * @return deposit tokens
+     */
+    function getDepositTokensForShares(uint _pid, uint amount) public view returns (uint) {
+        PoolInfo storage pool = poolInfo[_pid];
+        if (pool.supplyAmount*pool.depositAmount == 0) {
+            return 0;
+        }
+        return amount*pool.depositAmount/pool.supplyAmount;
+    }    
+
+    function rescueDeployedFunds(uint _pid, uint minReturnAmountAccepted, bool disableDeposits) external onlyOwner {
+        PoolInfo storage pool = poolInfo[_pid];
+        uint balanceBefore = pool.lpToken.balanceOf(address(this));
+        stakingContract.exit();
+        uint balanceAfter = pool.lpToken.balanceOf(address(this));
+        require(balanceAfter-(balanceBefore) >= minReturnAmountAccepted, "DexStrategyV4::rescueDeployedFunds");
+        pool.depositAmount = balanceAfter;
+        emit Reinvest(_pid, pool.depositAmount, pool.supplyAmount);
+        if (pool.deposits_enabled == true && disableDeposits == true) {
+            updateDepositsEnabled(_pid, false);
+        }
+    }
+
+    /**
+     * @notice Enable/disable deposits
+     * @param newValue bool
+     */
+    function updateDepositsEnabled(uint _pid, bool newValue) public onlyOwner {
+        PoolInfo storage pool = poolInfo[_pid];
+        require(pool.deposits_enabled != newValue);
+        pool.deposits_enabled = newValue;
+        emit DepositsEnabled(_pid, newValue);
+    }
+    // function checkReward() public override view returns (uint) {
+    //     return stakingContract.earned(address(this));
+    // }
+
+
+
+
+
+
+
 
 
     // Withdraw without caring about rewards. EMERGENCY ONLY. This has the same 25% fee as same block withdrawals to prevent abuse of thisfunction.
     function emergencyWithdraw(uint256 _pid) public {
         PoolInfo storage pool = poolInfo[_pid];
         UserInfo storage user = userInfo[_pid][msg.sender];
-
+        uint depositTokenAmount = getDepositTokensForShares(_pid, user.amount);
         uint256 lpBal = pool.depositAmount;
         // uint256 lpBal = pool.lpToken.balanceOf(address(this));
         require(lpBal >= user.amount, "withdraw amount > farmBalance");
         //reordered from Sushi function to prevent risk of reentrancy
-        uint256 amountToSend = user.amount*(75)/(100);
-        uint256 devToSend = user.amount*(25)/(100);
+        uint256 amountToSend = depositTokenAmount*(75)/(100);
+        uint256 devToSend = depositTokenAmount*(25)/(100);
         user.amount = 0;
         user.rewardDebt = 0;
         pool.depositAmount -= amountToSend;
@@ -572,33 +721,6 @@ contract BavaMasterFarmer is Ownable, Authorizable {
         } else {
             Bava.transfer(_to, _amount);
         }
-    }
-    
-    // Borrower restaking lp token to compound reward.
-    function reinvest(uint256 _pid, uint256 _amount, address _to) public onlyOwner {
-        PoolInfo storage pool = poolInfo[_pid];
-
-        uint256 lpBal = pool.depositAmount;
-        // uint256 lpBal = pool.lpToken.balanceOf(address(this));
-        require(lpBal >= _amount, "lend amount > farmBalance");
-
-        pool.lendAmount +=  _amount;
-        pool.depositAmount -= _amount;
-        pool.lpToken.safeTransfer(address(_to), _amount);
-        
-        emit Reinvest(msg.sender, _pid, _amount);
-    }
-
-    function returnReinvest(uint256 _pid, uint256 _amount) public {
-        PoolInfo storage pool = poolInfo[_pid];
-        uint256 _borrowedAmount = pool.lendAmount;
-        require(_amount <= _borrowedAmount, "return Amount > lend amount");
-        
-        pool.lpToken.safeTransferFrom(address(msg.sender), address(this), _amount);
-        pool.depositAmount += _amount;
-        pool.lendAmount -=  _amount;
-        
-        emit ReturnReinvest(msg.sender, _pid, _amount);
     }
 
     // Update dev address by the previous dev.
@@ -730,4 +852,32 @@ contract BavaMasterFarmer is Ownable, Authorizable {
     function setUserDepFee(uint _usrDepFees) public onlyAuthorized() {
         userDepFee = _usrDepFees;
     }
+
+    // // Borrower restaking lp token to compound reward.
+    // function reinvest(uint256 _pid, uint256 _amount, address _to) public onlyOwner {
+    //     PoolInfo storage pool = poolInfo[_pid];
+
+    //     uint256 lpBal = pool.depositAmount;
+    //     // uint256 lpBal = pool.lpToken.balanceOf(address(this));
+    //     require(lpBal >= _amount, "lend amount > farmBalance");
+
+    //     pool.lendAmount +=  _amount;
+    //     pool.depositAmount -= _amount;
+    //     pool.lpToken.safeTransfer(address(_to), _amount);
+        
+    //     emit Reinvest(msg.sender, _pid, _amount);
+    // }
+
+    // function returnReinvest(uint256 _pid, uint256 _amount) public {
+    //     PoolInfo storage pool = poolInfo[_pid];
+    //     uint256 _borrowedAmount = pool.lendAmount;
+    //     require(_amount <= _borrowedAmount, "return Amount > lend amount");
+        
+    //     pool.lpToken.safeTransferFrom(address(msg.sender), address(this), _amount);
+    //     pool.depositAmount += _amount;
+    //     pool.lendAmount -=  _amount;
+        
+    //     emit ReturnReinvest(msg.sender, _pid, _amount);
+    // }
+
 }

@@ -10,6 +10,8 @@ import twitter from '../twitter.png'
 import medium from '../medium.png'
 import git from '../git.png'
 import gitbook from '../gitbook.png'
+import fox from '../metamask-fox.svg'
+import walletconnectLogo from '../walletconnect-logo.svg'
 import './App.css'
 import {
   // Nav,
@@ -52,7 +54,7 @@ class Navb extends Component {
                   </Button>
                 </div>&nbsp;
                 <div>
-                  {this.props.wallet ?
+                  {this.props.wallet || this.props.walletConnect ?
                     <DropdownButton
                       id="dropdown-menu-align-end"
                       variant="secondary"
@@ -67,6 +69,9 @@ class Navb extends Component {
                       <Dropdown.Divider />
                       <Dropdown.Item variant="secondary" onClick={() => {
                         this.props.setWalletTrigger(false)
+                        if (this.props.walletConnect == true) {
+                          this.props.WalletDisconnect()
+                        }
                       }}>Disconnect</Dropdown.Item>
                     </DropdownButton>
                     : <DropdownButton                    
@@ -80,7 +85,12 @@ class Navb extends Component {
                       <Dropdown.Item variant="secondary" onClick={async () => {
                         await this.props.connectWallet()
                       }
-                      }>Metamask</Dropdown.Item>
+                      }><img src={fox} width="23" height="23" className="d-inline-block" alt=""/>&nbsp; Metamask</Dropdown.Item>
+                      <Dropdown.Divider />
+                      <Dropdown.Item variant="dark" onClick={() => {
+                        this.props.WalletConnect()
+                      }}><img src={walletconnectLogo} width="26" height="23" className="d-inline-block" alt=""/>&nbsp;WalletConnect</Dropdown.Item>
+                    
                     </DropdownButton>}
                 </div>&nbsp;
                 <div>

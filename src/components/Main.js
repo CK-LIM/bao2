@@ -35,7 +35,7 @@ class Main extends Component {
               <tbody>
                 <tr>
                   <td>{this.props.poolLength} </td>
-                  <td>{window.web3.utils.fromWei(this.props.totalrewardperblock, 'ether')} BAVA</td>
+                  <td>{window.web3Ava.utils.fromWei(this.props.totalrewardperblock, 'ether')} BAVA</td>
                   <td>{this.props.startBlk} </td>
                 </tr>
               </tbody>
@@ -50,9 +50,9 @@ class Main extends Component {
               </thead>
               <tbody>
                 <tr>
-                  <td>{parseFloat(window.web3.utils.fromWei(this.props.bavaTokenTotalSupply, 'ether'))} BAVA</td>
-                  <td>{window.web3.utils.fromWei(this.props.bavaTokenCapSupply, 'ether')} BAVA</td>
-                  <td>{parseFloat(window.web3.utils.fromWei(this.props.bavaTokenLock, 'ether'))} BAVA</td>
+                  <td>{parseFloat(window.web3Ava.utils.fromWei(this.props.bavaTokenTotalSupply, 'ether'))} BAVA</td>
+                  <td>{window.web3Ava.utils.fromWei(this.props.bavaTokenCapSupply, 'ether')} BAVA</td>
+                  <td>{parseFloat(window.web3Ava.utils.fromWei(this.props.bavaTokenLock, 'ether'))} BAVA</td>
                 </tr>
               </tbody>
             </table>

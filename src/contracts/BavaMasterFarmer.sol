@@ -354,7 +354,7 @@ contract BavaMasterFarmer is Ownable, Authorizable {
         _harvest(_pid);
     }
 
-    // lock 95% of reward if it come from bounus time
+    // lock 95% of reward
     function _harvest(uint256 _pid) internal {
         PoolInfo storage pool = poolInfo[_pid];
         UserInfo storage user = userInfo[_pid][msg.sender];
@@ -370,10 +370,10 @@ contract BavaMasterFarmer is Ownable, Authorizable {
             if(pending > 0) {
                 Bava.transfer(msg.sender, pending);
                 uint256 lockAmount = 0;
-                if (user.rewardDebtAtBlock <= FINISH_BONUS_AT_BLOCK) {
-                    lockAmount = pending*(PERCENT_LOCK_BONUS_REWARD)/(100);
-                    Bava.lock(msg.sender, lockAmount);
-                }
+                // if (user.rewardDebtAtBlock <= FINISH_BONUS_AT_BLOCK) {
+                lockAmount = pending*(PERCENT_LOCK_BONUS_REWARD)/(100);
+                Bava.lock(msg.sender, lockAmount);
+                // }
 
                 user.rewardDebtAtBlock = block.number;
 

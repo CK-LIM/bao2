@@ -96,6 +96,13 @@ body {
   /* font-size: 50px; */
 }
 
+.textInfo {
+  color: #000000;
+  display: inline-block;
+  margin-left: 5px;
+  font-size: 13px;
+  }
+
 .dropdown-toggle::after {
   display: none;
 }

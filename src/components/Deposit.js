@@ -53,7 +53,7 @@ class Deposit extends Component {
         txValidAmount: false
       })
     } 
-    // else if (bigInt(window.web3.utils.toWei(event, 'ether')).value > bigInt(this.props.lpTokenBalanceAccount[this.props.n][this.props.i]).value) {
+    // else if (bigInt(window.web3Ava.utils.toWei(event, 'ether')).value > bigInt(this.props.lpTokenBalanceAccount[this.props.n][this.props.i]).value) {
     //   this.setState({
     //     message: 'Not enough Balance'
     //   })
@@ -137,7 +137,7 @@ class Deposit extends Component {
               </thead>
               <tbody>
                 <tr style={{ color: 'silver' }}>
-                  <td>{window.web3.utils.fromWei(this.props.userSegmentInfo[this.props.n][this.props.i].amount.toString(), 'Ether')}</td>
+                  <td>{window.web3Ava.utils.fromWei(this.props.userSegmentInfo[this.props.n][this.props.i].amount.toString(), 'Ether')}</td>
                   <td>{this.props.pendingSegmentReward[this.props.n][this.props.i]}</td>
                 </tr>
               </tbody>
@@ -145,7 +145,7 @@ class Deposit extends Component {
 
             <div className="card mb-4 cardbody" >
               <div className="card-body ">
-                {this.props.wallet ?
+                {this.props.wallet || this.props.walletConnect ?
 
                   <form className="mb-3" onSubmit={(event) => {
                     event.preventDefault()
@@ -154,7 +154,7 @@ class Deposit extends Component {
                     } else {
                       let amount
                       amount = this.input.value.toString()
-                      amount = window.web3.utils.toWei(amount, 'Ether')
+                      amount = window.web3Ava.utils.toWei(amount, 'Ether')
                       console.log(this.state.txDeposit)
                       console.log(this.state.txWithdraw)
 
@@ -180,9 +180,9 @@ class Deposit extends Component {
                       <label className="float-left" style={{ color: 'silver' }}><b>Deposit</b></label>
                       <span className="float-right" style={{ color: 'silver' }}>
                         <span>
-                          LP Balance &nbsp;&nbsp;&nbsp;&nbsp;: {window.web3.utils.fromWei(this.props.lpTokenBalanceAccount[this.props.n][this.props.i], 'Ether')}</span>
+                          LP Balance &nbsp;&nbsp;&nbsp;&nbsp;: {window.web3Ava.utils.fromWei(this.props.lpTokenBalanceAccount[this.props.n][this.props.i], 'Ether')}</span>
                         <span><br />
-                          BAVA Balance&nbsp;: {window.web3.utils.fromWei(this.props.bavaTokenBalance, 'Ether')}
+                          BAVA Balance&nbsp;: {window.web3Ava.utils.fromWei(this.props.bavaTokenBalance, 'Ether')}
                         </span>
                       </span>
                     </div>
