@@ -111,7 +111,7 @@ class App extends Component {
         let bavaTokenBalance = 0
         let userSegmentInfo = [[], []]
         let pendingSegmentReward = [[], []]
-        
+
         this.setState({ bavaTokenBalance: bavaTokenBalance.toString() })
         this.setState({ totalpendingReward: totalpendingReward.toLocaleString('fullwide', { useGrouping: false }) })
         this.setState({ userSegmentInfo })
@@ -149,9 +149,9 @@ class App extends Component {
             lpTokenSegmentAsymbol[1][n] = lpTokenAsymbol
             lpTokenSegmentBsymbol[1][n] = lpTokenBsymbol
             n += 1
-          } 
-        }   
-        
+          }
+        }
+
         this.setState({ lpTokenSegmentAsymbol })
         this.setState({ lpTokenSegmentBsymbol })
         this.setState({ totalallocPoint })
@@ -402,12 +402,12 @@ class App extends Component {
       console.log("disconnected")
       await window.provider.disconnect()
       this.setState({ walletConnect: false })
-      
+
       let totalpendingReward = "0"
       let bavaTokenBalance = 0
       let userSegmentInfo = [[], []]
       let pendingSegmentReward = [[], []]
-      
+
       this.setState({ bavaTokenBalance: bavaTokenBalance.toString() })
       this.setState({ totalpendingReward: totalpendingReward.toLocaleString('fullwide', { useGrouping: false }) })
       this.setState({ userSegmentInfo })
@@ -753,7 +753,7 @@ class App extends Component {
       let bavaTokenBalance = 0
       let userSegmentInfo = [[], []]
       let pendingSegmentReward = [[], []]
-      
+
       this.setState({ bavaTokenBalance: bavaTokenBalance.toString() })
       this.setState({ totalpendingReward: totalpendingReward.toLocaleString('fullwide', { useGrouping: false }) })
       this.setState({ userSegmentInfo })
@@ -888,7 +888,7 @@ class App extends Component {
         wallet={this.state.wallet}
         apr={this.state.apr}
         walletConnect={this.state.walletConnect}
-        aprloading ={this.state.aprloading}
+        aprloading={this.state.aprloading}
         approve={this.approve}
         connectWallet={this.connectWallet}
       />
@@ -909,6 +909,7 @@ class App extends Component {
         pendingSegmentReward={this.state.pendingSegmentReward}
         buttonPopup={this.state.buttonPopup}
         setTrigger={this.setTrigger}
+        harvest={this.harvest}
         BAVAPrice={this.state.BAVAPrice}
         tvl={this.state.tvl}
         apr={this.state.apr}
