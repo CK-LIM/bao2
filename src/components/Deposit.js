@@ -120,7 +120,7 @@ class Deposit extends Component {
           <div><small>APR:</small></div>
           <div className="lds-facebook"><div></div><div></div><div></div></div>
         </div>} </div>
-
+        <br />
         <div className="card mb-4 cardbody" >
           <div className="card-body">
 
