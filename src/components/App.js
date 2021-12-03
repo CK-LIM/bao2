@@ -682,7 +682,7 @@ class App extends Component {
       const bavaMasterFarmeryData = BavaMasterFarmer.networks[this.state.networkId]
       let bavaMasterFarmer = new window.web3Con.eth.Contract(BavaMasterFarmer.abi, bavaMasterFarmeryData.address)
       if (this.state.pendingSegmentReward[n][i] <= 0) {
-        alert("No token to harvest! Please deposit PANCAKE LP to earn BAVA")
+        alert("No token to harvest! Please deposit LP to earn BAVA")
       } else {
         this.setState({ loading: false })
         bavaMasterFarmer.methods.claimReward(i).send({ from: this.state.account }).then(async (result) => {
@@ -707,7 +707,7 @@ class App extends Component {
       const bavaMasterFarmeryData = BavaMasterFarmer.networks[this.state.networkId]
       let bavaMasterFarmer = new window.web3.eth.Contract(BavaMasterFarmer.abi, bavaMasterFarmeryData.address)
       if (this.state.pendingSegmentReward[n][i] <= 0) {
-        alert("No token to harvest! Please deposit PANCAKE LP to earn BAVA")
+        alert("No token to harvest! Please deposit LP to earn BAVA")
       } else {
         this.setState({ loading: false })
         bavaMasterFarmer.methods.claimReward(i).send({ from: this.state.account }).then(async (result) => {

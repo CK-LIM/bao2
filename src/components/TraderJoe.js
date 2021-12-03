@@ -104,7 +104,7 @@ class Menu extends Component {
                     <br />
                     <div className="center" style={{ color: 'silver' }}><b><big>Select Your Favourite farm entrees!</big></b></div>
                     <div className="center" style={{ color: 'silver' }}><small>&nbsp;! Attention:&nbsp;Be sure to read <a href="https://baklavaspace.gitbook.io/" target="_blank">baklavaspace.gitbook</a> before using the pools so you are familiar with protocol risks and fees!</small></div>
-                    <br />
+                    
 
 
                     {/* ################################################################################################### */}
@@ -117,7 +117,7 @@ class Menu extends Component {
                                     <img src={baklava} height='30' alt="" /><br /><br />
                                     <b>BAVA-USDC</b>
                                     <div>
-                                        <span className=" text-muted"><small>Deposit<small className="textSmall">BAVA-USDC PANCAKE LP</small> to Earn BAVA</small></span><br /><br />
+                                        <span className=" text-muted"><small>Deposit<small className="textSmall">BAVA-USDC TraderJoe LP</small> to Earn BAVA</small></span><br /><br />
                                         <span className=" text-muted"><small>APY:  {(28000 * 365 * this.props.poolInfo[1].bavaPerBlock / this.props.lpTokenInContract[1]) * 100} % </small></span><br />
                                         <span className=" text-muted"><small>LP Staked: {window.web3Ava.utils.fromWei(this.props.userInfo[1].amount, 'Ether')}</small></span><br />
                                         <span className=" text-muted"><small>TVL: </small></span>
@@ -136,7 +136,7 @@ class Menu extends Component {
                                     <img src={baklava} height='30' alt="" /><br /><br />
                                     <b>BAVA-BNB</b>
                                     <div>
-                                        <span className=" text-muted"><small>Deposit<small className="textSmall">BAVA-BNB PANCAKE LP</small> to Earn BAVA</small></span><br /><br />
+                                        <span className=" text-muted"><small>Deposit<small className="textSmall">BAVA-BNB TraderJoe LP</small> to Earn BAVA</small></span><br /><br />
                                         <span className=" text-muted"><small>APY:  {(28000 * 365 * this.props.poolInfo[1].bavaPerBlock / this.props.lpTokenInContract[1]) * 100} % </small></span><br />
                                         <span className=" text-muted"><small>LP Staked: {window.web3Ava.utils.fromWei(this.props.userInfo[1].amount, 'Ether')}</small></span><br />
                                         <span className=" text-muted"><small>TVL: </small></span>
@@ -158,6 +158,7 @@ class Menu extends Component {
                                 let i = this.props.poolSegmentInfo[1].indexOf(poolSegmentInfo)
                                 return (
                                     <div key={key}>
+                                        <br />
                                         <div className="col">
                                             <div className="card mb-4 cardbody card-body text-center" style={{ minWidth: '230px', maxWidth: '230px' }}>
                                                 <span className="text">
