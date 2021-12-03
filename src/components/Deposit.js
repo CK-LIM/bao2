@@ -5,6 +5,9 @@ import baklava from '../baklava.png';
 import pangolin from '../pangolin.png';
 import joe from '../joe.png'
 import bigInt from 'big-integer'
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
+import { BsFillQuestionCircleFill } from 'react-icons/bs';
 import './App.css';
 
 
@@ -52,7 +55,7 @@ class Deposit extends Component {
       this.setState({
         txValidAmount: false
       })
-    } 
+    }
     // else if (bigInt(window.web3Ava.utils.toWei(event, 'ether')).value > bigInt(this.props.lpTokenBalanceAccount[this.props.n][this.props.i]).value) {
     //   this.setState({
     //     message: 'Not enough Balance'
@@ -102,8 +105,21 @@ class Deposit extends Component {
         <h2 className="center text"><b>{this.props.lpTokenSegmentAsymbol[this.props.n][this.props.i]}-{this.props.lpTokenSegmentBsymbol[this.props.n][this.props.i]} Farm</b></h2>
         <br />
         <div className="center" style={{ color: 'silver' }}>&nbsp;Deposit <b>&nbsp;{this.props.lpTokenSegmentAsymbol[this.props.n][this.props.i]}-{this.props.lpTokenSegmentBsymbol[this.props.n][this.props.i]} LP Token&nbsp;</b> and earn BAVA!!!</div>
-        <div className="center" style={{ color: 'silver' }}>&nbsp;APR :  {this.props.apr[0][this.props.i]} %</div>
-        <br />
+        <div className="center" style={{ color: 'silver' }}> {this.props.aprloading ? <small> <div>APR: {parseInt(this.props.apr[0][this.props.i])} % &nbsp;
+          <Popup
+            trigger={open => (
+              <span><BsFillQuestionCircleFill size={13} /></span>
+            )}
+            on="hover"
+            position="right center"
+            offsetY={-22}
+            offsetX={10}
+          ><span className="textInfo"><small>APR are affected by the price of BAVA which has not yet stabilized. </small></span>
+            <span className="textInfo"><small>If it shows 'NaN' or 'Infinity', it means currently the pool has no LP token staked. </small></span>
+          </Popup></div></small> : <div className="center rowC">
+          <div><small>APR:</small></div>
+          <div className="lds-facebook"><div></div><div></div><div></div></div>
+        </div>} </div>
 
         <div className="card mb-4 cardbody" >
           <div className="card-body">
@@ -118,7 +134,7 @@ class Deposit extends Component {
                 if (this.props.pendingReward <= 0) {
                   alert("No token to harvest! Please deposit LP to earn BAVA")
                 } else {
-                  this.props.withdraw(this.props.i, 0)
+                  this.props.harvest(this.props.i, "0")
                 }
               }}>
               <small>Harvest</small>
@@ -137,7 +153,7 @@ class Deposit extends Component {
               </thead>
               <tbody>
                 <tr style={{ color: 'silver' }}>
-                  <td>{window.web3Ava.utils.fromWei(this.props.userSegmentInfo[this.props.n][this.props.i].amount.toString(), 'Ether')}</td>
+                  <td>{this.props.userSegmentInfo[this.props.n][this.props.i]}</td>
                   <td>{this.props.pendingSegmentReward[this.props.n][this.props.i]}</td>
                 </tr>
               </tbody>
@@ -159,16 +175,16 @@ class Deposit extends Component {
                       console.log(this.state.txWithdraw)
 
                       if (this.state.txDeposit === true && this.state.txWithdraw === false) {
-                        if (bigInt(amount).value > bigInt(this.props.lpTokenBalanceAccount[this.props.n][this.props.i]).value) {
-                          alert("Not enough funds")                          
+                        if (bigInt(amount).value > bigInt(window.web3Ava.utils.toWei(this.props.lpTokenBalanceAccount[this.props.n][this.props.i], 'Ether')).value) {
+                          alert("Not enough funds")
                         } else {
                           this.props.deposit(this.props.i, amount, this.props.n)
                         }
                       } else if (this.state.txDeposit === false && this.state.txWithdraw === true) {
-                        if (bigInt(amount).value > this.props.userSegmentInfo[this.props.n][this.props.i].amount) {
-                          alert("Withdraw tokens more than deposit LP tokens")   
+                        if (bigInt(amount).value > window.web3Ava.utils.toWei(this.props.userSegmentInfo[this.props.n][this.props.i], 'Ether')) {
+                          alert("Withdraw tokens more than deposit LP tokens")
                         } else {
-                          this.props.withdraw(this.props.i, amount)
+                          this.props.withdraw(this.props.i, amount, this.props.n)
                         }
                       }
                     }
@@ -180,7 +196,7 @@ class Deposit extends Component {
                       <label className="float-left" style={{ color: 'silver' }}><b>Deposit</b></label>
                       <span className="float-right" style={{ color: 'silver' }}>
                         <span>
-                          LP Balance &nbsp;&nbsp;&nbsp;&nbsp;: {window.web3Ava.utils.fromWei(this.props.lpTokenBalanceAccount[this.props.n][this.props.i], 'Ether')}</span>
+                          LP Balance &nbsp;&nbsp;&nbsp;&nbsp;: {this.props.lpTokenBalanceAccount[this.props.n][this.props.i]}</span>
                         <span><br />
                           BAVA Balance&nbsp;: {window.web3Ava.utils.fromWei(this.props.bavaTokenBalance, 'Ether')}
                         </span>
@@ -251,7 +267,7 @@ class Deposit extends Component {
 
 
 
-        <div className="text-center" style={{ color: 'silver' }}><img src={asterisk} height='15' alt=""/>&nbsp;<small>Every time you stake and unstake LP tokens, the contract will automatically harvest BAVA rewards for you!</small></div>
+        <div className="text-center" style={{ color: 'silver' }}><img src={asterisk} height='15' alt="" />&nbsp;<small>Every time you stake and unstake LP tokens, the contract will automatically harvest BAVA rewards for you!</small></div>
       </div>
 
     );

@@ -165,15 +165,15 @@ body {
   .lds-facebook {
     display: inline-flex;
     position: relative;
-    width: 20px;
+    width: 0px;
     height: 0px;
   }
   .lds-facebook div {
     display: inline-block;
     position: absolute;
-    width: 3px;
+    width: 2px;
     background: #fff;
-    animation: lds-facebook 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+    animation: lds-facebook 1.0s cubic-bezier(0, 0.3, 0.3, 0.6) infinite;
   }
   .lds-facebook div:nth-child(1) {
     left: 8px;
@@ -189,12 +189,12 @@ body {
   }
   @keyframes lds-facebook {
     0% {
-      top: -5px;
-      height: 16px;
+      top: -4px;
+      height: 12px;
     }
     50%, 100% {
-      top: -3px;
-      height: 8px;
+      top: -2px;
+      height: 6px;
     }
   }
   

@@ -58,7 +58,7 @@ class Menu extends Component {
                                         </span>
                                         <span className="float-right ">
                                             <span>
-                                                {window.web3Ava.utils.fromWei(this.props.totalpendingReward, 'Ether')}&nbsp;BAVA
+                                                {parseFloat(window.web3Ava.utils.fromWei(this.props.totalpendingReward, 'Ether')).toFixed(5)}&nbsp;BAVA
                                             </span>
                                         </span>
                                     </small>
@@ -165,7 +165,7 @@ class Menu extends Component {
                                                     <b>{this.props.lpTokenSegmentAsymbol[0][i]}-{this.props.lpTokenSegmentBsymbol[0][i]}</b>
                                                     <div>
                                                         <span className=" " style={{ color: 'silver' }}><small>Deposit<br /><small className="textSmall">{this.props.lpTokenSegmentAsymbol[0][i]}-{this.props.lpTokenSegmentBsymbol[0][i]} Pangolin LP</small><br />to earn.</small></span><br />
-                                                        <span className="" style={{ color: 'silver' }}> {this.props.aprloading ? <small> <div>APR: {parseInt(this.props.apr[0][i])} % &nbsp;
+                                                        <span className="" style={{ color: 'silver' }}> {this.props.aprloading ? <small> <div>APR: {parseFloat(this.props.apr[0][i]).toFixed(3)} % &nbsp;
                                                         <Popup
                                                             trigger={open => (
                                                                 <span><BsFillQuestionCircleFill size={13} /></span>
@@ -180,9 +180,9 @@ class Menu extends Component {
                                                             <div><small>APR:</small></div>
                                                             <div className="lds-facebook"><div></div><div></div><div></div></div>
                                                         </div>} </span>
-                                                        <span className=" " style={{ color: 'silver' }}><small>LP Staked: {window.web3Ava.utils.fromWei(this.props.userSegmentInfo[0][i].amount, 'Ether')}</small></span><br />
-                                                        <span className=" " style={{ color: 'silver' }}><small>BAVA earned:  {this.props.pendingSegmentReward[0][i]}</small></span><br />
-                                                        <span className="" style={{ color: 'silver' }}> {this.props.aprloading ? <small> <div>TVL: $ {this.props.tvl[0][i]}</div></small> : <div className="center rowC">
+                                                        <span className=" " style={{ color: 'silver' }}><small>LP Staked: {parseFloat(this.props.userSegmentInfo[0][i])}</small></span><br />
+                                                        <span className=" " style={{ color: 'silver' }}><small>BAVA earned:  {parseFloat(this.props.pendingSegmentReward[0][i]).toFixed(3)}</small></span><br />
+                                                        <span className="" style={{ color: 'silver' }}> {this.props.aprloading ? <small> <div>TVL: $ {this.props.tvl[0][i].toFixed(3)}</div></small> : <div className="center rowC">
                                                             <div><small>TVL:</small></div>
                                                             <div className="lds-facebook"><div></div><div></div><div></div></div>
                                                         </div>} </span>
