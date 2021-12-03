@@ -78,8 +78,6 @@ class App extends Component {
       if (bavaTokenData) {
         const bavaToken = new web3Ava.eth.Contract(BavaToken.abi, bavaTokenData.address)
         this.setState({ bavaToken })
-        let bavaTokenBalance = 0
-        this.setState({ bavaTokenBalance: bavaTokenBalance.toString() })
         let bavaTokenTotalSupply = await bavaToken.methods.totalSupply().call()
         let bavaTokenCapSupply = await bavaToken.methods.cap().call()
         let bavaTokenLock = await bavaToken.methods.totalLock().call()
@@ -118,7 +116,7 @@ class App extends Component {
         this.setState({ pendingSegmentReward })
 
         for (let i = 0; i < this.state.poolLength; i++) {
-
+          console.log("cde")
           let poolInfo = await bavaMasterFarmer.methods.poolInfo(i).call()
           let lpTokenAddress = poolInfo.lpToken
           let lpTokenPair = new web3Ava.eth.Contract(IPancakePair.abi, lpTokenAddress)
@@ -163,7 +161,7 @@ class App extends Component {
 
     // #########################################################################################################################
     else {
-
+      console.log("abcd")
       // Load bavaToken
       let bavaTokenBalance = await this.state.bavaToken.methods.balanceOf(this.state.account).call()
       let bavaTokenTotalSupply = await this.state.bavaToken.methods.totalSupply().call()
@@ -684,7 +682,7 @@ class App extends Component {
       const bavaMasterFarmeryData = BavaMasterFarmer.networks[this.state.networkId]
       let bavaMasterFarmer = new window.web3Con.eth.Contract(BavaMasterFarmer.abi, bavaMasterFarmeryData.address)
       if (this.state.pendingSegmentReward[n][i] <= 0) {
-        alert("No token to harvest! Please deposit PANCAKE LP to earn PURSE")
+        alert("No token to harvest! Please deposit PANCAKE LP to earn BAVA")
       } else {
         this.setState({ loading: false })
         bavaMasterFarmer.methods.claimReward(i).send({ from: this.state.account }).then(async (result) => {
@@ -709,7 +707,7 @@ class App extends Component {
       const bavaMasterFarmeryData = BavaMasterFarmer.networks[this.state.networkId]
       let bavaMasterFarmer = new window.web3.eth.Contract(BavaMasterFarmer.abi, bavaMasterFarmeryData.address)
       if (this.state.pendingSegmentReward[n][i] <= 0) {
-        alert("No token to harvest! Please deposit PANCAKE LP to earn PURSE")
+        alert("No token to harvest! Please deposit PANCAKE LP to earn BAVA")
       } else {
         this.setState({ loading: false })
         bavaMasterFarmer.methods.claimReward(i).send({ from: this.state.account }).then(async (result) => {

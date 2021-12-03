@@ -104,7 +104,7 @@ class Menu extends Component {
                     <br />
                     <div className="center" style={{ color: 'silver' }}><b><big>Select Your Favourite farm entrees!</big></b></div>
                     <div className="center" style={{ color: 'silver' }}><small>&nbsp;! Attention:&nbsp;Be sure to read <a href="https://baklavaspace.gitbook.io/" target="_blank">baklavaspace.gitbook</a> before using the pools so you are familiar with protocol risks and fees!</small></div>
-                    <br />
+                    
 
 
                     {/* ################################################################################################### */}
@@ -114,15 +114,15 @@ class Menu extends Component {
                         <div className="card-body text-center">
                             <span>
                                 <span className="text">
-                                    <img src={purse} height='30' alt="" /><br /><br />
-                                    <b>PURSE-USDC</b>
+                                    <img src={baklava} height='30' alt="" /><br /><br />
+                                    <b>BAVA-USDC</b>
                                     <div>
-                                        <span className=" text-muted"><small>Deposit<small className="textSmall">PURSE-USDC PANCAKE LP</small> to Earn PURSE</small></span><br /><br />
-                                        <span className=" text-muted"><small>APY:  {(28000 * 365 * this.props.poolInfo[0].pursePerBlock / this.props.lpTokenInContract[0]) * 100} % </small></span><br />
+                                        <span className=" text-muted"><small>Deposit<small className="textSmall">BAVA-USDC PANCAKE LP</small> to Earn BAVA</small></span><br /><br />
+                                        <span className=" text-muted"><small>APY:  {(28000 * 365 * this.props.poolInfo[0].bavaPerBlock / this.props.lpTokenInContract[0]) * 100} % </small></span><br />
                                         <span className=" text-muted"><small>LP Staked: {window.web3Ava.utils.fromWei(this.props.userInfo[0].amount, 'Ether')}</small></span><br />
                                         <span className=" text-muted"><small>TVL: </small></span>
                                         <br /><br />
-                                        <Button variant="outlined" color="default" component={Link} to="/menu/PURSE-USDC">Select</Button>
+                                        <Button variant="outlined" color="default" component={Link} to="/menu/BAVA-USDC">Select</Button>
                                     </div>
                                 </span>
                             </span>
@@ -133,15 +133,15 @@ class Menu extends Component {
                         <div className="card-body text-center">
                             <span>
                                 <span className="text">
-                                    <img src={purse} height='30' alt="" /><br /><br />
-                                    <b>PURSE-BNB</b>
+                                    <img src={baklava} height='30' alt="" /><br /><br />
+                                    <b>BAVA-BNB</b>
                                     <div>
-                                        <span className=" text-muted"><small>Deposit<small className="textSmall">PURSE-BNB PANCAKE LP</small> to Earn PURSE</small></span><br /><br />
-                                        <span className=" text-muted"><small>APY:  {(28000 * 365 * this.props.poolInfo[1].pursePerBlock / this.props.lpTokenInContract[1]) * 100} % </small></span><br />
+                                        <span className=" text-muted"><small>Deposit<small className="textSmall">BAVA-BNB PANCAKE LP</small> to Earn BAVA</small></span><br /><br />
+                                        <span className=" text-muted"><small>APY:  {(28000 * 365 * this.props.poolInfo[1].bavaPerBlock / this.props.lpTokenInContract[1]) * 100} % </small></span><br />
                                         <span className=" text-muted"><small>LP Staked: {window.web3Ava.utils.fromWei(this.props.userInfo[1].amount, 'Ether')}</small></span><br />
                                         <span className=" text-muted"><small>TVL: </small></span>
                                         <br /><br />
-                                        <Button variant="outlined" color="default" component={Link} to="/menu/PURSE-BNB">Select</Button>
+                                        <Button variant="outlined" color="default" component={Link} to="/menu/BAVA-BNB">Select</Button>
                                     </div>
                                 </span>
                             </span>
@@ -152,8 +152,8 @@ class Menu extends Component {
 
                     {/* <div className="center" style={{ color: 'grey' }}><b><big>Dynamic added farm in progress...</big></b></div><br/> */}
 
-                    {this.props.farmloading ?
-                        <div className="row floated" >
+                    {this.props.farmloading ? 
+                        <div className="row floated" ><br />
                             {this.props.poolSegmentInfo[0].map((poolSegmentInfo, key) => {
                                 let i = this.props.poolSegmentInfo[0].indexOf(poolSegmentInfo)
                                 return (
@@ -224,7 +224,7 @@ class Menu extends Component {
 
                     <a
                         className="navbar-brand col-sm-3 col-md-2 mr-0"
-                        href="https://www.pundix.com/"
+                        href=""
                         target="_blank"
                         rel="noopener noreferrer"
                     >Baklava</a>

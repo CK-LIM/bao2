@@ -2,7 +2,7 @@
   "name": "baklava",
   "version": "0.1.0",
   "description": "baklava master chef",
-  "author": "Cklim",
+  "author": "Baklava Chef",
   "Access-Control-Allow-Origin": "*",
   "dependencies": {
     "@material-ui/core": "^4.12.3",
