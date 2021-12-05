@@ -22,16 +22,15 @@ class App extends Component {
   async componentWillMount() {
     await this.loadWeb3()
     await this.loadBlockchainData()
-    await this.loadTVLAPR()
+    this.loadTVLAPR()
     while (this.state.loading == true) {
       await this.loadBlockchainData()
       console.log("repeatfalse")
-      await this.delay(1500);
+      await this.delay(1000);
     }
   }
 
   async loadBlockchainData() {
-    const web3 = window.web3
     const web3Ava = window.web3Ava
 
     const networkId = "1"
@@ -40,6 +39,7 @@ class App extends Component {
     if (this.state.metamask == true) {
       const chainId = await window.ethereum.request({ method: 'eth_chainId' });
       this.setState({ chainId })
+
       if (this.state.chainId == "0x61") {
         this.setState({ networkName: "BSC Testnet" })
       } else if (this.state.chainId == "0x38") {
@@ -67,7 +67,6 @@ class App extends Component {
       this.setState({ chainID: "0x" })
       this.setState({ networkName: "Unavailable" })
     }
-
 
 
     if (this.state.wallet == false && this.state.walletConnect == false) {
@@ -105,10 +104,18 @@ class App extends Component {
         let n = 0
         let totalallocPoint = 0
 
+        let lpTokenAsymbols = []
+        let lpTokenBsymbols = []
+        let lpTokenPairAs = []
+        let lpTokenPairBs = []
+        let lpTokenPairsymbols = []
+        let lpTokenAddresses = []
+        let allocPoints = []
+
         let totalpendingReward = "0"
         let bavaTokenBalance = 0
         let userSegmentInfo = [[], []]
-        let pendingSegmentReward = [[], []]
+        let pendingSegmentReward = [[], []]         
 
         this.setState({ bavaTokenBalance: bavaTokenBalance.toString() })
         this.setState({ totalpendingReward: totalpendingReward.toLocaleString('fullwide', { useGrouping: false }) })
@@ -127,15 +134,16 @@ class App extends Component {
           let lpTokenPairsymbol = await lpTokenPair.methods.symbol().call()
           let lpTokenAsymbol = await lpTokenA.methods.symbol().call()
           let lpTokenBsymbol = await lpTokenB.methods.symbol().call()
+          
+          lpTokenAsymbols[i] = lpTokenAsymbol
+          lpTokenBsymbols[i] = lpTokenBsymbol
+          lpTokenPairAs[i] = lpTokenPairA
+          lpTokenPairBs[i] = lpTokenPairB
+          lpTokenPairsymbols[i] = lpTokenPairsymbol
+          lpTokenAddresses[i] = lpTokenAddress
+          allocPoints[i] = poolInfo.allocPoint
 
-          if (lpTokenAsymbol.slice(-2) === ".e") {
-            lpTokenAsymbol = lpTokenAsymbol.slice(0, -2)
-          }
-          if (lpTokenBsymbol.slice(-2) === ".e") {
-            lpTokenBsymbol = lpTokenBsymbol.slice(0, -2)
-          }
-
-          totalallocPoint += parseInt(poolInfo["allocPoint"])
+          totalallocPoint += parseInt(poolInfo.allocPoint)
 
           if (lpTokenPairsymbol == "PGL") {
             poolSegmentInfo[0][n] = poolInfo
@@ -155,6 +163,13 @@ class App extends Component {
         this.setState({ totalallocPoint })
         this.setState({ poolSegmentInfo })
 
+        this.setState({ lpTokenAsymbols })
+        this.setState({ lpTokenBsymbols })
+        this.setState({ lpTokenPairAs })
+        this.setState({ lpTokenPairBs })    
+        this.setState({ lpTokenPairsymbols })    
+        this.setState({ lpTokenAddresses })
+        this.setState({ allocPoints })
         this.setState({ farmloading: true })
       }
     }
@@ -173,10 +188,11 @@ class App extends Component {
       this.setState({ bavaTokenLock: bavaTokenLock.toString() })
 
       let totalpendingReward = 0
-      // let poolSegmentInfo = [[], []]
-      // let lpTokenBalanceAccount = [[], []]
-      // let lpTokenSegmentAllowance = [[], []]
-      // let pendingSegmentReward = [[], []]
+      let userSegmentInfo = [[], []]
+      let lpTokenBalanceAccount = [[], []]
+      let lpTokenSegmentAllowance = [[], []]
+      let pendingSegmentReward = [[], []]
+      let poolSegmentInfo = [[], []]
 
       let n = 0
       let i = 0
@@ -185,119 +201,99 @@ class App extends Component {
 
         let userInfo = await this.state.bavaMasterFarmer.methods.userInfo(i, this.state.account).call()
         let poolInfo = await this.state.bavaMasterFarmer.methods.poolInfo(i).call()
-        let lpTokenAddress = poolInfo.lpToken
-        let lpTokenPair = new web3Ava.eth.Contract(IPancakePair.abi, lpTokenAddress)
+        let lpTokenPair = new web3Ava.eth.Contract(IPancakePair.abi, this.state.lpTokenAddresses[i])
         let lpTokenBalance = await lpTokenPair.methods.balanceOf(this.state.account).call()
-        let lpTokenPairsymbol = await lpTokenPair.methods.symbol().call()
         let lpTokenAllowance = await lpTokenPair.methods.allowance(this.state.account, this.state.bavaMasterFarmer._address).call()
         let pendingReward = await this.state.bavaMasterFarmer.methods.pendingReward(i, this.state.account).call()
         totalpendingReward += parseInt(pendingReward)
 
-        if (lpTokenPairsymbol == "PGL") {
-          this.state.userSegmentInfo[0][n] = window.web3Ava.utils.fromWei(userInfo.amount, 'Ether')
-          this.state.poolSegmentInfo[0][n] = poolInfo
-          this.state.lpTokenBalanceAccount[0][n] = window.web3Ava.utils.fromWei(lpTokenBalance, 'Ether')
-          this.state.lpTokenSegmentAllowance[0][n] = lpTokenAllowance
-          this.state.pendingSegmentReward[0][n] = window.web3Ava.utils.fromWei(pendingReward, 'Ether')
+        if (this.state.lpTokenPairsymbols[i] == "PGL") {
+          userSegmentInfo[0][n] = window.web3Ava.utils.fromWei(userInfo.amount, 'Ether')
+          poolSegmentInfo[0][n] = poolInfo
+          lpTokenBalanceAccount[0][n] = window.web3Ava.utils.fromWei(lpTokenBalance, 'Ether')
+          lpTokenSegmentAllowance[0][n] = lpTokenAllowance
+          pendingSegmentReward[0][n] = window.web3Ava.utils.fromWei(pendingReward, 'Ether')
           n += 1
         } else {
-          this.state.userSegmentInfo[1][n] = window.web3Ava.utils.fromWei(userInfo.amount, 'Ether')
-          this.state.poolSegmentInfo[1][n] = poolInfo
-          this.state.lpTokenBalanceAccount[1][n] = window.web3Ava.utils.fromWei(lpTokenBalance, 'Ether')
-          this.state.lpTokenSegmentAllowance[1][n] = lpTokenAllowance
-          this.state.pendingSegmentReward[1][n] = window.web3Ava.utils.fromWei(pendingReward, 'Ether')
+          userSegmentInfo[1][n] = window.web3Ava.utils.fromWei(userInfo.amount, 'Ether')
+          poolSegmentInfo[1][n] = poolInfo
+          lpTokenBalanceAccount[1][n] = window.web3Ava.utils.fromWei(lpTokenBalance, 'Ether')
+          lpTokenSegmentAllowance[1][n] = lpTokenAllowance
+          pendingSegmentReward[1][n] = window.web3Ava.utils.fromWei(pendingReward, 'Ether')
           n += 1
         }
       }
-      // this.setState({ lpTokenBalanceAccount })
-      // this.setState({ pendingSegmentReward })
-      // this.setState({ lpTokenSegmentAllowance })
-      // this.setState({ poolSegmentInfo })
+      this.setState({ userSegmentInfo })
+      this.setState({ poolSegmentInfo })
+      this.setState({ lpTokenBalanceAccount })
+      this.setState({ lpTokenSegmentAllowance })
+      this.setState({ lpTokenSegmentAllowance })
       this.setState({ totalpendingReward: totalpendingReward.toLocaleString('fullwide', { useGrouping: false }) })
-
     }
     this.setState({ farmloading: true })
-
   }
 
-  async loadTVLAPR() {
-    // ***************************TVL & APR***********************************************************************
 
+    // ***************************TVL & APR***********************************************************************
+  async loadTVLAPR() {
     // Load bavaMasterFarmer
     const bavaMasterFarmeryData = BavaMasterFarmer.networks[this.state.networkId]
 
-    let lpTokenSegmentInContract = [[], []]
     let lpTokenValue = [[], []]
     let tvl = [[], []]
     let apr = [[], []]
     let n = 0
-    let i = 0
-    for (i = 0; i < this.state.poolLength; i++) {
 
-      let poolInfo = await this.state.bavaMasterFarmer.methods.poolInfo(i).call()
-      let lpTokenAddress = poolInfo.lpToken
-      let lpTokenPair = new window.web3Ava.eth.Contract(IPancakePair.abi, lpTokenAddress)
-      let lpTokenPairsymbol = await lpTokenPair.methods.symbol().call()
-      let lpTokenPairA = await lpTokenPair.methods.token0().call()
-      let lpTokenPairB = await lpTokenPair.methods.token1().call()
-      let lpTokenA = new window.web3Ava.eth.Contract(LpToken.abi, lpTokenPairA)
-      let lpTokenB = new window.web3Ava.eth.Contract(LpToken.abi, lpTokenPairB)
-
-      let lpTokenAsymbol = await lpTokenA.methods.symbol().call()
-      let lpTokenBsymbol = await lpTokenB.methods.symbol().call()
+    for (let i = 0; i < this.state.poolLength; i++) {
+      let lpTokenPair = new window.web3Ava.eth.Contract(IPancakePair.abi, this.state.lpTokenAddresses[i])
+      let lpTokenA = new window.web3Ava.eth.Contract(LpToken.abi, this.state.lpTokenPairAs[i])
+      let lpTokenB = new window.web3Ava.eth.Contract(LpToken.abi, this.state.lpTokenPairBs[i])
 
       let lpTokenInContract = await lpTokenPair.methods.balanceOf(bavaMasterFarmeryData.address).call()
       lpTokenInContract = window.web3Ava.utils.fromWei(lpTokenInContract, "ether")
       let lpTokenTSupply = await lpTokenPair.methods.totalSupply().call()
-      let lpTokenABalanceContract = await lpTokenA.methods.balanceOf(lpTokenAddress).call()
-      let lpTokenBBalanceContract = await lpTokenB.methods.balanceOf(lpTokenAddress).call()
+      let lpTokenABalanceContract = await lpTokenA.methods.balanceOf(this.state.lpTokenAddresses[i]).call()
+      let lpTokenBBalanceContract = await lpTokenB.methods.balanceOf(this.state.lpTokenAddresses[i]).call()
 
       let tokenAPrice = 0
       let tokenBPrice = 0
-      if (lpTokenAsymbol.slice(-2) === ".e") {
-        lpTokenAsymbol = lpTokenAsymbol.slice(0, -2)
-      }
-      if (lpTokenBsymbol.slice(-2) === ".e") {
-        lpTokenBsymbol = lpTokenBsymbol.slice(0, -2)
-      }
-      if (lpTokenAsymbol == "BAVA") {
+
+      if (this.state.lpTokenAsymbols[i] == "BAVA") {
         tokenAPrice = this.state.BAVAPrice
-      } else if (lpTokenAsymbol == "WAVAX") {
+      } else if (this.state.lpTokenAsymbols[i] == "AVAX") {
         tokenAPrice = this.state.WAVAXPrice
-      } else if (lpTokenAsymbol == "PNG") {
+      } else if (this.state.lpTokenAsymbols[i] == "PNG") {
         tokenAPrice = this.state.PNGPrice
-      } else if (lpTokenAsymbol == "WETH") {
+      } else if (this.state.lpTokenAsymbols[i] == "WETH.e") {
         tokenAPrice = this.state.WETHPrice
-      } else if (lpTokenAsymbol == "USDT") {
+      } else if (this.state.lpTokenAsymbols[i] == "USDT.e") {
         tokenAPrice = this.state.USDTPrice
-      } else if (lpTokenAsymbol == "USDC") {
+      } else if (this.state.lpTokenAsymbols[i] == "USDC.e") {
         tokenAPrice = this.state.USDCPrice
       }
-      if (lpTokenBsymbol == "BAVA") {
+      if (this.state.lpTokenBsymbols[i] == "BAVA") {
         tokenBPrice = this.state.BAVAPrice
-      } else if (lpTokenBsymbol == "WAVAX") {
+      } else if (this.state.lpTokenBsymbols[i] == "AVAX") {
         tokenBPrice = this.state.WAVAXPrice
-      } else if (lpTokenBsymbol == "PNG") {
+      } else if (this.state.lpTokenBsymbols[i] == "PNG") {
         tokenBPrice = this.state.PNGPrice
-      } else if (lpTokenBsymbol == "WETH") {
+      } else if (this.state.lpTokenBsymbols[i] == "WETH.e") {
         tokenBPrice = this.state.WETHPrice
-      } else if (lpTokenBsymbol == "USDT") {
+      } else if (this.state.lpTokenBsymbols[i] == "USDT.e") {
         tokenBPrice = this.state.USDTPrice
-      } else if (lpTokenBsymbol == "USDC") {
+      } else if (this.state.lpTokenBsymbols[i] == "USDC.e") {
         tokenBPrice = this.state.USDCPrice
       }
 
-      if (lpTokenPairsymbol == "PGL") {
-        lpTokenSegmentInContract[0][n] = lpTokenInContract
+      if (this.state.lpTokenPairsymbols[i] == "PGL") {
         lpTokenValue[0][n] = ((lpTokenABalanceContract * tokenAPrice) + (lpTokenBBalanceContract * tokenBPrice)) / lpTokenTSupply
         tvl[0][n] = lpTokenValue[0][n] * lpTokenInContract
-        apr[0][n] = ((28000 * 315 * 365 * poolInfo.allocPoint * window.web3Ava.utils.fromWei(this.state.totalrewardperblock, 'ether') * this.state.BAVAPrice) / (lpTokenSegmentInContract[0][n] * this.state.totalallocPoint * lpTokenValue[0][n])) * 100
+        apr[0][n] = ((28000 * 315 * 365 * this.state.allocPoints[i] * window.web3Ava.utils.fromWei(this.state.totalrewardperblock, 'ether') * this.state.BAVAPrice) / (lpTokenInContract * this.state.totalallocPoint * lpTokenValue[0][n])) * 100
         n += 1
       } else {
-        lpTokenSegmentInContract[1][n] = lpTokenInContract
         lpTokenValue[1][n] = ((lpTokenABalanceContract * tokenAPrice) + (lpTokenBBalanceContract * tokenBPrice)) / lpTokenTSupply
         tvl[1][n] = lpTokenValue[1][n] * lpTokenInContract
-        apr[1][n] = ((28000 * 315 * 365 * poolInfo.allocPoint * window.web3Ava.utils.fromWei(this.state.totalrewardperblock, 'ether') * this.state.BAVAPrice) / (lpTokenSegmentInContract[1][n] * this.state.totalallocPoint * lpTokenValue[1][n])) * 100
+        apr[1][n] = ((28000 * 315 * 365 * this.state.allocPoints[i] * window.web3Ava.utils.fromWei(this.state.totalrewardperblock, 'ether') * this.state.BAVAPrice) / (lpTokenInContract* this.state.totalallocPoint * lpTokenValue[1][n])) * 100
         n += 1
       }
     }
@@ -342,7 +338,6 @@ class App extends Component {
   }
 
 
-
   connectWallet = () => {
     if (this.state.metamask == true) {
       window.ethereum
@@ -353,7 +348,7 @@ class App extends Component {
           if (chainId == "0xa869") {
             this.WalletDisconnect()
             this.setWalletTrigger(true)
-            this.componentWillMount()
+            // this.componentWillMount()
           }
         })
         .catch((err) => {
@@ -392,7 +387,7 @@ class App extends Component {
     this.setState({ last4Account: last4Account })
     this.setState({ walletConnect: true })
     this.setWalletTrigger(false)
-    this.componentWillMount()
+    // this.componentWillMount()
   }
 
   WalletDisconnect = async () => {
@@ -544,7 +539,7 @@ class App extends Component {
         let bavaTokenBalance = await this.state.bavaToken.methods.balanceOf(this.state.account).call()
         this.state.bavaTokenBalance = bavaTokenBalance
         let pendingReward = await this.state.bavaMasterFarmer.methods.pendingReward(i, this.state.account).call()
-        this.state.pendingSegmentReward[n][i] = window.web3.utils.fromWei(pendingReward, 'ether')
+        this.state.pendingSegmentReward[n][i] = window.web3Ava.utils.fromWei(pendingReward, 'ether')
       }).catch((err) => {
         if (err.code === 4001) {
           // EIP-1193 userRejectedRequest error
@@ -568,7 +563,7 @@ class App extends Component {
         let bavaTokenBalance = await this.state.bavaToken.methods.balanceOf(this.state.account).call()
         this.state.bavaTokenBalance = bavaTokenBalance
         let pendingReward = await this.state.bavaMasterFarmer.methods.pendingReward(i, this.state.account).call()
-        this.state.pendingSegmentReward[n][i] = window.web3.utils.fromWei(pendingReward, 'ether')
+        this.state.pendingSegmentReward[n][i] = window.web3Ava.utils.fromWei(pendingReward, 'ether')
       }).catch((err) => {
         if (err.code === 4001) {
           // EIP-1193 userRejectedRequest error
@@ -592,7 +587,6 @@ class App extends Component {
         let lpTokenPair = new window.web3Ava.eth.Contract(IPancakePair.abi, lpTokenAddress)
         let lpTokenAllowance = await lpTokenPair.methods.allowance(this.state.account, this.state.bavaMasterFarmer._address).call()
         this.state.lpTokenSegmentAllowance[n][i] = lpTokenAllowance
-        this.setState({ loading: true })
       }).catch((err) => {
         if (err.code === 4001) {
           // EIP-1193 userRejectedRequest error
@@ -610,7 +604,6 @@ class App extends Component {
         let lpTokenPair = new window.web3Ava.eth.Contract(IPancakePair.abi, lpTokenAddress)
         let lpTokenAllowance = await lpTokenPair.methods.allowance(this.state.account, this.state.bavaMasterFarmer._address).call()
         this.state.lpTokenSegmentAllowance[n][i] = lpTokenAllowance
-        this.setState({ loading: true })
       }).catch((err) => {
         if (err.code === 4001) {
           // EIP-1193 userRejectedRequest error
@@ -621,6 +614,8 @@ class App extends Component {
         }
       });
     }
+    this.setState({ loading: true })
+    this.componentWillMount()
   }
 
   withdraw = (i, amount, n) => {
