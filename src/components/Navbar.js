@@ -28,15 +28,14 @@ class Navb extends Component {
       <nav className="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 ">
 
         <a
-          className="navbar-brand col-sm-3 col-md-2 mr-0"
+          className="navbar-brand  col-md-0 "
           href="https://twitter.com/baklavaspace"
           target="_blank"
           rel="noopener noreferrer"
-        >
+        >&nbsp;&nbsp;&nbsp;
           <img src={baklava} width="30" height="30" alt="" />
           &nbsp; Baklava
         </a>
-
 
         <span>
           <ul className="navbar-nav px-3">

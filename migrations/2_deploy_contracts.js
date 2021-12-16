@@ -17,7 +17,7 @@
 
 
 const BavaToken = artifacts.require("BavaToken");
-const BavaMasterFarmer = artifacts.require("BavaMasterFarmer");
+const BavaMasterFarmer = artifacts.require("BavaMasterFarmerV2");
 // const LpToken = artifacts.require("LpToken");
 
 
@@ -40,7 +40,7 @@ module.exports = async function (deployer, network, accounts) {
   await deployer.deploy(BavaMasterFarmer, bavaToken.address, "0x7bC1Eb6Ed4d3aB3BEd5EE8b7EeD01dB0714A1Bb1","0x355DFe12aF156Ba4C3B010AF973A43304Dd31f5D","0x9a6F4E35a8BF20F207EdAA0876D59e276EeedD3F","0x9D834dd94bEd11641d314f2bC7897E99Acd1768D" , "10","9990",["0","1","258","6172","18515","30858","86401","172801"],["257","6171","18514","30857","86400","172800"],["75","92","96","98","99","995","9975","9999"],["25","8","4","2","1","5","25","1"])   //avalanche mainnet
   const bavaMasterFarmer = await BavaMasterFarmer.deployed()
   await bavaMasterFarmer.initPool("232800000000000000", bavafarmstartblk ,"43200")    // 302400 for avalanche mainet(2sec/blk)
-  console.log("bavafarm init") 
+  console.log("bavafarm init")
 
   // ****************************************************************************************************************
 
@@ -58,7 +58,6 @@ module.exports = async function (deployer, network, accounts) {
   // await bavaMasterFarmer.initPool("33250000000000000", bavafarmstartblk ,"302400")    // 302400 for avalanche mainet(2sec/blk)
   // console.log("bavafarm init") 
   
-
   // ****************************************************************************************************************
 
   await bavaMasterFarmer.lockdevUpdate(53165)
@@ -76,21 +75,20 @@ module.exports = async function (deployer, network, accounts) {
   await bavaToken.manualMint("0xc6c266D553b018aa4CB001FA18Bd0eceff2B5AF9", "180440000000000000000000000") //Liquidity 18.044%
   console.log("manualMint2")
 
-
-  await bavaMasterFarmer.add(1000, "0x88D845D62f85b6227bEa6B37cc147449ac583846", false)
+  await bavaMasterFarmer.add(1000, "0xF52e1f503FffF3c212d72045839915B11478fAc6", "0x5E429cd9a5c0ee5b87cEE98Ec07D7bE9a45185D7", "0x0000000000000000000000000000000000000000", 0, 0, false)
   console.log("add Farm1")
-  await bavaMasterFarmer.add(1000, "0x430B6Fec06E83847aEB0D2E423f7a1E3B5C9811D", false)
-  console.log("add Farm2")
-  await bavaMasterFarmer.add(1000, "0xF889D569B631Fd079B0763172512F6a59c57cb38", false)
-  console.log("add Farm3")
+  // await bavaMasterFarmer.add(1000, "0x430B6Fec06E83847aEB0D2E423f7a1E3B5C9811D", false)
+  // console.log("add Farm2")
+  // await bavaMasterFarmer.add(1000, "0xF889D569B631Fd079B0763172512F6a59c57cb38", false)
+  // console.log("add Farm3")
   // await bavaMasterFarmer.add(1000, "0x94f2414eE834E78a3d83097507326cc044f4A60E", false)
   // console.log("add Farm3")
-  await bavaMasterFarmer.add(1000, "0x4C5c3189303e59FF9F727386418443F129E2f801", false)
-  console.log("add Farm3")
-  await bavaMasterFarmer.add(1000, "0x1A1a2057105C41103714288287C1a364F0454FFA", false)
-  console.log("add Farm3")
-  await bavaMasterFarmer.add(1000, "0x1B2dA256eD83352c8EE7E3E06C565Ea011444451", false)
-  console.log("add Farm3")
+  // await bavaMasterFarmer.add(1000, "0x4C5c3189303e59FF9F727386418443F129E2f801", false)
+  // console.log("add Farm3")
+  // await bavaMasterFarmer.add(1000, "0x1A1a2057105C41103714288287C1a364F0454FFA", false)
+  // console.log("add Farm3")
+  // await bavaMasterFarmer.add(1000, "0x1B2dA256eD83352c8EE7E3E06C565Ea011444451", false)
+  // console.log("add Farm3")
   await bavaToken.transferOwnership(bavaMasterFarmer.address)
   console.log("transfer Ownership")
 };

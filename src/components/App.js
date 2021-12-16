@@ -14,6 +14,7 @@ import Menu from './Menu'
 import TraderJoe from './TraderJoe'
 import Deposit from './Deposit'
 import Popup from './Popup'
+import ComingSoon from './ComingSoon'
 import './Popup.css'
 import './App.css'
 
@@ -808,6 +809,7 @@ class App extends Component {
     let menucontent
     let depositcontent
     let traderjoecontent
+    let comingSoon
     if (this.state.loading == false) {
       maincontent =
         <div className="wrap">
@@ -826,6 +828,7 @@ class App extends Component {
           </div>
         </div>
     } else {
+      comingSoon = <ComingSoon/>
       maincontent = <Main
         lpTokenBalance={this.state.lpTokenBalance}
         bavaTokenBalance={this.state.bavaTokenBalance}
@@ -914,7 +917,9 @@ class App extends Component {
     return (
       <Router>
         <div>
-          <Navb
+        <div className="container-fluid mt-4" style={{ maxWidth: '1600px' }}>
+            <div className="row">{comingSoon}</div></div>
+          {/* <Navb
             account={this.state.account}
             first4Account={this.state.first4Account}
             last4Account={this.state.last4Account}
@@ -945,7 +950,7 @@ class App extends Component {
 
               </main>
             </div>
-          </div>
+          </div> */}
         </div>
       </Router>
     );
