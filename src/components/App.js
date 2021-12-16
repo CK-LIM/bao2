@@ -917,7 +917,7 @@ class App extends Component {
     return (
       <Router>
         <div>
-        <div className="container-fluid mt-4" style={{ maxWidth: '1600px' }}>
+        <div className="container-fluid mt-3" style={{ maxWidth: '1300px' }}>
             <div className="row">{comingSoon}</div></div>
           {/* <Navb
             account={this.state.account}
