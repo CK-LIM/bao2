@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.0;
 
@@ -14,16 +14,31 @@ contract BavaToken is ERC20("BavaToken", "BAVA"), Ownable, Authorizable {
     uint256 public lockToBlock;
     uint256 public manualMintLimit = 500000000e18;   // 1 thousand tokens
     uint256 public manualMinted = 0;
-    
+    uint256 public minimumSupply = 1000000e18;      // 1 million tokens
+    address public disPool;
+    uint256 public burnPercent;
+    uint256 public disPercent;
+    uint256 public taxStartDate;
+    uint256 public taxReductionDuration;
+    uint256 public dynamicTaxReduction;
 
     mapping(address => uint256) private _locks;
     mapping(address => uint256) private _lastUnlockBlock;
+    mapping(address => bool) public isWhitelistedTo;
+    mapping(address => bool) public isWhitelistedFrom;
 
     event Lock(address indexed to, uint256 value);
+    event Burn(address indexed _from, uint256 _value);
 
-    constructor(uint256 _lockFromBlock, uint256 _lockToBlock) {
+    constructor(uint256 _lockFromBlock, uint256 _lockToBlock, address _disPool, uint256 _burnPercent, uint256 _disPercent, uint256 _taxStartDate) {
         lockFromBlock = _lockFromBlock;
         lockToBlock = _lockToBlock;
+        disPool = _disPool;
+        burnPercent = _burnPercent;
+        disPercent = _disPercent;
+        taxStartDate = _taxStartDate;
+        taxReductionDuration = 604800;
+        dynamicTaxReduction = 10;
     }
 
     /**
@@ -47,6 +62,65 @@ contract BavaToken is ERC20("BavaToken", "BAVA"), Ownable, Authorizable {
     function lockToUpdate(uint256 _newLockTo) public onlyAuthorized {
         lockToBlock = _newLockTo;
     }
+
+    // Update the taxStartDate
+    function taxStartDateUpdate(uint256 _newTaxStartDate) public onlyAuthorized {
+        taxStartDate = _newTaxStartDate;
+    }
+
+    // Update the burnPercent
+    function burnPercentUpdate(uint256 _newBurnPercent) public onlyAuthorized {
+        burnPercent = _newBurnPercent;
+    }
+
+    // Update the disPercent
+    function minimumSupplyUpdate(uint256 _newMinimumSupply) public onlyAuthorized {
+        minimumSupply = _newMinimumSupply;
+    }
+
+    // Update the disPercent
+    function disPoolUpdate(address _newDisPool) public onlyAuthorized {
+        disPool = _newDisPool;
+    }
+
+    // Update the disPercent
+    function disPercentUpdate(uint256 _newDisPercent) public onlyAuthorized {
+        disPercent = _newDisPercent;
+    }
+
+    // Update the taxReductionDuration
+    function taxReductionDurationUpdate(uint256 _newTaxReductionDuration) public onlyAuthorized {
+        taxReductionDuration = _newTaxReductionDuration;
+    }
+
+    // Update the taxStartDate
+    function dynamicTaxReductionUpdate(uint256 _newDynamicTaxReduction) public onlyAuthorized {
+        dynamicTaxReduction = _newDynamicTaxReduction;
+    }  
+
+    function setWhitelistedTo(address newWhitelist) external onlyAuthorized {
+        require(!isWhitelistedTo[newWhitelist], "whitelisted Address");
+
+        isWhitelistedTo[newWhitelist] = true;
+    }
+
+    function removeWhitelistedTo(address newWhitelist) external onlyAuthorized {
+        require(isWhitelistedTo[newWhitelist], "Non whitelisted Address");
+
+        isWhitelistedTo[newWhitelist] = false;
+    }
+
+    function setWhitelistedFrom(address newWhitelist) external onlyAuthorized {
+        require(!isWhitelistedFrom[newWhitelist], "whitelisted Address");
+
+        isWhitelistedFrom[newWhitelist] = true;
+    }
+
+    function removeWhitelistedFrom(address newWhitelist) external onlyAuthorized {
+        require(isWhitelistedFrom[newWhitelist], "Non whitelisted Address");
+
+        isWhitelistedFrom[newWhitelist] = false;
+    } 
 
     function unlockedSupply() public view returns (uint256) {
         return (totalSupply()-_totalLock);
@@ -110,6 +184,70 @@ contract BavaToken is ERC20("BavaToken", "BAVA"), Ownable, Authorizable {
             _moveDelegates(address(0), _delegates[_to], _amount);
             manualMinted = manualMinted+(_amount);
         }
+    }
+
+    function transfer(address to, uint256 amount) public override returns (bool) {
+        // if (isWhitelistedTo[to] || isWhitelistedFrom[msg.sender]) {
+        //     return super.transfer(to, amount);
+        // } else {
+            return super.transfer(to, _partialBurn(amount, msg.sender));
+        // }
+    }
+
+    function transferFrom(address from, address to, uint256 amount) public override returns (bool) {
+        if (isWhitelistedTo[to] || isWhitelistedFrom[msg.sender]) {
+            return super.transferFrom(from, to, amount);
+        } else {
+            return super.transferFrom(from, to, _partialBurn(amount, msg.sender));
+        }
+    }
+
+    function _partialBurn(uint256 _amount, address _from) internal returns (uint256) {
+        uint256 transferAmount = 0;
+        uint256 burnAmount;
+        uint256 disAmount;
+        (burnAmount, disAmount) = _calculateDeductAmount(_amount);
+
+        _burn(_from, burnAmount);
+        _transfer(_from, disPool, disAmount);
+        
+        transferAmount = _amount - burnAmount - disAmount;
+        emit Burn(_from, burnAmount);
+        return transferAmount; 
+    }
+
+    function _calculateDeductAmount(uint256 _amount) internal view returns (uint256, uint256) {
+        uint256 burnAmount = 0;
+        uint256 disAmount = 0;
+
+        if (totalSupply() > minimumSupply) {
+            if (block.timestamp < taxStartDate) {
+                burnAmount = (_amount * burnPercent) / 10000;
+                disAmount = (_amount * disPercent) / 10000;
+                uint256 availableBurn = totalSupply() - minimumSupply;
+                if (burnAmount > availableBurn) {
+                    burnAmount = availableBurn;
+                }               
+            } else {
+                uint256 dynamicTaxReductionPercent = (block.timestamp - taxStartDate)/taxReductionDuration * dynamicTaxReduction;
+                if (dynamicTaxReductionPercent >= burnPercent) {
+                    burnAmount = 0;
+                } else {
+                    burnAmount = (_amount * (burnPercent - dynamicTaxReductionPercent)) / 10000;
+                }
+                if (dynamicTaxReductionPercent >= burnPercent) {
+                    disAmount = 0;
+                } else {
+                    disAmount = (_amount * (disPercent - dynamicTaxReductionPercent)) / 10000;
+                }
+
+                uint256 availableBurn = totalSupply() - minimumSupply;
+                if (burnAmount > availableBurn) {
+                    burnAmount = availableBurn;
+                } 
+            }
+        }
+        return (burnAmount, disAmount);
     }
 
     function totalBalanceOf(address _holder) public view returns (uint256) {

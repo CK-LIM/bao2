@@ -18,7 +18,7 @@
 
 const BavaToken = artifacts.require("BavaToken");
 const BavaMasterFarmer = artifacts.require("BavaMasterFarmerV2");
-// const LpToken = artifacts.require("LpToken");
+const LpToken = artifacts.require("LpToken");
 
 
 function tokens(n) {
@@ -30,15 +30,16 @@ module.exports = async function (deployer, network, accounts) {
 
   // Avalanche Fuji Testnet (blk number calculation based on 14sec per blk)
 
-  const bavafarmstartblk = 2523663     //update start blk
+  const bavafarmstartblk = 3795634     //update start blk
   const avalancheblkperyear = 2246400
 
   // Deploy BavaToken Fuji Testnet
-  await deployer.deploy(BavaToken, bavafarmstartblk+avalancheblkperyear , bavafarmstartblk+avalancheblkperyear*4)
+  await deployer.deploy(BavaToken, bavafarmstartblk+avalancheblkperyear , bavafarmstartblk+avalancheblkperyear*4, "0x355DFe12aF156Ba4C3B010AF973A43304Dd31f5D" , "100", "100", bavafarmstartblk+avalancheblkperyear*100)
   const bavaToken = await BavaToken.deployed()
 
   await deployer.deploy(BavaMasterFarmer, bavaToken.address, "0x7bC1Eb6Ed4d3aB3BEd5EE8b7EeD01dB0714A1Bb1","0x355DFe12aF156Ba4C3B010AF973A43304Dd31f5D","0x9a6F4E35a8BF20F207EdAA0876D59e276EeedD3F","0x9D834dd94bEd11641d314f2bC7897E99Acd1768D" , "10","9990",["0","1","258","6172","18515","30858","86401","172801"],["257","6171","18514","30857","86400","172800"],["75","92","96","98","99","995","9975","9999"],["25","8","4","2","1","5","25","1"])   //avalanche mainnet
   const bavaMasterFarmer = await BavaMasterFarmer.deployed()
+  await bavaMasterFarmer.rewardMulUpdate([4096, 2048, 2048, 1024, 1024, 512, 512, 256, 256, 256, 256, 256, 256, 256, 256, 128, 128, 128, 128, 128, 128, 128, 128, 128, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 16, 8, 8, 8, 8, 32, 32, 64, 64, 64, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 256, 256, 256, 128, 128, 128, 128, 128, 128, 128, 128, 128, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 16, 16, 16, 16, 8, 8, 8, 4, 2, 1, 0])
   await bavaMasterFarmer.initPool("232800000000000000", bavafarmstartblk ,"43200")    // 302400 for avalanche mainet(2sec/blk)
   console.log("bavafarm init")
 
@@ -59,7 +60,6 @@ module.exports = async function (deployer, network, accounts) {
   // console.log("bavafarm init") 
   
   // ****************************************************************************************************************
-
   await bavaMasterFarmer.lockdevUpdate(53165)
   await bavaMasterFarmer.lockftUpdate(100)
   await bavaMasterFarmer.lockadrUpdate(345)
@@ -70,25 +70,27 @@ module.exports = async function (deployer, network, accounts) {
   console.log(accounts[0])
   await bavaToken.addAuthorized(accounts[0])
   console.log("add Authorized")
-  await bavaToken.manualMint("0xe57a7F50De2A71d8805C93786046e1a6B69161F0", "200000000000000000000000000") //Airdrop 20%
-  console.log("manualMint1")
-  await bavaToken.manualMint("0xc6c266D553b018aa4CB001FA18Bd0eceff2B5AF9", "180440000000000000000000000") //Liquidity 18.044%
-  console.log("manualMint2")
-
-  await bavaMasterFarmer.add(1000, "0xF52e1f503FffF3c212d72045839915B11478fAc6", "0x5E429cd9a5c0ee5b87cEE98Ec07D7bE9a45185D7", "0x0000000000000000000000000000000000000000", 0, 0, false)
-  console.log("add Farm1")
-  // await bavaMasterFarmer.add(1000, "0x430B6Fec06E83847aEB0D2E423f7a1E3B5C9811D", false)
-  // console.log("add Farm2")
-  // await bavaMasterFarmer.add(1000, "0xF889D569B631Fd079B0763172512F6a59c57cb38", false)
-  // console.log("add Farm3")
-  // await bavaMasterFarmer.add(1000, "0x94f2414eE834E78a3d83097507326cc044f4A60E", false)
-  // console.log("add Farm3")
-  // await bavaMasterFarmer.add(1000, "0x4C5c3189303e59FF9F727386418443F129E2f801", false)
-  // console.log("add Farm3")
-  // await bavaMasterFarmer.add(1000, "0x1A1a2057105C41103714288287C1a364F0454FFA", false)
-  // console.log("add Farm3")
-  // await bavaMasterFarmer.add(1000, "0x1B2dA256eD83352c8EE7E3E06C565Ea011444451", false)
-  // console.log("add Farm3")
   await bavaToken.transferOwnership(bavaMasterFarmer.address)
   console.log("transfer Ownership")
+  // await bavaToken.manualMint("0xe57a7F50De2A71d8805C93786046e1a6B69161F0", "200000000000000000000000000") //Airdrop 20%
+  // console.log("manualMint1")
+  // await bavaToken.manualMint("0xc6c266D553b018aa4CB001FA18Bd0eceff2B5AF9", "180440000000000000000000000") //Liquidity 18.044%
+  // console.log("manualMint2")
+  
+  // add(uint256 _allocPoint, IERC20 _lpToken, IMiniChef _stakingPglContract, IJoeChef _stakingJoeContract, uint256 _restakingFarmID, uint256 _numberOfPair, bool _withUpdate)
+  await bavaMasterFarmer.add(1000, "0x88D845D62f85b6227bEa6B37cc147449ac583846", "0xCe7c9a156a43DD13E5C82f9655D2b8D937F1C666", "0x0000000000000000000000000000000000000000", 0, 0, false)
+  console.log("add MiniChef Farm0")
+  await bavaMasterFarmer.add(1000, "0x430B6Fec06E83847aEB0D2E423f7a1E3B5C9811D", "0xCe7c9a156a43DD13E5C82f9655D2b8D937F1C666", "0x0000000000000000000000000000000000000000", 1, 0, false)
+  console.log("add MiniChef Farm1")
+  await bavaMasterFarmer.add(1000, "0xF889D569B631Fd079B0763172512F6a59c57cb38", "0xCe7c9a156a43DD13E5C82f9655D2b8D937F1C666", "0x0000000000000000000000000000000000000000", 2, 0, false)
+  console.log("add MiniChef Farm2")
+  await bavaMasterFarmer.add(1000, "0x57c2cC5A37B2A00Af6020168565B974694816B8A", "0xe3c70d9127F4914Eb06130Ef4A1e092F3C6c7AcD", "0x0000000000000000000000000000000000000000", 0, 1, false)
+  console.log("add stakingReward Farm")
+  await bavaMasterFarmer.add(1000, "0x4C5c3189303e59FF9F727386418443F129E2f801", "0x0000000000000000000000000000000000000000", "0x695E85Dc33410DBea646217AEA138924FBDF81f5", 0, 0, false)
+  console.log("add MasterChefJoe Farm0")
+  await bavaMasterFarmer.add(1000, "0x1A1a2057105C41103714288287C1a364F0454FFA", "0x0000000000000000000000000000000000000000", "0x695E85Dc33410DBea646217AEA138924FBDF81f5", 1, 0, false)
+  console.log("add MasterChefJoe Farm1")
+  await bavaMasterFarmer.add(1000, "0xd51d2670Ff2065796893987a16a38aD2BC1b0A8d", "0x0000000000000000000000000000000000000000", "0x695E85Dc33410DBea646217AEA138924FBDF81f5", 2, 1, false)
+  console.log("add MasterChefJoe Farm2")
+
 };

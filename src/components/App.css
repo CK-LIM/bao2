@@ -11,6 +11,7 @@ body {
   height: 10vh;
   font-family: Montserrat;
   margin-top: 0px;
+  z-index: 1;
   /* background-color: #39595e; */
   background-attachment: fixed;
   background-color: #363e46;
@@ -161,6 +162,43 @@ body {
     }
   }
 
+  .comingSoon {
+    animation: comingSoon ease 1s;
+    animation-delay: 0.5s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+  }
+
+  .comingSoon1 {
+    animation: comingSoon ease 1s;
+    animation-delay: 1.5s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+  }
+
+  .comingSoon2 {
+    animation: comingSoon ease 1s;
+    animation-delay: 2.5s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+  }
+
+  .comingSoon3 {
+    animation: comingSoon ease 1s;
+    animation-delay: 3.5s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+  }
+  
+  @keyframes comingSoon {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+  }
+  
 
   .lds-facebook {
     display: inline-flex;

@@ -3,8 +3,8 @@ import Web3 from 'web3'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import WalletConnectProvider from "@walletconnect/web3-provider";
 
-import LpToken from '../abis/LpToken.json'
-import IPancakePair from '../abis/IPancakePair.json'
+import LpToken from '../abis/Interface/LpToken.json'
+import IPancakePair from '../abis/Interface/IPancakePair.json'
 import BavaToken from '../abis/BavaToken.json'
 import BavaMasterFarmer from '../abis/BavaMasterFarmer.json'
 
