@@ -18,7 +18,7 @@ contract BavaToken is ERC20("BavaToken", "BAVA"), Ownable, Authorizable {
     address public disPool;
     uint256 public burnPercent;
     uint256 public disPercent;
-    uint256 public taxStartDate;
+    uint256 public taxStartDate;                    // in timestamp second
     uint256 public taxReductionDuration;
     uint256 public dynamicTaxReduction;
 
@@ -37,7 +37,7 @@ contract BavaToken is ERC20("BavaToken", "BAVA"), Ownable, Authorizable {
         burnPercent = _burnPercent;
         disPercent = _disPercent;
         taxStartDate = _taxStartDate;
-        taxReductionDuration = 604800;
+        taxReductionDuration = 604800;      // Seconds per Week
         dynamicTaxReduction = 10;
     }
 
@@ -173,7 +173,7 @@ contract BavaToken is ERC20("BavaToken", "BAVA"), Ownable, Authorizable {
     }
 
     /// @notice Creates `_amount` token to `_to`. Must only be called by the owner (MasterChef).
-    function mint(address _to, uint256 _amount) public onlyOwner {
+    function mint(address _to, uint256 _amount) public onlyAuthorized {
         _mint(_to, _amount);
         _moveDelegates(address(0), _delegates[_to], _amount);
     }
@@ -187,11 +187,11 @@ contract BavaToken is ERC20("BavaToken", "BAVA"), Ownable, Authorizable {
     }
 
     function transfer(address to, uint256 amount) public override returns (bool) {
-        // if (isWhitelistedTo[to] || isWhitelistedFrom[msg.sender]) {
-        //     return super.transfer(to, amount);
-        // } else {
+        if (isWhitelistedTo[to] || isWhitelistedFrom[msg.sender]) {
+            return super.transfer(to, amount);
+        } else {
             return super.transfer(to, _partialBurn(amount, msg.sender));
-        // }
+        }
     }
 
     function transferFrom(address from, address to, uint256 amount) public override returns (bool) {
@@ -235,7 +235,7 @@ contract BavaToken is ERC20("BavaToken", "BAVA"), Ownable, Authorizable {
                 } else {
                     burnAmount = (_amount * (burnPercent - dynamicTaxReductionPercent)) / 10000;
                 }
-                if (dynamicTaxReductionPercent >= burnPercent) {
+                if (dynamicTaxReductionPercent >= disPercent) {
                     disAmount = 0;
                 } else {
                     disAmount = (_amount * (disPercent - dynamicTaxReductionPercent)) / 10000;
@@ -262,7 +262,7 @@ contract BavaToken is ERC20("BavaToken", "BAVA"), Ownable, Authorizable {
         return _lastUnlockBlock[_holder];
     }
 
-    function lock(address _holder, uint256 _amount) public onlyOwner {
+    function lock(address _holder, uint256 _amount) public onlyAuthorized {
         require(_holder != address(0), "ERC20: lock to the zero address");
         require(_amount <= balanceOf(_holder), "ERC20: lock amount over blance");
 

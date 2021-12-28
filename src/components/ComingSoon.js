@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import baklava from '../baklava.png';
-import discord from '../discord.png'
-import twitter from '../twitter.png'
-import medium from '../medium.png'
-import git from '../git.png'
+import discord from '../discord.svg'
+import twitter from '../twitter.svg'
+import medium from '../medium.svg'
+import git from '../github.svg'
 import './App.css';
 
 class ComingSoon extends Component {
