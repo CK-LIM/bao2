@@ -136,7 +136,7 @@ class App extends Component {
           let lpTokenPairsymbol = poolInfo.lpTokenPairsymbol
           let lpTokenAsymbol = poolInfo.token[this.state.farmNetwork]["symbol"]
           let lpTokenBsymbol = poolInfo.quoteToken[this.state.farmNetwork]["symbol"]
-
+          console.log(poolInfo)
           lpTokenAsymbols[i] = lpTokenAsymbol
           lpTokenBsymbols[i] = lpTokenBsymbol
           lpTokenPairAs[i] = lpTokenPairA

@@ -94,52 +94,6 @@
       },
       {
         "pid": 2,
-        "lpTokenPairsymbol": "JLP",
-        "lpName": "AVAX-JOE",
-        "lpAddresses": {
-          "43113": "",
-          "43114": "0x454E67025631C065d3cFAD6d71E6892f74487a15"
-        },
-        "icon": "JOE",
-        "platform": "Trader Joe",
-        "allocPoint": 1000,
-        "projectLink": "https://traderjoexyz.com/#/farm/0x454E67025631C065d3cFAD6d71E6892f74487a15-0x188bED1968b795d5c9022F6a0bb5931Ac4c18F00",
-        "getLPLink": "https://traderjoexyz.com/#/trade?outputCurrency=0x6e84a6216ea6dacc71ee8e6b0a5b7322eebc0fdd",
-        "token": {
-          "TESTNET": {
-            "chainId": "43113",
-            "address": "",
-            "decimals": "18",
-            "symbol": "JOE",
-            "name": "JoeToken"
-          },
-          "MAINNET": {
-            "chainId": "43114",
-            "address": "0x6e84a6216ea6dacc71ee8e6b0a5b7322eebc0fdd",
-            "decimals": "18",
-            "symbol": "JOE",
-            "name": "JoeToken"
-          }
-        },
-        "quoteToken": {
-          "TESTNET": {
-            "chainId": "43113",
-            "address": "",
-            "decimals": "18",
-            "symbol": "JOE",
-            "name": "JoeToken"       
-          },
-          "MAINNET": {
-            "chainId": "43114",
-            "address": "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7",
-            "decimals": "18",
-            "symbol": "AVAX",
-            "name": "Wrapped AVAX"            
-          }
-        }
-      },
-      {
-        "pid": 3,
         "lpTokenPairsymbol": "PNG",
         "lpName": "PNG",
         "lpAddresses": {
@@ -161,7 +115,7 @@
           },
           "MAINNET": {
             "chainId": "43114",
-            "address": "",
+            "address": "0x60781C2586D68229fde47564546784ab3fACA982",
             "decimals": "18",
             "symbol": "PNG",
             "name": "Pangolin" 
@@ -177,7 +131,7 @@
           },
           "MAINNET": {
             "chainId": "43114",
-            "address": "",
+            "address": "0x60781C2586D68229fde47564546784ab3fACA982",
             "decimals": "18",
             "symbol": "PNG",
             "name": "Pangolin"          
