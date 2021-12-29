@@ -23,7 +23,7 @@ class App extends Component {
     this.loadTVLAPR()
     while (this.state.loading == true) {
       await this.loadBlockchainData()
-      await this.delay(2000);
+      await this.delay(3500);
     }
   }
 
@@ -36,8 +36,10 @@ class App extends Component {
     const web3Ava = window.web3Ava
     const networkId = "1"
     this.setState({ networkId })
-    const farmNetworkId = "43113"
+    const farmNetworkId = "43114"
     this.setState({ farmNetworkId })
+    const farmNetwork = "MAINNET"
+    this.setState({ farmNetwork })
 
     const bavaContract = 'https://testnet.snowtrace.io/address/0x7F04aCFC46F5e54031d1cfF6BE9fA4a90094C253#code'
     this.setState({ bavaContract })
@@ -125,15 +127,15 @@ class App extends Component {
         this.setState({ totalpendingReward: totalpendingReward.toLocaleString('fullwide', { useGrouping: false }) })
         this.setState({ userSegmentInfo })
         this.setState({ pendingSegmentReward })
-
+        console.log(this.state.poolLength)
         for (let i = 0; i < this.state.poolLength; i++) {
           let poolInfo = this.state.farm[i]
           let lpTokenAddress = poolInfo.lpAddresses[farmNetworkId]
-          let lpTokenPairA = poolInfo.token["address"]
-          let lpTokenPairB = poolInfo.quoteToken["address"]
+          let lpTokenPairA = poolInfo.token[this.state.farmNetwork]["address"]
+          let lpTokenPairB = poolInfo.quoteToken[this.state.farmNetwork]["address"]
           let lpTokenPairsymbol = poolInfo.lpTokenPairsymbol
-          let lpTokenAsymbol = poolInfo.token["symbol"]
-          let lpTokenBsymbol = poolInfo.quoteToken["symbol"]
+          let lpTokenAsymbol = poolInfo.token[this.state.farmNetwork]["symbol"]
+          let lpTokenBsymbol = poolInfo.quoteToken[this.state.farmNetwork]["symbol"]
 
           lpTokenAsymbols[i] = lpTokenAsymbol
           lpTokenBsymbols[i] = lpTokenBsymbol
@@ -178,13 +180,7 @@ class App extends Component {
     else {
       // Load bavaToken
       let bavaTokenBalance = await this.state.bavaToken.methods.balanceOf(this.state.account).call()
-      // let bavaTokenTotalSupply = await this.state.bavaToken.methods.totalSupply().call()
-      // let bavaTokenCapSupply = await this.state.bavaToken.methods.cap().call()
-      // let bavaTokenLock = await this.state.bavaToken.methods.totalLock().call()
       this.setState({ bavaTokenBalance: bavaTokenBalance.toString() })
-      // this.setState({ bavaTokenTotalSupply: bavaTokenTotalSupply.toString() })
-      // this.setState({ bavaTokenCapSupply: bavaTokenCapSupply.toString() })
-      // this.setState({ bavaTokenLock: bavaTokenLock.toString() })
 
       let totalpendingReward = 0
       let userSegmentInfo = [[], []]
@@ -271,6 +267,8 @@ class App extends Component {
         tokenAPrice = this.state.USDTPrice
       } else if (this.state.lpTokenAsymbols[i] == "USDC.e") {
         tokenAPrice = this.state.USDCPrice
+      } else if (this.state.lpTokenAsymbols[i] == "JOE") {
+        tokenAPrice = this.state.JOEPrice
       }
       if (this.state.lpTokenBsymbols[i] == "BAVA") {
         tokenBPrice = this.state.BAVAPrice
@@ -284,6 +282,8 @@ class App extends Component {
         tokenBPrice = this.state.USDTPrice
       } else if (this.state.lpTokenBsymbols[i] == "USDC.e") {
         tokenBPrice = this.state.USDCPrice
+      } else if (this.state.lpTokenBsymbols[i] == "JOE") {
+        tokenBPrice = this.state.JOEPrice
       }
 
       if (this.state.lpTokenPairsymbols[i] == "PGL" || this.state.lpTokenPairsymbols[i] == "PNG") {
@@ -300,6 +300,8 @@ class App extends Component {
         lpTokenValue[1][n] = ((lpTokenABalanceContract * tokenAPrice) + (lpTokenBBalanceContract * tokenBPrice)) / lpTokenTSupply
         if (this.state.lpTokenPairsymbols[i] == "JOE") {
           tvl[1][n] = tokenAPrice * lpTokenInContract
+          console.log(tokenAPrice)
+          console.log(lpTokenInContract)
         } else {
           tvl[1][n] = lpTokenValue[1][n] * lpTokenInContract
         }
@@ -330,23 +332,25 @@ class App extends Component {
       this.setState({ metamask: false })
     }
     // window.web3Ava = new Web3(`https://api.avax-test.network/ext/bc/C/rpc`);
-    window.web3Ava = new Web3(`https://speedy-nodes-nyc.moralis.io/${process.env.REACT_APP_moralisapiKey}/avalanche/testnet`);
+    window.web3Ava = new Web3(`https://speedy-nodes-nyc.moralis.io/${process.env.REACT_APP_moralisapiKey}/avalanche/mainnet`);
     // let response = await fetch(`https://api.covalenthq.com/v1/pricing/historical_by_addresses_v2/43114/USD/0x65378b697853568dA9ff8EaB60C13E1Ee9f4a654%2C0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7%2C0x60781c2586d68229fde47564546784ab3faca982%2C0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB%2C0xc7198437980c041c805A1EDcbA50c1Ce5db95118%2C0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664/?key=${process.env.REACT_APP_covalentapikey}`);
-    let response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=husky-avax%2Cwrapped-avax%2Cpangolin%2Cweth%2Cusd-coin%2Ctether&vs_currencies=usd`);
+    let response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=joe%2Cwrapped-avax%2Cpangolin%2Cweth%2Cusd-coin%2Ctether&vs_currencies=usd`);
     const myJson = await response.json();
-    let BAVAPrice = myJson["husky-avax"]["usd"]
+    // let BAVAPrice = myJson["husky-avax"]["usd"]
     this.setState({ BAVAPrice: "0.10" })
     let WAVAXPrice = myJson["wrapped-avax"]["usd"]
-    this.setState({ WAVAXPrice: WAVAXPrice.toFixed(10) })
+    this.setState({ WAVAXPrice: WAVAXPrice.toFixed(5) })
     let PNGPrice = myJson["pangolin"]["usd"]
-    this.setState({ PNGPrice: PNGPrice.toFixed(10) })
+    this.setState({ PNGPrice: PNGPrice.toFixed(5) })
     let WETHPrice = myJson["weth"]["usd"]
-    this.setState({ WETHPrice: WETHPrice.toFixed(10) })
+    this.setState({ WETHPrice: WETHPrice.toFixed(5) })
     let USDTPrice = myJson["tether"]["usd"]
-    this.setState({ USDTPrice: USDTPrice.toFixed(10) })
+    this.setState({ USDTPrice: USDTPrice.toFixed(5) })
     let USDCPrice = myJson["usd-coin"]["usd"]
-    this.setState({ USDCPrice: USDCPrice.toFixed(10) })
-    this.setState({ loading: true })
+    this.setState({ USDCPrice: USDCPrice.toFixed(5) })
+    let JOEPrice = myJson["joe"]["usd"]
+    this.setState({ JOEPrice: JOEPrice.toFixed(5)})
+    this.setState({ loading: true })    
   }
 
 
@@ -357,7 +361,8 @@ class App extends Component {
         .then(async () => {
           await this.switchNetwork()
           const chainId = await window.ethereum.request({ method: 'eth_chainId' });
-          if (chainId == "0xa869") {
+          console.log(chainId)
+          if (chainId == "0xa86a") {
             this.WalletDisconnect()
             this.setWalletTrigger(true)
             await this.componentWillMount()
@@ -425,7 +430,7 @@ class App extends Component {
     try {
       await window.ethereum.request({
         method: 'wallet_switchEthereumChain',
-        params: [{ chainId: '0xa869' }],
+        params: [{ chainId: '0xa86a' }],
       });
     } catch (switchError) {
       // console.log(switchError.code)
@@ -436,7 +441,7 @@ class App extends Component {
           await window.ethereum.request({
             method: 'wallet_addEthereumChain',
             params: [{
-              chainId: '0xa869', rpcUrls: ['https://data-seed-prebsc-1-s2.binance.org:8545'], chainName: 'Fuji',
+              chainId: '0xa86A', rpcUrls: ['https://data-seed-prebsc-1-s2.binance.org:8545'], chainName: 'Fuji',
               nativeCurrency: {
                 name: 'BNB',
                 symbol: 'BNB', // 2-6 characters long
@@ -609,7 +614,7 @@ class App extends Component {
       });
     } else if (this.state.wallet == true) {
       this.setState({ loading: false })
-      let lpTokenAddress = await this.state.poolSegmentInfo[n][i].lpAddresses["43113"]
+      let lpTokenAddress = await this.state.poolSegmentInfo[n][i].lpAddresses[this.state.farmNetworkId]
       let lpToken = new window.web3.eth.Contract(LpToken.abi, lpTokenAddress)
       lpToken.methods.approve(this.state.bavaMasterFarmer._address, "115792089237316195423570985008687907853269984665640564039457584007913129639935").send({ from: this.state.account }).then(async (result) => {
         let lpTokenPair = new window.web3Ava.eth.Contract(IPancakePair.abi, lpTokenAddress)
