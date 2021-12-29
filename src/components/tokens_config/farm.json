@@ -137,6 +137,52 @@
             "name": "Wrapped AVAX"            
           }
         }
+      },
+      {
+        "pid": 3,
+        "lpTokenPairsymbol": "PNG",
+        "lpName": "PNG",
+        "lpAddresses": {
+          "43113": "0x57c2cC5A37B2A00Af6020168565B974694816B8A",
+          "43114": "0x60781C2586D68229fde47564546784ab3fACA982"
+        },
+        "icon": "PNG",
+        "platform": "Pangolin",
+        "allocPoint": 1000,
+        "projectLink": "https://app.pangolin.exchange/#/stake/0/0x60781C2586D68229fde47564546784ab3fACA982",
+        "getLPLink": "https://app.pangolin.exchange/#/swap?inputCurrency=0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7&outputCurrency=0x60781C2586D68229fde47564546784ab3fACA982",
+        "token": {
+          "TESTNET": {
+            "chainId": "43113",
+            "address": "0x57c2cC5A37B2A00Af6020168565B974694816B8A",
+            "decimals": "18",
+            "symbol": "PNG",
+            "name": "Pangolin" 
+          },
+          "MAINNET": {
+            "chainId": "43114",
+            "address": "",
+            "decimals": "18",
+            "symbol": "PNG",
+            "name": "Pangolin" 
+          }
+        },
+        "quoteToken": {
+          "TESTNET": {
+            "chainId": "43113",
+            "address": "0x57c2cC5A37B2A00Af6020168565B974694816B8A",
+            "decimals": "18",
+            "symbol": "PNG",
+            "name": "Pangolin"     
+          },
+          "MAINNET": {
+            "chainId": "43114",
+            "address": "",
+            "decimals": "18",
+            "symbol": "PNG",
+            "name": "Pangolin"          
+          }
+        }
       }
     ]
   }

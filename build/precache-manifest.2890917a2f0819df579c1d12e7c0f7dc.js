@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "747b715b58d1c40dba6a",
+    "revision": "a15bb827b0fde1e23ab2",
     "url": "/static/css/main.dc0cd70d.chunk.css"
   },
   {
-    "revision": "747b715b58d1c40dba6a",
-    "url": "/static/js/main.747b715b.chunk.js"
+    "revision": "a15bb827b0fde1e23ab2",
+    "url": "/static/js/main.a15bb827.chunk.js"
   },
   {
     "revision": "394040924d0b1f376f8e",
@@ -64,7 +64,7 @@ self.__precacheManifest = [
     "url": "/static/media/baklava_mainBottom.06deafb4.png"
   },
   {
-    "revision": "b763c5135f5980fc2b75ad8be6409269",
+    "revision": "02d23997ed30507c42efa0d6c26ceb9e",
     "url": "/index.html"
   }
 ];
