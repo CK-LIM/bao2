@@ -47,7 +47,7 @@
         }
       },
       {
-        "pid": 2,
+        "pid": 1,
         "lpTokenPairsymbol": "XJOE",
         "lpName": "XJOE",
         "lpAddresses": {
@@ -93,7 +93,53 @@
         }
       },
       {
-        "pid": 1,
+        "pid": 2,
+        "lpTokenPairsymbol": "JLP",
+        "lpName": "WETH.e-AVAX",
+        "lpAddresses": {
+          "43113": "0x4C5c3189303e59FF9F727386418443F129E2f801",
+          "43114": "0xFE15c2695F1F920da45C30AAE47d11dE51007AF9"
+        },
+        "icon": "WETH.e-AVAX",
+        "platform": "Trader Joe",
+        "allocPoint": 1000,
+        "projectLink": "https://traderjoexyz.com/#/farm/0xFE15c2695F1F920da45C30AAE47d11dE51007AF9-0xd6a4F121CA35509aF06A0Be99093d08462f53052",
+        "getLPLink": "https://traderjoexyz.com/#/pool/0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab/AVAX",
+        "token": {
+          "TESTNET": {
+            "chainId": "43113",
+            "address": "0x2acdc97e4c5AE689C4e51eFd5c97dFF795FbEc59",
+            "decimals": "18",
+            "symbol": "WETH.e",
+            "name": "WETH.e Token"
+          },
+          "MAINNET": {
+            "chainId": "43114",
+            "address": "",
+            "decimals": "18",
+            "symbol": "WETH.e",
+            "name": "WETH.e Token"
+          }
+        },
+        "quoteToken": {
+          "TESTNET": {
+            "chainId": "43113",
+            "address": "0x823dbe6593d54A472161B69aCf496FFf10816A81",
+            "decimals": "18",
+            "symbol": "AVAX",
+            "name": "AVAX Token"      
+          },
+          "MAINNET": {
+            "chainId": "43114",
+            "address": "",
+            "decimals": "18",
+            "symbol": "AVAX",
+            "name": "AVAX Token"            
+          }
+        }
+      },
+      {
+        "pid": 3,
         "lpTokenPairsymbol": "PGL",
         "lpName": "USDC.e-USDT.e",
         "lpAddresses": {
@@ -139,7 +185,7 @@
         }
       },            
       {
-        "pid": 3,
+        "pid": 4,
         "lpTokenPairsymbol": "PNG",
         "lpName": "PNG",
         "lpAddresses": {
