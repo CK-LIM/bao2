@@ -47,6 +47,52 @@
         }
       },
       {
+        "pid": 2,
+        "lpTokenPairsymbol": "XJOE",
+        "lpName": "XJOE",
+        "lpAddresses": {
+          "43113": "0x4D6acD96DCB80703680A4F1c1D5498C6E383Db06",
+          "43114": "0x57319d41F71E81F3c65F2a47CA4e001EbAFd4F33"
+        },
+        "icon": "JOE",
+        "platform": "Trader Joe",
+        "allocPoint": 1000,
+        "projectLink": "https://traderjoexyz.com/#/stake",
+        "getLPLink": "https://traderjoexyz.com/#/trade?outputCurrency=0x6e84a6216ea6dacc71ee8e6b0a5b7322eebc0fdd",
+        "token": {
+          "TESTNET": {
+            "chainId": "43113",
+            "address": "0x4D6acD96DCB80703680A4F1c1D5498C6E383Db06",
+            "decimals": "18",
+            "symbol": "JOE",
+            "name": "JoeToken"
+          },
+          "MAINNET": {
+            "chainId": "43114",
+            "address": "0x6e84a6216eA6dACC71eE8E6b0a5B7322EEbC0fDd",
+            "decimals": "18",
+            "symbol": "JOE",
+            "name": "JoeToken"
+          }
+        },
+        "quoteToken": {
+          "TESTNET": {
+            "chainId": "43113",
+            "address": "0x4D6acD96DCB80703680A4F1c1D5498C6E383Db06",
+            "decimals": "18",
+            "symbol": "JOE",
+            "name": "JoeToken"       
+          },
+          "MAINNET": {
+            "chainId": "43114",
+            "address": "0x6e84a6216eA6dACC71eE8E6b0a5B7322EEbC0fDd",
+            "decimals": "18",
+            "symbol": "JOE",
+            "name": "JoeToken"            
+          }
+        }
+      },
+      {
         "pid": 1,
         "lpTokenPairsymbol": "PGL",
         "lpName": "USDC.e-USDT.e",
@@ -91,53 +137,7 @@
             "name": "USDT.e Token"
           }
         }
-      },
-      {
-        "pid": 2,
-        "lpTokenPairsymbol": "JOE",
-        "lpName": "JOE",
-        "lpAddresses": {
-          "43113": "0x4D6acD96DCB80703680A4F1c1D5498C6E383Db06",
-          "43114": "0x6e84a6216eA6dACC71eE8E6b0a5B7322EEbC0fDd"
-        },
-        "icon": "JOE",
-        "platform": "Trader Joe",
-        "allocPoint": 1000,
-        "projectLink": "https://traderjoexyz.com/#/stake",
-        "getLPLink": "https://traderjoexyz.com/#/trade?outputCurrency=0x6e84a6216ea6dacc71ee8e6b0a5b7322eebc0fdd",
-        "token": {
-          "TESTNET": {
-            "chainId": "43113",
-            "address": "0x4D6acD96DCB80703680A4F1c1D5498C6E383Db06",
-            "decimals": "18",
-            "symbol": "JOE",
-            "name": "JoeToken"
-          },
-          "MAINNET": {
-            "chainId": "43114",
-            "address": "0x6e84a6216eA6dACC71eE8E6b0a5B7322EEbC0fDd",
-            "decimals": "18",
-            "symbol": "JOE",
-            "name": "JoeToken"
-          }
-        },
-        "quoteToken": {
-          "TESTNET": {
-            "chainId": "43113",
-            "address": "0x4D6acD96DCB80703680A4F1c1D5498C6E383Db06",
-            "decimals": "18",
-            "symbol": "JOE",
-            "name": "JoeToken"       
-          },
-          "MAINNET": {
-            "chainId": "43114",
-            "address": "0x6e84a6216eA6dACC71eE8E6b0a5B7322EEbC0fDd",
-            "decimals": "18",
-            "symbol": "JOE",
-            "name": "JoeToken"            
-          }
-        }
-      },      
+      },            
       {
         "pid": 3,
         "lpTokenPairsymbol": "PNG",
