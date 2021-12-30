@@ -950,7 +950,7 @@ class App extends Component {
                   <Route path="/" exact > {maincontent} </Route>
                   <Route path="/home" exact > {maincontent} </Route>
                   <Route path="/menu" exact > {menucontent} </Route>
-                  {/* <Route path="/traderjoe/" exact > {traderjoecontent} </Route> */}
+                  <Route path="/traderjoe/" exact > {traderjoecontent} </Route>
                 </Switch>
               </main>
             </div>

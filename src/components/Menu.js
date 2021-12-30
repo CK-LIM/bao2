@@ -101,7 +101,7 @@ class Menu extends Component {
                             <ButtonGroup>
                                 {/* <Button variant="text" size="small" color="inherit" component={Link} to="/traderjoe/">All</Button> */}
                                 <Button variant="outlined" size="small" color="inherit" component={Link} to="/menu/">Pangolin</Button>
-                                {/* <Button variant="text" size="small" color="inherit" component={Link} to="/traderjoe/">Trader Joe</Button> */}
+                                <Button variant="text" size="small" color="inherit" component={Link} to="/traderjoe/">Trader Joe</Button>
                             </ButtonGroup>
                         </span>
                         <span className="float-right mr-4">
