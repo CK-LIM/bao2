@@ -2,20 +2,24 @@
 
 pragma solidity ^0.8.0;
 
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./Ownable.sol";
-import "./IERC20.sol";
-import "./SafeERC20.sol";
 import "./IStakingRewards.sol";
 import "./IMiniChef.sol";
 import "./IJoeChef.sol";
-import "./IJoeBar.sol";
 
 interface IBavaToken {
     function transfer(address to, uint tokens) external returns (bool success);
+
     function mint(address to, uint tokens) external;
+
     function balanceOf(address tokenOwner) external view returns (uint balance);
+
     function cap() external view returns (uint capSuppply);
+
     function totalSupply() external view returns (uint _totalSupply);
+
     function lock(address _holder, uint256 _amount) external;
 }
 
@@ -66,7 +70,6 @@ contract BavaMasterFarmerV2 is Ownable, Authorizable {
         IMiniChef pglStakingContract;           // Panglin LP Staking contract
         IStakingRewards pglSPStakingContract;   // Panglin SP Staking contract
         IJoeChef joeStakingContract;            // TraderJoe LP Staking contract
-        IJoeBar joeSPStakingContract;           // TraderJoe SP Staking contract
         uint256 restakingFarmID;                // RestakingFarm ID
         uint256 numberOfPair;                   // Single or Double pair 0 represent LP pair, 1 reprsent SP pair
         IERC20 reward;                          // reward token from 3rd party restaking
@@ -90,7 +93,6 @@ contract BavaMasterFarmerV2 is Ownable, Authorizable {
     // Bava tokens created per block.
     uint256 public REWARD_PER_BLOCK;
     // Bonus muliplier for early Bava makers.
-    // uint256[] public REWARD_MULTIPLIER =[4096, 2048, 2048, 1024, 1024, 512, 512, 256, 256, 256, 256, 256, 256, 256, 256, 128, 128, 128, 128, 128, 128, 128, 128, 128, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 16, 8, 8, 8, 8, 32, 32, 64, 64, 64, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 256, 256, 256, 128, 128, 128, 128, 128, 128, 128, 128, 128, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 16, 16, 16, 16, 8, 8, 8, 4, 2, 1, 0];
     uint256[] public REWARD_MULTIPLIER;
     uint256[] public HALVING_AT_BLOCK; // init in constructor function
     uint256[] public blockDeltaStartStage;
@@ -160,8 +162,8 @@ contract BavaMasterFarmerV2 is Ownable, Authorizable {
         HALVING_AT_BLOCK.push(type(uint256).max);
     }  
 
-    // Add a new lp to the pool. Can only be called by the owner.
-    function add(uint256 _allocPoint, IERC20 _lpToken, IMiniChef _stakingPglContract, IJoeChef _stakingJoeContract, IJoeChef _joeChefContract, uint256 _restakingFarmID, uint256 _numberOfPair, IERC20 _reward, IERC20 _reward1, bool _withUpdate) external onlyOwner {        
+    // Add a new lp to the pool. Can only be called by the owner. Support LP from panglolin miniChef, PNG single assest staking contract and traderJOe masterChef
+    function add(uint256 _allocPoint, IERC20 _lpToken, IMiniChef _stakingPglContract, IJoeChef _stakingJoeContract, uint256 _restakingFarmID, uint256 _numberOfPair, IERC20 _reward, IERC20 _reward1, bool _withUpdate) external onlyOwner {        
         require(poolId1[address(_lpToken)] == 0, "lp is in pool");
         require(_numberOfPair == 0 || _numberOfPair == 1, "no != 0/1");
         require(address(_stakingPglContract) == address(0) || address(_stakingJoeContract) == address(0), "Both add != 0");
@@ -169,7 +171,7 @@ contract BavaMasterFarmerV2 is Ownable, Authorizable {
             massUpdatePools();
         }
         uint256 lastRewardBlock = block.number > START_BLOCK ? block.number : START_BLOCK;
-        totalAllocPoint = totalAllocPoint+(_allocPoint);
+        totalAllocPoint = totalAllocPoint + _allocPoint;
         poolId1[address(_lpToken)] = poolInfo.length + 1;
         poolInfo.push(PoolInfo({
             lpToken: _lpToken,
@@ -183,8 +185,7 @@ contract BavaMasterFarmerV2 is Ownable, Authorizable {
         poolRestakingInfo.push(PoolRestakingInfo({
             pglStakingContract: _stakingPglContract,
             pglSPStakingContract: IStakingRewards(address(_stakingPglContract)),
-            joeStakingContract: ((_numberOfPair == 1 && address(_stakingPglContract) == address(0)) ? _joeChefContract : _stakingJoeContract),
-            joeSPStakingContract: IJoeBar(address(_stakingJoeContract)),
+            joeStakingContract: _stakingJoeContract,
             restakingFarmID: _restakingFarmID,
             numberOfPair: _numberOfPair,
             reward: _reward,  
@@ -192,36 +193,41 @@ contract BavaMasterFarmerV2 is Ownable, Authorizable {
             reward1: _reward1,
             reward1Amount: 0
         }));
-        if (address(_stakingPglContract) != address(0)) {
-            _lpToken.approve(address(_stakingPglContract), MAX_UINT);
+    }
+
+    /**
+     * @notice Approve tokens for use in Strategy, Restricted to avoid griefing attacks
+     */
+    function setAllowances(uint256 _pid, uint256 _amount) external onlyOwner {
+        PoolInfo storage pool = poolInfo[_pid];
+        PoolRestakingInfo storage poolRestaking = poolRestakingInfo[_pid];        
+        if (address(poolRestaking.pglStakingContract) != address(0)) {
+            pool.lpToken.approve(address(poolRestaking.pglStakingContract), _amount);
         }
-        if (address(_stakingJoeContract) != address(0) && _numberOfPair == 1) {
-            _lpToken.approve(address(_stakingJoeContract), MAX_UINT);   
-            IERC20(address(_stakingJoeContract)).approve(address(_joeChefContract), MAX_UINT);
-        } else if (address(_stakingJoeContract) != address(0) && _numberOfPair == 0) {
-            _lpToken.approve(address(_stakingJoeContract), MAX_UINT); 
+        if (address(poolRestaking.joeStakingContract) != address(0)) {
+            pool.lpToken.approve(address(poolRestaking.joeStakingContract), _amount);
         }
     }
 
     // Update the given pool's Bava allocation point. Can only be called by the owner.
-    function set(uint256 _pid, uint256 _allocPoint, bool _withUpdate) external onlyOwner {
+    function set(uint256 _pid, IERC20 _lpToken, uint256 _allocPoint, bool _withUpdate) external onlyOwner {
         if (_withUpdate) {
             massUpdatePools();
         }
         totalAllocPoint = totalAllocPoint-(poolInfo[_pid].allocPoint)+(_allocPoint);
         poolInfo[_pid].allocPoint = _allocPoint;
+        poolInfo[_pid].lpToken = _lpToken;
     }
 
     // Update the given pool's Bava restaking contract. Can only be called by the owner.
-    function setPoolRestakingInfo(uint256 _pid, IMiniChef _stakingPglContract, IJoeChef _stakingJoeContract, IJoeChef _joeChefContract, uint256 _restakingFarmID, uint256 _numberOfPair, IERC20 _reward, IERC20 _reward1, bool _withUpdate) external onlyOwner {
+    function setPoolRestakingInfo(uint256 _pid, IMiniChef _stakingPglContract, IJoeChef _stakingJoeContract, uint256 _restakingFarmID, uint256 _numberOfPair, IERC20 _reward, IERC20 _reward1, bool _withUpdate) external onlyOwner {
         require(address(_stakingPglContract) == address(0) || address(_stakingJoeContract) == address(0), "Both add != 0");        
         if (_withUpdate) {
             massUpdatePools();
         }
         poolRestakingInfo[_pid].pglStakingContract = _stakingPglContract;
         poolRestakingInfo[_pid].pglSPStakingContract = IStakingRewards(address(_stakingPglContract));
-        poolRestakingInfo[_pid].joeStakingContract = ((_numberOfPair == 1 && address(_stakingPglContract) == address(0)) ? _joeChefContract : _stakingJoeContract);
-        poolRestakingInfo[_pid].joeSPStakingContract = IJoeBar(address(_stakingJoeContract));
+        poolRestakingInfo[_pid].joeStakingContract = _stakingJoeContract;
         poolRestakingInfo[_pid].restakingFarmID = _restakingFarmID;
         poolRestakingInfo[_pid].numberOfPair = _numberOfPair;
         poolRestakingInfo[_pid].reward = _reward;
@@ -480,6 +486,7 @@ contract BavaMasterFarmerV2 is Ownable, Authorizable {
         PoolInfo storage pool = poolInfo[_pid];
         UserInfo storage user = userInfo[_pid][msg.sender];
         uint depositTokenAmount = getDepositTokensForShares(_pid, user.amount);
+        (uint256 rewardBalBefore, uint256 reward1BalBefore) = _calRewardBefore(_pid);
 
         uint256 lpBal = pool.depositAmount;     //  pool.lpToken.balanceOf(address(this))
         require(lpBal >= depositTokenAmount, "withdraw > farmBal");
@@ -495,89 +502,73 @@ contract BavaMasterFarmerV2 is Ownable, Authorizable {
 
         pool.lpToken.safeTransfer(address(msg.sender), amountToSend);
         pool.lpToken.safeTransfer(address(devaddr), devToSend);
+        _calRewardAfter(_pid, rewardBalBefore, reward1BalBefore);
+
         emit EmergencyWithdraw(msg.sender, _pid, amountToSend, devToSend);
     }
 
     // Restake LP token to 3rd party restaking farm
     function _stakeDepositTokens(uint256 _pid, uint amount) private {
-        PoolRestakingInfo storage pool = poolRestakingInfo[_pid];
+        PoolRestakingInfo storage poolRestaking = poolRestakingInfo[_pid];
         require(amount > 0, "amount < 0");
         getReinvestReward(_pid);
-        if (address(pool.pglStakingContract) != address(0)) {
-            if(pool.numberOfPair == 0) {
-                pool.pglStakingContract.deposit(pool.restakingFarmID, amount, address(this));                
-            } else if (pool.numberOfPair == 1) {
-                pool.pglSPStakingContract.stake(amount);
+        if (address(poolRestaking.pglStakingContract) != address(0)) {
+            if(poolRestaking.numberOfPair == 0) {
+                poolRestaking.pglStakingContract.deposit(poolRestaking.restakingFarmID, amount, address(this));                
+            } else if (poolRestaking.numberOfPair == 1) {
+                poolRestaking.pglSPStakingContract.stake(amount);
             }
         }
-        if (address(pool.joeStakingContract) != address(0)) {
-            if(pool.numberOfPair == 0) {
-                pool.joeStakingContract.deposit(pool.restakingFarmID, amount);
-            } else if (pool.numberOfPair == 1) {
-                pool.joeSPStakingContract.enter(amount);
-                pool.joeStakingContract.deposit(pool.restakingFarmID, pool.joeSPStakingContract.balanceOf(address(this)));
-            }
+        if (address(poolRestaking.joeStakingContract) != address(0)) {
+            poolRestaking.joeStakingContract.deposit(poolRestaking.restakingFarmID, amount);
         }
     }
 
     // Withdraw LP token to 3rd party restaking farm
     function _withdrawDepositTokens(uint256 _pid, uint amount) private {
-        PoolRestakingInfo storage pool = poolRestakingInfo[_pid];
+        PoolRestakingInfo storage poolRestaking = poolRestakingInfo[_pid];
         require(amount > 0, "amount < 0");
         getReinvestReward(_pid);
-        if (address(pool.pglStakingContract) != address(0)) {
-            if(pool.numberOfPair == 0) {
-                (uint256 depositAmount,) = pool.pglStakingContract.userInfo(pool.restakingFarmID, address(this));
+        if (address(poolRestaking.pglStakingContract) != address(0)) {
+            if(poolRestaking.numberOfPair == 0) {
+                (uint256 depositAmount,) = poolRestaking.pglStakingContract.userInfo(poolRestaking.restakingFarmID, address(this));
                 if(depositAmount >= amount) {
-                    pool.pglStakingContract.withdraw(pool.restakingFarmID, amount, address(this));
+                    poolRestaking.pglStakingContract.withdraw(poolRestaking.restakingFarmID, amount, address(this));
                 } else {
-                    pool.pglStakingContract.withdraw(pool.restakingFarmID, depositAmount, address(this));
+                    poolRestaking.pglStakingContract.withdraw(poolRestaking.restakingFarmID, depositAmount, address(this));
                 }
-            } else if (pool.numberOfPair == 1) {
-                uint256 depositAmount = pool.pglSPStakingContract.balanceOf(address(this));
+            } else if (poolRestaking.numberOfPair == 1) {
+                uint256 depositAmount = poolRestaking.pglSPStakingContract.balanceOf(address(this));
                 if(depositAmount >= amount) {  
-                    pool.pglSPStakingContract.withdraw(amount);
+                    poolRestaking.pglSPStakingContract.withdraw(amount);
                 } else {
-                    pool.pglSPStakingContract.withdraw(depositAmount);
+                    poolRestaking.pglSPStakingContract.withdraw(depositAmount);
                 }
             }
         }
-        if (address(pool.joeStakingContract) != address(0)) {
-            if(pool.numberOfPair == 0) {
-                (uint256 depositAmount,) = pool.joeStakingContract.userInfo(pool.restakingFarmID, address(this));
-                if(depositAmount >= amount) {
-                    pool.joeStakingContract.withdraw(pool.restakingFarmID, amount);
-                } else {
-                    pool.joeStakingContract.withdraw(pool.restakingFarmID, depositAmount);
-                }
-            } else if (pool.numberOfPair == 1) {
-                (uint256 depositAmount,) = pool.joeStakingContract.userInfo(pool.restakingFarmID, address(this));
-                if(depositAmount >= amount) {    
-                    uint256 xJoeAmount = _getXJoeForJoe(_pid, amount);                
-                    pool.joeStakingContract.withdraw(pool.restakingFarmID, xJoeAmount);
-                    pool.joeSPStakingContract.leave(pool.joeSPStakingContract.balanceOf(address(this)));
-                } else {
-                    uint256 xJoeAmount = _getXJoeForJoe(_pid, depositAmount);                
-                    pool.joeStakingContract.withdraw(pool.restakingFarmID, xJoeAmount);
-                    pool.joeSPStakingContract.leave(pool.joeSPStakingContract.balanceOf(address(this)));
-                }
+        if (address(poolRestaking.joeStakingContract) != address(0)) {
+            (uint256 depositAmount,) = poolRestaking.joeStakingContract.userInfo(poolRestaking.restakingFarmID, address(this));
+            if(depositAmount >= amount) {
+                poolRestaking.joeStakingContract.withdraw(poolRestaking.restakingFarmID, amount);
+            } else {
+                poolRestaking.joeStakingContract.withdraw(poolRestaking.restakingFarmID, depositAmount);
             }
         }
     }
 
     // Claim LP restaking reward from 3rd party restaking contract
     function getReinvestReward(uint256 _pid) private {
-        PoolRestakingInfo storage pool = poolRestakingInfo[_pid];  
+        PoolRestakingInfo storage poolRestaking = poolRestakingInfo[_pid];  
 
-        if (address(pool.pglStakingContract) != address(0)) {
-            if(pool.numberOfPair == 0) {
-                pool.pglStakingContract.harvest(pool.restakingFarmID, address(this));
-            } else if (pool.numberOfPair == 1) {
-                pool.pglSPStakingContract.getReward();
+        if (address(poolRestaking.pglStakingContract) != address(0)) {
+            if(poolRestaking.numberOfPair == 0) {
+                poolRestaking.pglStakingContract.harvest(poolRestaking.restakingFarmID, address(this));
+            } else if (poolRestaking.numberOfPair == 1) {
+                poolRestaking.pglSPStakingContract.getReward();
             }
         }
-        if (address(pool.joeStakingContract) != address(0)) {
-            pool.joeStakingContract.deposit(pool.restakingFarmID, 0);
+        if (address(poolRestaking.joeStakingContract) != address(0)) {
+            poolRestaking.joeStakingContract.deposit(poolRestaking.restakingFarmID, 0);
         }
     }
 
@@ -591,82 +582,48 @@ contract BavaMasterFarmerV2 is Ownable, Authorizable {
 
     // Emergency withdraw LP token from 3rd party restaking contract
     function emergencyWithdrawDepositTokens(uint256 _pid, bool disableDeposits) external onlyOwner {
-        PoolInfo storage poolThis = poolInfo[_pid];
-        PoolRestakingInfo storage pool = poolRestakingInfo[_pid];
+        PoolInfo storage pool = poolInfo[_pid];
+        PoolRestakingInfo storage poolRestaking = poolRestakingInfo[_pid];
 
         (uint256 rewardBalBefore, uint256 reward1BalBefore) = _calRewardBefore(_pid);
 
-        if (address(pool.pglStakingContract) != address(0)) {
-            if(pool.numberOfPair == 0) {
-                pool.pglStakingContract.emergencyWithdraw(pool.restakingFarmID, address(this));
-            } else if (pool.numberOfPair == 1) {
-                pool.pglSPStakingContract.exit();
+        if (address(poolRestaking.pglStakingContract) != address(0)) {
+            if(poolRestaking.numberOfPair == 0) {
+                poolRestaking.pglStakingContract.emergencyWithdraw(poolRestaking.restakingFarmID, address(this));
+            } else if (poolRestaking.numberOfPair == 1) {
+                poolRestaking.pglSPStakingContract.exit();
             }
         }
-        if (address(pool.joeStakingContract) != address(0)) {
-            if (pool.numberOfPair == 0) {                
-                pool.joeStakingContract.emergencyWithdraw(pool.restakingFarmID);
-            } else if (pool.numberOfPair == 1) {               
-                pool.joeStakingContract.emergencyWithdraw(pool.restakingFarmID);
-                pool.joeSPStakingContract.leave(pool.joeSPStakingContract.balanceOf(address(this)));
-            }
+        if (address(poolRestaking.joeStakingContract) != address(0)) {               
+            poolRestaking.joeStakingContract.emergencyWithdraw(poolRestaking.restakingFarmID);
         } 
-        if (poolThis.deposits_enabled == true && disableDeposits == true) {
+        if (pool.deposits_enabled == true && disableDeposits == true) {
             updateDepositsEnabled(_pid, false);
         }
         _calRewardAfter(_pid, rewardBalBefore, reward1BalBefore);
     }
 
-    function _calRewardBefore(uint256 _pid) private view returns(uint256, uint256) {
-        PoolRestakingInfo storage pool = poolRestakingInfo[_pid];
-
-        uint256 rewardBalBefore = 0;
-        uint256 reward1BalBefore = 0;
-
-        rewardBalBefore = IERC20(pool.reward).balanceOf(address(this));        
-        if (address(pool.reward1) != address(0)) {
-            reward1BalBefore = IERC20(pool.reward1).balanceOf(address(this));
-        }
-        return (rewardBalBefore, reward1BalBefore);
-    }
-
-    function _calRewardAfter(uint256 _pid, uint256 _rewardBalBefore, uint256 _reward1BalBefore) private {
-        PoolRestakingInfo storage pool = poolRestakingInfo[_pid];
-
-        uint256 rewardBalAfter = 0;
-        uint256 reward1BalAfter = 0;
-
-        rewardBalAfter = IERC20(pool.reward).balanceOf(address(this));
-        if (address(pool.reward1) != address(0)) {
-            reward1BalAfter = IERC20(pool.reward1).balanceOf(address(this));
-            uint256 diffReward1Bal = reward1BalAfter - _reward1BalBefore;
-            pool.reward1Amount += diffReward1Bal;
-        }
-        uint256 diffRewardBal = rewardBalAfter - _rewardBalBefore;
-        pool.rewardAmount += diffRewardBal;
-    }
-
-    /**
-     * @notice Enable/disable deposits
-     * @param newValue bool
-     */
-    function updateDepositsEnabled(uint _pid, bool newValue) public onlyOwner {
-        PoolInfo storage pool = poolInfo[_pid];
-        require(pool.deposits_enabled != newValue);
-        pool.deposits_enabled = newValue;
-        emit DepositsEnabled(_pid, newValue);
-    }
-
     // Compound reward token to restaking LP Token.
     function reinvest(uint _pid, uint256 _amount, address _to) external onlyOwner {
-        PoolRestakingInfo storage pool = poolRestakingInfo[_pid];
+        PoolRestakingInfo storage poolRestaking = poolRestakingInfo[_pid];
 
         (uint256 rewardBalBefore, uint256 reward1BalBefore) = _calRewardBefore(_pid);
 
-        uint256 rewardBal = IERC20(pool.reward).balanceOf(address(this));
-        require(rewardBal >= _amount, "amount > farmBal");
+        uint256 rewardBal = poolRestaking.reward.balanceOf(address(this));
+        if (rewardBal >= _amount) {
+            poolRestaking.reward.safeTransfer(_to, _amount);
+        } else {
+            poolRestaking.reward.safeTransfer(_to, rewardBal);
+        }
 
-        IERC20(pool.reward).safeTransfer(address(_to), _amount);
+        if (address(poolRestaking.reward1) != address(0)) {
+            uint256 reward1Bal = poolRestaking.reward1.balanceOf(address(this));
+            if (reward1Bal >= _amount) {
+                poolRestaking.reward1.safeTransfer(_to, _amount);
+            } else {
+                poolRestaking.reward1.safeTransfer(_to, reward1Bal);
+            }
+        }        
 
         _calRewardAfter(_pid, rewardBalBefore, reward1BalBefore);       
     }
@@ -683,19 +640,56 @@ contract BavaMasterFarmerV2 is Ownable, Authorizable {
         _calRewardAfter(_pid, rewardBalBefore, reward1BalBefore);
     }
 
-    /**
-     * @notice Conversion rate for Joe to xJoe
-     * @param amount Joe tokens
-     * @return xJoe shares
-     */
-    function _getXJoeForJoe(uint _pid, uint256 amount) private view returns (uint256) {
-        PoolRestakingInfo storage pool = poolRestakingInfo[_pid];
-        uint256 joeBalance = pool.reward.balanceOf(address(pool.joeSPStakingContract));
-        uint256 xJoeShares = pool.joeSPStakingContract.totalSupply();
-        if (joeBalance*xJoeShares == 0) {
-            return amount;
+    function _calRewardBefore(uint256 _pid) private view returns(uint256, uint256) {
+        PoolRestakingInfo storage poolRestaking = poolRestakingInfo[_pid];
+
+        uint256 rewardBalBefore = 0;
+        uint256 reward1BalBefore = 0;
+
+        rewardBalBefore = poolRestaking.reward.balanceOf(address(this));        
+        if (address(poolRestaking.reward1) != address(0)) {
+            reward1BalBefore = poolRestaking.reward1.balanceOf(address(this));
         }
-        return amount*xJoeShares/joeBalance;
+        return (rewardBalBefore, reward1BalBefore);
+    }
+
+    function _calRewardAfter(uint256 _pid, uint256 _rewardBalBefore, uint256 _reward1BalBefore) private {
+        PoolRestakingInfo storage poolRestaking = poolRestakingInfo[_pid];
+
+        uint256 rewardBalAfter = 0;
+        uint256 reward1BalAfter = 0;
+        uint256 diffReward1Bal = 0;
+
+        rewardBalAfter = poolRestaking.reward.balanceOf(address(this));
+        if (rewardBalAfter >= _rewardBalBefore) {
+            uint256 diffRewardBal = rewardBalAfter - _rewardBalBefore;
+            poolRestaking.rewardAmount += diffRewardBal;
+        } else {
+            uint256 diffRewardBal = _rewardBalBefore - rewardBalAfter;
+            poolRestaking.rewardAmount -= diffRewardBal;
+        }
+
+        if (address(poolRestaking.reward1) != address(0)) {
+            reward1BalAfter = poolRestaking.reward1.balanceOf(address(this));
+            if (reward1BalAfter >= _reward1BalBefore) {
+                diffReward1Bal = reward1BalAfter - _reward1BalBefore;
+                poolRestaking.reward1Amount += diffReward1Bal;
+            } else {
+                diffReward1Bal =  _reward1BalBefore - reward1BalAfter;
+                poolRestaking.reward1Amount -= diffReward1Bal;
+            }            
+        }
+    }
+
+    /**
+     * @notice Enable/disable deposits
+     * @param newValue bool
+     */
+    function updateDepositsEnabled(uint _pid, bool newValue) public onlyOwner {
+        PoolInfo storage pool = poolInfo[_pid];
+        require(pool.deposits_enabled != newValue);
+        pool.deposits_enabled = newValue;
+        emit DepositsEnabled(_pid, newValue);
     }
 
     /**
@@ -734,6 +728,12 @@ contract BavaMasterFarmerV2 is Ownable, Authorizable {
         } else {
             Bava.transfer(_to, _amount);
         }
+    }
+
+    // Rescue any token function, just in case if any user not able to withdraw token from the smart contract.
+    function rescueDeployedFunds(address token, uint256 amount, address _to) external onlyOwner {
+        require(_to != address(0), "send to the zero address");
+        IERC20(token).safeTransfer(_to, amount);
     }
 
     /****** ONLY AUTHORIZED FUNCTIONS ******/
@@ -832,16 +832,16 @@ contract BavaMasterFarmerV2 is Ownable, Authorizable {
     }
 
     function pendingReinvestReward(uint256 _pid) public view returns (uint256 pending, address bonusTokenAddress, string memory bonusTokenSymbol, uint256 pendingBonusToken) {
-        PoolRestakingInfo storage pool = poolRestakingInfo[_pid];
-        if (address(pool.pglStakingContract) != address(0)) {
-            if(pool.numberOfPair == 0) {
-                return (pool.pglStakingContract.pendingReward(pool.restakingFarmID, address(this)), address(0), string(''), 0);  
-            } else if (pool.numberOfPair == 1) {
-                return (pool.pglSPStakingContract.earned(address(this)), address(0), string(''), 0);  
+        PoolRestakingInfo storage poolRestaking = poolRestakingInfo[_pid];
+        if (address(poolRestaking.pglStakingContract) != address(0)) {
+            if(poolRestaking.numberOfPair == 0) {
+                return (poolRestaking.pglStakingContract.pendingReward(poolRestaking.restakingFarmID, address(this)), address(0), string(''), 0);  
+            } else if (poolRestaking.numberOfPair == 1) {
+                return (poolRestaking.pglSPStakingContract.earned(address(this)), address(0), string(''), 0);  
             }
         }
-        if (address(pool.joeStakingContract) != address(0)) {
-            return pool.joeStakingContract.pendingTokens(pool.restakingFarmID, address(this));
+        if (address(poolRestaking.joeStakingContract) != address(0)) {
+            return poolRestaking.joeStakingContract.pendingTokens(poolRestaking.restakingFarmID, address(this));
         }   
     }
 }
