@@ -609,8 +609,7 @@ class App extends Component {
           console.error(err);
         }
       });
-    } else if (this.state.wallet == true) {
-      this.setState({ loading: false })
+    } else if (this.state.wallet == true) {      
       let lpTokenAddress = await this.state.poolSegmentInfo[n][i].lpAddresses[this.state.farmNetworkId]
       let lpToken = new window.web3.eth.Contract(LpToken.abi, lpTokenAddress)
       lpToken.methods.approve(this.state.bavaMasterFarmer._address, "115792089237316195423570985008687907853269984665640564039457584007913129639935").send({ from: this.state.account }).then(async (result) => {

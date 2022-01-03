@@ -1,7 +1,7 @@
 {
   "main.css": "/static/css/main.1fcfb8b2.chunk.css",
-  "main.js": "/static/js/main.2d96336f.chunk.js",
-  "main.js.map": "/static/js/main.2d96336f.chunk.js.map",
+  "main.js": "/static/js/main.c823661b.chunk.js",
+  "main.js.map": "/static/js/main.c823661b.chunk.js.map",
   "static/css/1.2a799e46.chunk.css": "/static/css/1.2a799e46.chunk.css",
   "static/js/1.c8ef00a0.chunk.js": "/static/js/1.c8ef00a0.chunk.js",
   "static/js/1.c8ef00a0.chunk.js.map": "/static/js/1.c8ef00a0.chunk.js.map",
@@ -18,9 +18,9 @@
   "static/media/metamask-fox.svg": "/static/media/metamask-fox.c06f3a3e.svg",
   "static/media/walletconnect-logo.svg": "/static/media/walletconnect-logo.37f2bc6e.svg",
   "static/media/baklava_mainBottom.png": "/static/media/baklava_mainBottom.06deafb4.png",
-  "static/css/main.1fcfb8b2.chunk.css.map": "/static/css/main.1fcfb8b2.chunk.css.map",
   "static/css/1.2a799e46.chunk.css.map": "/static/css/1.2a799e46.chunk.css.map",
+  "static/css/main.1fcfb8b2.chunk.css.map": "/static/css/main.1fcfb8b2.chunk.css.map",
   "index.html": "/index.html",
-  "precache-manifest.b24c5e5591950be969d6c0d405154533.js": "/precache-manifest.b24c5e5591950be969d6c0d405154533.js",
+  "precache-manifest.90090e83358fc26f9c4d81ab518708c3.js": "/precache-manifest.90090e83358fc26f9c4d81ab518708c3.js",
   "service-worker.js": "/service-worker.js"
 }
