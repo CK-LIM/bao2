@@ -19,7 +19,7 @@ class Navb extends Component {
       <nav className="navbar navbar-dark top flex-md-nowrap p-0 mt-2">
         <a
           className=" col-md-0 textMiddleBold1"
-          href="https://twitter.com/baklavaspace"
+          href="https://baklava.space/"
           target="_blank"
           rel="noopener noreferrer"
           style={{ textDecoration: 'none', marginLeft: "15px" }}
