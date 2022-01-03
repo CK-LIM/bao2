@@ -344,15 +344,15 @@
       {
         "pid": 11,
         "lpTokenPairsymbol": "JLP",
-        "lpName": "USDC.e-USDT.e",
+        "lpName": "Joe-USDT.e",
         "lpAddresses": {
           "43114": "0x1643de2efb8e35374d796297a9f95f64c082a8ce"
         },
-        "icon": "USDC.e-USDT.e",
+        "icon": "Joe-USDT.e",
         "platform": "Trader Joe",
         "allocPoint": 1000,
-        "projectLink": "https://traderjoexyz.com/#/farm/0x2E02539203256c83c7a9F6fA6f8608A32A2b1Ca2-0xd6a4F121CA35509aF06A0Be99093d08462f53052",
-        "getLPLink": "https://traderjoexyz.com/#/pool/0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664/0xc7198437980c041c805a1edcba50c1ce5db95118",
+        "projectLink": "https://traderjoexyz.com/#/farm/0x1643de2efB8e35374D796297a9f95f64C082a8ce-0xd6a4F121CA35509aF06A0Be99093d08462f53052",
+        "getLPLink": "https://traderjoexyz.com/#/pool/0x6e84a6216ea6dacc71ee8e6b0a5b7322eebc0fdd/0xc7198437980c041c805a1edcba50c1ce5db95118",
         "token": {
           "MAINNET": {
             "chainId": "43114",
@@ -365,10 +365,10 @@
         "quoteToken": {
           "MAINNET": {
             "chainId": "43114",
-            "address": "0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664",
+            "address": "0x6e84a6216eA6dACC71eE8E6b0a5B7322EEbC0fDd",
             "decimals": "18",
-            "symbol": "USDC.e",
-            "name": "USDC.e Token"            
+            "symbol": "JOE",
+            "name": "JoeToken"
           }
         }
       }
