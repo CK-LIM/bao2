@@ -47,7 +47,7 @@ class Navb extends Component {
                   }}><img src={git} width="20" height="20" align="right" alt="" />
                   </div>
                   <div className="exLink0" style={{ marginRight: '60px' }} onClick={() => {
-                    window.open(`https://discord.gg/tNCV9wR7y`, '_blank')
+                    window.open(`https://discord.gg/E6aYX5ukAw`, '_blank')
                   }}><img src={discord} width="20" height="20" align="right" alt="" />
                   </div>
                 </div>
