@@ -37,13 +37,14 @@ class Menu extends Component {
                                                     <span><BsFillQuestionCircleFill size={13} /></span>
                                                 )}
                                                 on="hover"
-                                                position="bottom center"
-                                                arrow={false}
+                                                offsetY={-10}
+                                                offsetX={10}
+                                                position="right center"
                                             ><span className="textInfo"><small>Total BAVA tokens earned acrossed all farm </small></span>
                                             </Popup>
                                         </span><br />
                                         <span className="float-left "><b>
-                                            {parseFloat(window.web3Ava.utils.fromWei(this.props.totalpendingReward, 'Ether')).toLocaleString('en-US', { maximumFractionDigits: 0 })}&nbsp;BAVA</b>
+                                            {parseFloat(window.web3Ava.utils.fromWei(this.props.totalpendingReward, 'Ether')).toLocaleString('en-US', { maximumFractionDigits: 5 })}&nbsp;BAVA</b>
                                         </span>
                                         <span className="float-right ">
                                             <span>All pools compound at an optimal rate</span>

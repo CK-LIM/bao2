@@ -41,13 +41,12 @@ class Menu extends Component {
                                                 on="hover"
                                                 offsetY={-10}
                                                 offsetX={10}
-                                                position="bottom center"
-                                                arrow={false}
+                                                position="right center"
                                             ><span className="textInfo"><small>Total BAVA tokens earned acrossed all farm </small></span>
                                             </Popup>
                                         </span><br />
                                         <span className="float-left "><b>
-                                            {parseFloat(window.web3Ava.utils.fromWei(this.props.totalpendingReward, 'Ether')).toFixed(5)}&nbsp;BAVA</b>
+                                            {parseFloat(window.web3Ava.utils.fromWei(this.props.totalpendingReward, 'Ether')).toLocaleString('en-US', { maximumFractionDigits: 5 })}&nbsp;BAVA</b>
                                         </span>
                                         <span className="float-right ">
                                             <span>All pools compound at an optimal rate</span>
