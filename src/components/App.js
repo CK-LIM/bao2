@@ -267,9 +267,9 @@ class App extends Component {
       } else if (this.state.lpTokenAsymbols[i] == "WETH.e") {
         tokenAPrice = this.state.WETHPrice
       } else if (this.state.lpTokenAsymbols[i] == "USDT.e") {
-        tokenAPrice = this.state.USDTPrice
+        tokenAPrice = this.state.USDTPrice * 1000000000000
       } else if (this.state.lpTokenAsymbols[i] == "USDC.e") {
-        tokenAPrice = this.state.USDCPrice
+        tokenAPrice = this.state.USDCPrice * 1000000000000
       } else if (this.state.lpTokenAsymbols[i] == "JOE") {
         tokenAPrice = this.state.JOEPrice
       }
@@ -282,9 +282,9 @@ class App extends Component {
       } else if (this.state.lpTokenBsymbols[i] == "WETH.e") {
         tokenBPrice = this.state.WETHPrice
       } else if (this.state.lpTokenBsymbols[i] == "USDT.e") {
-        tokenBPrice = this.state.USDTPrice
+        tokenBPrice = this.state.USDTPrice * 1000000000000
       } else if (this.state.lpTokenBsymbols[i] == "USDC.e") {
-        tokenBPrice = this.state.USDCPrice
+        tokenBPrice = this.state.USDCPrice * 1000000000000
       } else if (this.state.lpTokenBsymbols[i] == "JOE") {
         tokenBPrice = this.state.JOEPrice
       }
@@ -301,7 +301,7 @@ class App extends Component {
         n += 1
       } else {
         lpTokenValue[1][n] = ((lpTokenABalanceContract * tokenAPrice) + (lpTokenBBalanceContract * tokenBPrice)) / lpTokenTSupply
-        if (this.state.lpTokenPairsymbols[i] == "JOE") {
+        if (this.state.lpTokenPairsymbols[i] == "XJOE") {
           tvl[1][n] = tokenAPrice * lpTokenInContract
         } else {
           tvl[1][n] = lpTokenValue[1][n] * lpTokenInContract
@@ -362,7 +362,7 @@ class App extends Component {
         .then(async () => {
           await this.switchNetwork()
           const chainId = await window.ethereum.request({ method: 'eth_chainId' });
-          console.log(chainId)
+          // console.log(chainId)
           if (chainId == "0xa86a") {
             this.WalletDisconnect()
             this.setWalletTrigger(true)
