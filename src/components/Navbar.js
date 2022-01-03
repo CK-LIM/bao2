@@ -70,7 +70,7 @@ class Navb extends Component {
                         on="hover"
                         position="bottom right"
                         offsetY={0}
-                        offsetX={10}
+                        offsetX={0}
                         mouseLeaveDelay={100}
                         contentStyle={{ padding: '5px' }}
                         arrow={false}
@@ -94,7 +94,7 @@ class Navb extends Component {
                         on="hover"
                         position="bottom right"
                         offsetY={0}
-                        offsetX={10}
+                        offsetX={0}
                         mouseLeaveDelay={100}
                         contentStyle={{ padding: '5px' }}
                         arrow={false}
