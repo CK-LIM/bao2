@@ -23,9 +23,11 @@ class Menu extends Component {
                                 <span>
                                     <span className="float-left" style={{ color: 'black' }}>
                                         Your BAVA Balance<br /><b>{parseFloat(window.web3Ava.utils.fromWei(this.props.bavaTokenBalance, 'Ether')).toLocaleString('en-US', { maximumFractionDigits: 5 })}</b>
-                                        <div>
-                                        </div>
-                                    </span><br /><br /><br />
+                                    </span>
+                                    <span className="float-right" style={{ color: 'black' }}>
+                                        Your Locked BAVA<br /><b>{parseFloat(window.web3Ava.utils.fromWei(this.props.lockedBavaTokenBalance, 'Ether')).toLocaleString('en-US', { maximumFractionDigits: 5 })}</b>
+                                    </span>
+                                    <br /><br /><br />
                                 </span>
                                 <span>
                                     <small>
@@ -55,7 +57,12 @@ class Menu extends Component {
                                     <span className="float-left" style={{ color: 'black' }}>
                                         Your BAVA Balance<br />
                                         <div style={{ color: 'black' }}><big><b>Locked</b></big></div>
-                                    </span><br /><br /><br />
+                                    </span>
+                                    <span className="float-right" style={{ color: 'black' }}>
+                                        Your Locked BAVA<br />
+                                        <div style={{ color: 'black' }}><big><b>Locked</b></big></div>
+                                    </span>
+                                    <br /><br /><br />
                                 </span>
                                 <span>
                                     <small>
@@ -125,7 +132,7 @@ class Menu extends Component {
                                         <div key={key}>
                                             <div>
                                                 <div className="card mb-3 cardbody">
-                                                    <div className="card-body" style={{padding: '1rem'}}>
+                                                    <div className="card-body" style={{ padding: '1rem' }}>
                                                         <div>
                                                             <div>
                                                                 <div className="float-left">
@@ -185,7 +192,7 @@ class Menu extends Component {
                                                                         }}>Close</Buttons>&nbsp;&nbsp;&nbsp;</div>
                                                                     {this.props.wallet || this.props.walletConnect ? <div className="borderTop "><br /><div className="rowC">
                                                                         <div className="card cardbody float-left mr-3" style={{ width: '300px' }}>
-                                                                            <div className="card-body" style={{padding: '0.5rem'}}>
+                                                                            <div className="card-body" style={{ padding: '0.5rem' }}>
                                                                                 <span className="float-left" style={{ color: 'black' }}><small>BAVA earned</small></span><br />
                                                                                 <span className="float-left" style={{ color: 'black', marginTop: '8px' }}><small>{this.props.accountLoading ? <div>{parseFloat(this.props.pendingSegmentReward[0][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })}</div> :
                                                                                     <div className="ml-3 lds-facebook"><div></div><div></div><div></div></div>}</small></span>
@@ -204,7 +211,7 @@ class Menu extends Component {
                                                                         </div>
                                                                         <div className="float-right">
                                                                             <span className="card cardbody float-right" style={{ width: '650px' }}>
-                                                                                <div className="card-body" style={{padding: '0.5rem'}}>
+                                                                                <div className="card-body" style={{ padding: '0.5rem' }}>
                                                                                     {this.props.lpTokenSegmentAllowance[0][i] > 2000000000000000000000000000 ?
                                                                                         <div><Deposit
                                                                                             lpTokenBalanceAccount={this.props.lpTokenBalanceAccount}
@@ -260,7 +267,7 @@ class Menu extends Component {
                             </div>
                         }
                     </div>
-                </div><br/><br/><br/><br/><br/>
+                </div><br /><br /><br /><br /><br />
             </div >
         );
     }

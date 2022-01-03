@@ -182,6 +182,8 @@ class App extends Component {
       // Load bavaToken
       let bavaTokenBalance = await this.state.bavaToken.methods.balanceOf(this.state.account).call()
       this.setState({ bavaTokenBalance: bavaTokenBalance.toString() })
+      let lockedBavaTokenBalance = await this.state.bavaToken.methods.lockOf(this.state.account).call()
+      this.setState({ lockedBavaTokenBalance: lockedBavaTokenBalance.toString() })
 
       let totalpendingReward = 0
       let userSegmentInfo = [[], []]
@@ -806,6 +808,7 @@ class App extends Component {
       poolLength: '0',
       startBlk: '0',
       totalallocPoint: '0',
+      lockedBavaTokenBalance: '0',
       accountLoading: false
     }
   }
@@ -883,6 +886,7 @@ class App extends Component {
         wallet={this.state.wallet}
         farmOpen={this.state.farmOpen}
         accountLoading={this.state.accountLoading}
+        lockedBavaTokenBalance={this.state.lockedBavaTokenBalance}
       />
       traderjoecontent = <TraderJoe
         lpTokenBalance={this.state.lpTokenBalance}
@@ -915,6 +919,7 @@ class App extends Component {
         lpTokenSegmentAllowance={this.state.lpTokenSegmentAllowance}
         farmOpen={this.state.farmOpen}
         accountLoading={this.state.accountLoading}
+        lockedBavaTokenBalance={this.state.lockedBavaTokenBalance}
       />
     }
 

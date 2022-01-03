@@ -25,7 +25,11 @@ class Menu extends Component {
                                         Your BAVA Balance<br /><b>{window.web3Ava.utils.fromWei(this.props.bavaTokenBalance, 'Ether')}</b>
                                         <div>
                                         </div>
-                                    </span><br /><br /><br />
+                                    </span>
+                                    <span className="float-right" style={{ color: 'black' }}>
+                                        Your Locked BAVA<br /><b>{parseFloat(window.web3Ava.utils.fromWei(this.props.lockedBavaTokenBalance, 'Ether')).toLocaleString('en-US', { maximumFractionDigits: 5 })}</b>
+                                    </span>
+                                    <br /><br /><br />
                                 </span>
                                 <span>
                                     <small>
@@ -57,7 +61,12 @@ class Menu extends Component {
                                     <span className="float-left" style={{ color: 'black' }}>
                                         Your BAVA Balance<br />
                                         <div style={{ color: 'black' }}><big><b>Locked</b></big></div>
-                                    </span><br /><br /><br />
+                                    </span>
+                                    <span className="float-right" style={{ color: 'black' }}>
+                                        Your Locked BAVA<br />
+                                        <div style={{ color: 'black' }}><big><b>Locked</b></big></div>
+                                    </span>
+                                    <br /><br /><br />
                                 </span>
                                 <span>
                                     <small>
