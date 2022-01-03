@@ -187,7 +187,7 @@
         }
       },
       {
-        "pid": 1,
+        "pid": 6,
         "lpTokenPairsymbol": "PGL",
         "lpName": "AVAX-PNG",
         "lpAddresses": {
@@ -214,6 +214,161 @@
             "decimals": "18",
             "symbol": "AVAX",
             "name": "AVAX Token"            
+          }
+        }
+      },
+      {
+        "pid": 7,
+        "lpTokenPairsymbol": "PGL",
+        "lpName": "AVAX-USDT.e",
+        "lpAddresses": {
+          "43114": "0xe28984e1EE8D431346D32BeC9Ec800Efb643eef4"
+        },
+        "icon": "AVAX-USDT.e",
+        "platform": "Pangolin",
+        "allocPoint": 1000,
+        "projectLink": "https://app.pangolin.exchange/#/png/AVAX/0xc7198437980c041c805A1EDcbA50c1Ce5db95118/2",
+        "getLPLink": "https://app.pangolin.exchange/#/add/AVAX/0xc7198437980c041c805A1EDcbA50c1Ce5db95118",
+        "token": {
+          "MAINNET": {
+            "chainId": "43114",
+            "address": "0xc7198437980c041c805A1EDcbA50c1Ce5db95118",
+            "decimals": "18",
+            "symbol": "USDT.e",
+            "name": "USDT.e Token"           
+          }  
+        },       
+        "quoteToken": {
+          "MAINNET": {
+            "chainId": "43114",
+            "address": "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7",
+            "decimals": "18",
+            "symbol": "AVAX",
+            "name": "AVAX Token"            
+          }
+        }
+      },
+      {
+        "pid": 8,
+        "lpTokenPairsymbol": "PGL",
+        "lpName": "AVAX-USDC.e",
+        "lpAddresses": {
+          "43114": "0xbd918Ed441767fe7924e99F6a0E0B568ac1970D9"
+        },
+        "icon": "AVAX-USDC.e",
+        "platform": "Pangolin",
+        "allocPoint": 1000,
+        "projectLink": "https://app.pangolin.exchange/#/png/0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664/AVAX/2",
+        "getLPLink": "https://app.pangolin.exchange/#/add/AVAX/0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664",
+        "token": {
+          "MAINNET": {
+            "chainId": "43114",
+            "address": "0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664",
+            "decimals": "18",
+            "symbol": "USDT.e",
+            "name": "USDC.e Token"           
+          }  
+        },       
+        "quoteToken": {
+          "MAINNET": {
+            "chainId": "43114",
+            "address": "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7",
+            "decimals": "18",
+            "symbol": "AVAX",
+            "name": "AVAX Token"            
+          }
+        }
+      },
+      {
+        "pid": 9,
+        "lpTokenPairsymbol": "JLP",
+        "lpName": "USDC.e-AVAX",
+        "lpAddresses": {
+          "43114": "0xA389f9430876455C36478DeEa9769B7Ca4E3DDB1"
+        },
+        "icon": "USDC.e-AVAX",
+        "platform": "Trader Joe",
+        "allocPoint": 1000,
+        "projectLink": "https://traderjoexyz.com/#/farm/0xa389f9430876455c36478deea9769b7ca4e3ddb1-0xd6a4F121CA35509aF06A0Be99093d08462f53052",
+        "getLPLink": "https://traderjoexyz.com/#/pool/0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664/AVAX",
+        "token": {
+          "MAINNET": {
+            "chainId": "43114",
+            "address": "0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664",
+            "decimals": "18",
+            "symbol": "USDC.e",
+            "name": "USDC.e Token"
+          }
+        },
+        "quoteToken": {
+          "MAINNET": {
+            "chainId": "43114",
+            "address": "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7",
+            "decimals": "18",
+            "symbol": "AVAX",
+            "name": "AVAX Token"            
+          }
+        }
+      },
+      {
+        "pid": 10,
+        "lpTokenPairsymbol": "JLP",
+        "lpName": "AVAX-USDT.e",
+        "lpAddresses": {
+          "43114": "0xeD8CBD9F0cE3C6986b22002F03c6475CEb7a6256"
+        },
+        "icon": "AVAX-USDT.e",
+        "platform": "Trader Joe",
+        "allocPoint": 1000,
+        "projectLink": "https://traderjoexyz.com/#/farm/0xeD8CBD9F0cE3C6986b22002F03c6475CEb7a6256-0xd6a4F121CA35509aF06A0Be99093d08462f53052",
+        "getLPLink": "https://traderjoexyz.com/#/pool/AVAX/0xc7198437980c041c805a1edcba50c1ce5db95118",
+        "token": {
+          "MAINNET": {
+            "chainId": "43114",
+            "address": "0xc7198437980c041c805A1EDcbA50c1Ce5db95118",
+            "decimals": "18",
+            "symbol": "USDT.e",
+            "name": "USDT.e Token"
+          }
+        },
+        "quoteToken": {
+          "MAINNET": {
+            "chainId": "43114",
+            "address": "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7",
+            "decimals": "18",
+            "symbol": "AVAX",
+            "name": "AVAX Token"            
+          }
+        }
+      },
+      {
+        "pid": 11,
+        "lpTokenPairsymbol": "JLP",
+        "lpName": "USDC.e-USDT.e",
+        "lpAddresses": {
+          "43114": "0x1643de2efb8e35374d796297a9f95f64c082a8ce"
+        },
+        "icon": "USDC.e-USDT.e",
+        "platform": "Trader Joe",
+        "allocPoint": 1000,
+        "projectLink": "https://traderjoexyz.com/#/farm/0x2E02539203256c83c7a9F6fA6f8608A32A2b1Ca2-0xd6a4F121CA35509aF06A0Be99093d08462f53052",
+        "getLPLink": "https://traderjoexyz.com/#/pool/0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664/0xc7198437980c041c805a1edcba50c1ce5db95118",
+        "token": {
+          "MAINNET": {
+            "chainId": "43114",
+            "address": "0xc7198437980c041c805A1EDcbA50c1Ce5db95118",
+            "decimals": "18",
+            "symbol": "USDT.e",
+            "name": "USDT.e Token"
+          }
+        },
+        "quoteToken": {
+          "MAINNET": {
+            "chainId": "43114",
+            "address": "0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664",
+            "decimals": "18",
+            "symbol": "USDC.e",
+            "name": "USDC.e Token"            
           }
         }
       }
