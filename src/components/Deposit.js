@@ -145,7 +145,6 @@ class Deposit extends Component {
               <ButtonGroup>
                 <Button type="submit" variant="primary"
                   size="sm"
-                  style={{ width: '90px' }}
                   onClick={(event) => {
                     this.clickHandlerDeposit()
                   }}> Deposit </Button>
@@ -156,7 +155,6 @@ class Deposit extends Component {
               <ButtonGroup>
                 <Button type="submit" variant="primary"
                   size="sm"
-                  style={{ width: '90px' }}
                   onClick={(event) => {
                     this.clickHandlerWithdraw()
                   }}>Withdraw</Button>
