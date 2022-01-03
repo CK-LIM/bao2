@@ -7,6 +7,7 @@ import LpToken from '../abis/Interface/LpToken.json'
 import IPancakePair from '../abis/Interface/IPancakePair.json'
 import BavaToken from '../abis/BavaToken.json'
 import BavaMasterFarmer from '../abis/BavaMasterFarmerV2.json'
+// import Farm from './tokens_config/farmTestnet.json'
 import Farm from './tokens_config/farm.json'
 
 import Navb from './Navbar'
@@ -23,7 +24,7 @@ class App extends Component {
     this.loadTVLAPR()
     while (this.state.loading == true) {
       await this.loadBlockchainData()
-      await this.delay(3500);
+      await this.delay(5000);
     }
   }
 
@@ -41,7 +42,7 @@ class App extends Component {
     const farmNetwork = "MAINNET"
     this.setState({ farmNetwork })
 
-    const bavaContract = 'https://testnet.snowtrace.io/address/0x7F04aCFC46F5e54031d1cfF6BE9fA4a90094C253#code'
+    const bavaContract = 'https://snowtrace.io/address/0xb5a054312a73581a3c0fed148b736911c02f4539'
     this.setState({ bavaContract })
 
     if (this.state.metamask == true) {
@@ -127,7 +128,7 @@ class App extends Component {
         this.setState({ totalpendingReward: totalpendingReward.toLocaleString('fullwide', { useGrouping: false }) })
         this.setState({ userSegmentInfo })
         this.setState({ pendingSegmentReward })
-        console.log(this.state.poolLength)
+        // console.log(this.state.poolLength)
         for (let i = 0; i < this.state.poolLength; i++) {
           let poolInfo = this.state.farm[i]
           let lpTokenAddress = poolInfo.lpAddresses[farmNetworkId]
@@ -136,7 +137,7 @@ class App extends Component {
           let lpTokenPairsymbol = poolInfo.lpTokenPairsymbol
           let lpTokenAsymbol = poolInfo.token[this.state.farmNetwork]["symbol"]
           let lpTokenBsymbol = poolInfo.quoteToken[this.state.farmNetwork]["symbol"]
-          console.log(poolInfo)
+          // console.log(poolInfo)
           lpTokenAsymbols[i] = lpTokenAsymbol
           lpTokenBsymbols[i] = lpTokenBsymbol
           lpTokenPairAs[i] = lpTokenPairA
@@ -258,7 +259,7 @@ class App extends Component {
       if (this.state.lpTokenAsymbols[i] == "BAVA") {
         tokenAPrice = this.state.BAVAPrice
       } else if (this.state.lpTokenAsymbols[i] == "AVAX") {
-        tokenAPrice = this.state.WAVAXPrice
+        tokenAPrice = this.state.AVAXPrice
       } else if (this.state.lpTokenAsymbols[i] == "PNG") {
         tokenAPrice = this.state.PNGPrice
       } else if (this.state.lpTokenAsymbols[i] == "WETH.e") {
@@ -273,7 +274,7 @@ class App extends Component {
       if (this.state.lpTokenBsymbols[i] == "BAVA") {
         tokenBPrice = this.state.BAVAPrice
       } else if (this.state.lpTokenBsymbols[i] == "AVAX") {
-        tokenBPrice = this.state.WAVAXPrice
+        tokenBPrice = this.state.AVAXPrice
       } else if (this.state.lpTokenBsymbols[i] == "PNG") {
         tokenBPrice = this.state.PNGPrice
       } else if (this.state.lpTokenBsymbols[i] == "WETH.e") {
@@ -300,8 +301,6 @@ class App extends Component {
         lpTokenValue[1][n] = ((lpTokenABalanceContract * tokenAPrice) + (lpTokenBBalanceContract * tokenBPrice)) / lpTokenTSupply
         if (this.state.lpTokenPairsymbols[i] == "JOE") {
           tvl[1][n] = tokenAPrice * lpTokenInContract
-          console.log(tokenAPrice)
-          console.log(lpTokenInContract)
         } else {
           tvl[1][n] = lpTokenValue[1][n] * lpTokenInContract
         }
@@ -331,15 +330,15 @@ class App extends Component {
       window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!')
       this.setState({ metamask: false })
     }
-    // window.web3Ava = new Web3(`https://api.avax-test.network/ext/bc/C/rpc`);
-    window.web3Ava = new Web3(`https://speedy-nodes-nyc.moralis.io/${process.env.REACT_APP_moralisapiKey}/avalanche/mainnet`);
+    window.web3Ava = new Web3(`https://api.avax.network/ext/bc/C/rpc`);
+    // window.web3Ava = new Web3(`https://speedy-nodes-nyc.moralis.io/${process.env.REACT_APP_moralisapiKey}/avalanche/mainnet`);
     // let response = await fetch(`https://api.covalenthq.com/v1/pricing/historical_by_addresses_v2/43114/USD/0x65378b697853568dA9ff8EaB60C13E1Ee9f4a654%2C0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7%2C0x60781c2586d68229fde47564546784ab3faca982%2C0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB%2C0xc7198437980c041c805A1EDcbA50c1Ce5db95118%2C0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664/?key=${process.env.REACT_APP_covalentapikey}`);
     let response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=joe%2Cwrapped-avax%2Cpangolin%2Cweth%2Cusd-coin%2Ctether&vs_currencies=usd`);
     const myJson = await response.json();
     // let BAVAPrice = myJson["husky-avax"]["usd"]
     this.setState({ BAVAPrice: "0.10" })
-    let WAVAXPrice = myJson["wrapped-avax"]["usd"]
-    this.setState({ WAVAXPrice: WAVAXPrice.toFixed(5) })
+    let AVAXPrice = myJson["wrapped-avax"]["usd"]
+    this.setState({ AVAXPrice: AVAXPrice.toFixed(5) })
     let PNGPrice = myJson["pangolin"]["usd"]
     this.setState({ PNGPrice: PNGPrice.toFixed(5) })
     let WETHPrice = myJson["weth"]["usd"]
@@ -349,8 +348,8 @@ class App extends Component {
     let USDCPrice = myJson["usd-coin"]["usd"]
     this.setState({ USDCPrice: USDCPrice.toFixed(5) })
     let JOEPrice = myJson["joe"]["usd"]
-    this.setState({ JOEPrice: JOEPrice.toFixed(5)})
-    this.setState({ loading: true })    
+    this.setState({ JOEPrice: JOEPrice.toFixed(5) })
+    this.setState({ loading: true })
   }
 
 
@@ -441,12 +440,12 @@ class App extends Component {
           await window.ethereum.request({
             method: 'wallet_addEthereumChain',
             params: [{
-              chainId: '0xa86A', rpcUrls: ['https://data-seed-prebsc-1-s2.binance.org:8545'], chainName: 'Fuji',
+              chainId: '0xa86a', rpcUrls: ['https://api.avax.network/ext/bc/C/rpc'], chainName: 'Avalanche Mainnet C-Chain',
               nativeCurrency: {
-                name: 'BNB',
-                symbol: 'BNB', // 2-6 characters long
+                name: 'AVAX',
+                symbol: 'AVAX', // 2-6 characters long
                 decimals: 18
-              }, blockExplorerUrls: ['https://testnet.bscscan.com/']
+              }, blockExplorerUrls: ['https://snowtrace.io/']
             }],
           });
           const chainId = await window.ethereum.request({ method: 'eth_chainId' });
@@ -502,7 +501,7 @@ class App extends Component {
     // We recommend reloading the page, unless you must do otherwise
     // window.location.reload();
     // console.log("network changed")
-    if (_chainId != "0xa869") {
+    if (_chainId != "0xa86a") {
       this.setWalletTrigger(false)
     }
     if (this.state.chainId !== _chainId) {
@@ -540,7 +539,6 @@ class App extends Component {
 
   deposit = async (i, amount, n) => {
     if (this.state.walletConnect == true) {
-      this.setState({ loading: false })
       const bavaMasterFarmeryData = BavaMasterFarmer.networks[this.state.networkId]
       let bavaMasterFarmer = new window.web3Con.eth.Contract(BavaMasterFarmer.abi, bavaMasterFarmeryData.address)
       await bavaMasterFarmer.methods.deposit(i, amount).send({ from: this.state.account }).then(async (result) => {
@@ -565,7 +563,6 @@ class App extends Component {
         }
       });
     } else if (this.state.wallet == true) {
-      this.setState({ loading: false })
       const bavaMasterFarmeryData = BavaMasterFarmer.networks[this.state.networkId]
       let bavaMasterFarmer = new window.web3.eth.Contract(BavaMasterFarmer.abi, bavaMasterFarmeryData.address)
       await bavaMasterFarmer.methods.deposit(i, amount).send({ from: this.state.account }).then(async (result) => {
@@ -590,12 +587,10 @@ class App extends Component {
         }
       });
     }
-    this.setState({ loading: true })
   }
 
   approve = async (i, n) => {
     if (this.state.walletConnect == true) {
-      this.setState({ loading: false })
       let lpTokenAddress = this.state.poolSegmentInfo[n][i].lpAddresses[this.state.farmNetworkId]
       let lpToken = new window.web3Con.eth.Contract(LpToken.abi, lpTokenAddress)
       lpToken.methods.approve(this.state.bavaMasterFarmer._address, "115792089237316195423570985008687907853269984665640564039457584007913129639935").send({ from: this.state.account }).then(async (result) => {
@@ -631,12 +626,10 @@ class App extends Component {
         }
       });
     }
-    this.setState({ loading: true })
   }
 
   withdraw = (i, amount, n) => {
     if (this.state.walletConnect == true) {
-      this.setState({ loading: false })
       const bavaMasterFarmeryData = BavaMasterFarmer.networks[this.state.networkId]
       let bavaMasterFarmer = new window.web3Con.eth.Contract(BavaMasterFarmer.abi, bavaMasterFarmeryData.address)
       bavaMasterFarmer.methods.withdraw(i, amount).send({ from: this.state.account }).then(async (result) => {
@@ -661,7 +654,6 @@ class App extends Component {
         }
       });
     } else if (this.state.wallet == true) {
-      this.setState({ loading: false })
       const bavaMasterFarmeryData = BavaMasterFarmer.networks[this.state.networkId]
       let bavaMasterFarmer = new window.web3.eth.Contract(BavaMasterFarmer.abi, bavaMasterFarmeryData.address)
       bavaMasterFarmer.methods.withdraw(i, amount).send({ from: this.state.account }).then(async (result) => {
@@ -686,7 +678,6 @@ class App extends Component {
         }
       });
     }
-    this.setState({ loading: true })
   }
 
   harvest = async (i, n) => {
@@ -696,7 +687,6 @@ class App extends Component {
       if (this.state.pendingSegmentReward[n][i] <= 0) {
         alert("No token to harvest! Please deposit LP to earn BAVA")
       } else {
-        this.setState({ loading: false })
         bavaMasterFarmer.methods.claimReward(i).send({ from: this.state.account }).then(async (result) => {
           let bavaTokenBalance = await this.state.bavaToken.methods.balanceOf(this.state.account).call()
           this.state.bavaTokenBalance = bavaTokenBalance
@@ -714,20 +704,17 @@ class App extends Component {
           }
         });
       }
-      this.setState({ loading: true })
     } else if (this.state.wallet == true) {
       const bavaMasterFarmeryData = BavaMasterFarmer.networks[this.state.networkId]
       let bavaMasterFarmer = new window.web3.eth.Contract(BavaMasterFarmer.abi, bavaMasterFarmeryData.address)
       if (this.state.pendingSegmentReward[n][i] <= 0) {
         alert("No token to harvest! Please deposit LP to earn BAVA")
       } else {
-        this.setState({ loading: false })
         bavaMasterFarmer.methods.claimReward(i).send({ from: this.state.account }).then(async (result) => {
           let bavaTokenBalance = await this.state.bavaToken.methods.balanceOf(this.state.account).call()
           this.state.bavaTokenBalance = bavaTokenBalance
           let pendingReward = await this.state.bavaMasterFarmer.methods.pendingReward(i, this.state.account).call()
           this.state.pendingSegmentReward[n][i] = window.web3.utils.fromWei(pendingReward, 'ether')
-          this.setState({ loading: true })
           this.componentWillMount()
         }).catch((err) => {
           if (err.code === 4001) {
@@ -739,7 +726,6 @@ class App extends Component {
           }
         });
       }
-      this.setState({ loading: true })
     } else {
       alert("Wallet is not connected")
     }
@@ -747,9 +733,9 @@ class App extends Component {
 
 
   setI = (platform, pair, boolean) => {
-    this.setState({ n: platform })
-    this.setState({ i: pair })
     this.state.farmOpen[platform][pair] = boolean
+    this.setState({ n: platform })
+    // this.setState({ i: pair })
   }
 
   // setTrigger = (state) => {
@@ -838,6 +824,13 @@ class App extends Component {
           </div>
         </div>
       menucontent =
+        <div className="wrap">
+          <div className="loading">
+            <div className="bounceball"></div>
+            <div className="textLoading">NETWORK IS Loading...</div>
+          </div>
+        </div>
+      traderjoecontent =
         <div className="wrap">
           <div className="loading">
             <div className="bounceball"></div>

@@ -65,6 +65,8 @@ class Menu extends Component {
                                                     <span><BsFillQuestionCircleFill size={13} /></span>
                                                 )}
                                                 on="hover"
+                                                offsetY={-10}
+                                                offsetX={10}
                                                 position="right center"
                                             ><span className="textInfo"><small>Total BAVA tokens earned acrossed all farm </small></span>
                                             </Popup>
@@ -87,6 +89,8 @@ class Menu extends Component {
                             <span><BsFillQuestionCircleFill size={13} /></span>
                         )}
                         on="hover"
+                        offsetY={-10}
+                        offsetX={10}
                         position="right center"
                     ><span className="textInfo"><small>Initial BAVA token price to USD will be fixed at the rate $ 0.10 </small></span>
                     </Popup></big></b></div>
@@ -145,6 +149,8 @@ class Menu extends Component {
                                                                                 <th scope="col">APR &nbsp;<Popup
                                                                                     trigger={open => (<span><BsFillQuestionCircleFill style={{ marginBottom: "2px" }} size={10} /></span>)}
                                                                                     on="hover"
+                                                                                    offsetY={-10}
+                                                                                    offsetX={10}
                                                                                     position="right center"
                                                                                 ><span className="textInfo"><small>APR are affected by the price of BAVA which has not yet stabilized. </small></span>
                                                                                     {/* <span className="textInfo"><small>If it shows 'NaN' or 'Infinity', it means currently the pool has no LP token staked. </small></span> */}
@@ -159,11 +165,11 @@ class Menu extends Component {
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>}</td>
                                                                                 <td className="">{this.props.accountLoading ? <div>{parseFloat(this.props.userSegmentInfo[0][i]).toLocaleString('en-US', { maximumFractionDigits: 3 })}</div> : <div className="center">
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
-                                                                                <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.apr[0][i]).toLocaleString('en-US', { maximumFractionDigits: 2 })}%</div> : <div className="center">
+                                                                                <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.apr[0][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })}%</div> : <div className="center">
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
-                                                                                <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.apyDaily[0][i]).toExponential(3)}%</div> : <div className="center">
+                                                                                <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.apyDaily[0][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })}%</div> : <div className="center">
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>}</td>
-                                                                                <td className="">$ {parseFloat(this.props.tvl[0][i]).toLocaleString('en-US', { maximumFractionDigits: 2 })} </td>
+                                                                                <td className="">${parseFloat(this.props.tvl[0][i]).toLocaleString('en-US', { maximumFractionDigits: 10 })} </td>
                                                                             </tr>
                                                                         </tbody>
                                                                     </table>
@@ -202,6 +208,7 @@ class Menu extends Component {
                                                                                     {this.props.lpTokenSegmentAllowance[0][i] > 2000000000000000000000000000 ?
                                                                                         <div><Deposit
                                                                                             lpTokenBalanceAccount={this.props.lpTokenBalanceAccount}
+                                                                                            poolSegmentInfo={this.props.poolSegmentInfo}
                                                                                             userSegmentInfo={this.props.userSegmentInfo}
                                                                                             i={i}
                                                                                             n='0'
@@ -255,7 +262,6 @@ class Menu extends Component {
                     </div>
                 </div><br/><br/><br/><br/><br/>
             </div >
-
         );
     }
 }

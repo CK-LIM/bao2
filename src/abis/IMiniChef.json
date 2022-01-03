@@ -208,6 +208,8 @@
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.0;\r\n\r\ninterface IMiniChef {\r\n    function userInfo(uint pid, address user) external view returns (\r\n        uint256 amount,\r\n        uint256 rewardDebt\r\n    );\r\n\r\n    function poolInfo(uint pid) external view returns (\r\n        uint allocPoint,\r\n        uint lastRewardTime,\r\n        uint accRewardPerShare\r\n    );\r\n\r\n    function rewarder(uint pid) external view returns (address);\r\n    function lpToken(uint pid) external view returns (address);\r\n    function pendingReward(uint256 _pid, address _user) external view returns (uint256);\r\n    function deposit(uint256 pid, uint256 amount, address to) external;\r\n    function withdraw(uint256 pid, uint256 amount, address to) external;\r\n    function harvest(uint256 pid, address to) external;\r\n    function emergencyWithdraw(uint256 pid, address to) external;\r\n}",
@@ -2185,8 +2187,8 @@
     "version": "0.8.7+commit.e28d00a7.Emscripten.clang"
   },
   "networks": {},
-  "schemaVersion": "3.2.3",
-  "updatedAt": "2021-12-30T07:03:14.425Z",
+  "schemaVersion": "3.3.4",
+  "updatedAt": "2022-01-01T14:38:11.617Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

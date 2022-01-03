@@ -162,6 +162,8 @@
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.0;\r\n\r\ninterface IJoeChef {\r\n    function deposit(uint256 _pid, uint256 _amount) external;\r\n\r\n    function withdraw(uint256 _pid, uint256 _amount) external;\r\n\r\n    function emergencyWithdraw(uint256 _pid) external;\r\n\r\n    function pendingTokens(uint256 _pid, address _user) external view returns (\r\n            uint256 pendingJoe,\r\n            address bonusTokenAddress,\r\n            string memory bonusTokenSymbol,\r\n            uint256 pendingBonusToken\r\n        );\r\n\r\n    function userInfo(uint256 pid, address user) external view returns (uint256 amount, uint256 rewardDebt);\r\n\r\n    function poolInfo(uint256 pid) external view returns (\r\n            address lpToken,\r\n            uint256 accJoePerShare,\r\n            uint256 lastRewardTimestamp,\r\n            uint256 allocPoint,\r\n            address rewarder\r\n        );\r\n}\r\n",
@@ -1745,8 +1747,8 @@
     "version": "0.8.7+commit.e28d00a7.Emscripten.clang"
   },
   "networks": {},
-  "schemaVersion": "3.2.3",
-  "updatedAt": "2021-12-30T07:03:14.423Z",
+  "schemaVersion": "3.3.4",
+  "updatedAt": "2022-01-01T14:38:11.616Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

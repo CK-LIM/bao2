@@ -5,9 +5,7 @@ import joe from '../joe.png'
 import Button from 'react-bootstrap/Button'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import bigInt from 'big-integer'
-import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
-import { BsFillQuestionCircleFill } from 'react-icons/bs';
 import './App.css';
 
 
@@ -104,13 +102,8 @@ class Deposit extends Component {
             let amount
             amount = this.input.value.toString()
             amount = window.web3Ava.utils.toWei(amount, 'Ether')
-            console.log(this.state.txDeposit)
-            console.log(this.state.txWithdraw)
 
             if (this.state.txDeposit === true && this.state.txWithdraw === false) {
-              console.log(this.props.n)
-              console.log(this.props.i)
-              console.log(this.props.lpTokenBalanceAccount)
               if (bigInt(amount).value > bigInt(window.web3Ava.utils.toWei(this.props.lpTokenBalanceAccount[this.props.n][this.props.i], 'Ether')).value) {
                 alert("Not enough funds")
               } else {
@@ -136,13 +129,13 @@ class Deposit extends Component {
                 placeholder="0"
                 onChange={(e) => {
                   const value = e.target.value;
-                  // console.log(value)
                   this.changeHandler(value)
                 }}
                 required />
               <div className="input-group-append">
                 <div className="input-group-text cardbody" style={{ color: 'silver' }}>
-                  <img src={pangolin} height='25' className="mr-3" alt="" />LP
+                  {this.props.poolSegmentInfo[this.props.n][this.props.i].platform == 'Pangolin' ? <img src={pangolin} height='25' className="mr-1" alt="" /> : <img src={joe} height='28' className="mr-1" alt="" />}
+
                 </div>
               </div>
             </div >
@@ -152,24 +145,24 @@ class Deposit extends Component {
               <ButtonGroup>
                 <Button type="submit" variant="primary"
                   size="sm"
-                  style={{ minWidth: '90px' }}
+                  style={{ width: '90px' }}
                   onClick={(event) => {
-                    console.log("clicked deposit...")
                     this.clickHandlerDeposit()
-                  }}> Deposit </Button><Button type="text" variant="outline-primary" size="sm" onClick={(event) => {
-                    this.input.value = this.props.lpTokenBalanceAccount[this.props.n][this.props.i]
-                  }}>All</Button>&nbsp;&nbsp;&nbsp;
+                  }}> Deposit </Button>
+                <Button type="text" variant="outline-primary" size="sm" onClick={(event) => {
+                  this.input.value = this.props.lpTokenBalanceAccount[this.props.n][this.props.i]
+                }}>All</Button>&nbsp;&nbsp;&nbsp;
               </ButtonGroup>
               <ButtonGroup>
                 <Button type="submit" variant="primary"
                   size="sm"
-                  style={{ minWidth: '90px' }}
+                  style={{ width: '90px' }}
                   onClick={(event) => {
-                    console.log("clicked withdraw...")
                     this.clickHandlerWithdraw()
-                  }}>Withdraw</Button><Button type="text" variant="outline-primary" size="sm" onClick={(event) => {
-                    this.input.value = this.props.userSegmentInfo[this.props.n][this.props.i]
-                  }}>All</Button>
+                  }}>Withdraw</Button>
+                <Button type="text" variant="outline-primary" size="sm" onClick={(event) => {
+                  this.input.value = this.props.userSegmentInfo[this.props.n][this.props.i]
+                }}>All</Button>
               </ButtonGroup>
             </div>
           </div>

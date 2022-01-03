@@ -271,6 +271,8 @@
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "// SPDX-License-Identifier: MIT\r\n\r\npragma solidity ^0.8.0;\r\n\r\ninterface IStakingRewards {\r\n    function totalSupply() external view returns (uint256);\r\n    function balanceOf(address account) external view returns (uint256);\r\n    function lastTimeRewardApplicable() external view returns (uint256);\r\n    function rewardPerToken() external view returns (uint256);\r\n    function earned(address account) external view returns (uint256);\r\n    function getRewardForDuration() external view returns (uint256);\r\n    function stake(uint256 amount) external;\r\n    function stakeWithPermit(uint256 amount, uint deadline, uint8 v, bytes32 r, bytes32 s) external;\r\n    function withdraw(uint256 amount) external;\r\n    function getReward() external;\r\n    function exit() external;\r\n    event RewardAdded(uint256 reward);\r\n    event Staked(address indexed user, uint256 amount);\r\n    event Withdrawn(address indexed user, uint256 amount);\r\n    event RewardPaid(address indexed user, uint256 reward);\r\n    event RewardsDurationUpdated(uint256 newDuration);\r\n    event Recovered(address token, uint256 amount);\r\n}",
@@ -2546,8 +2548,8 @@
     "version": "0.8.7+commit.e28d00a7.Emscripten.clang"
   },
   "networks": {},
-  "schemaVersion": "3.2.3",
-  "updatedAt": "2021-12-30T07:03:14.435Z",
+  "schemaVersion": "3.3.4",
+  "updatedAt": "2022-01-01T14:38:11.626Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

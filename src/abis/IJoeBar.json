@@ -64,6 +64,8 @@
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.0;\r\n\r\ninterface IJoeBar {\r\n    function enter(uint256 _amount) external;\r\n    function leave(uint256 _share) external;\r\n    function balanceOf(address account) external view returns (uint256);\r\n    function totalSupply() external view returns (uint256);\r\n}",
@@ -659,8 +661,8 @@
     "version": "0.8.7+commit.e28d00a7.Emscripten.clang"
   },
   "networks": {},
-  "schemaVersion": "3.2.3",
-  "updatedAt": "2021-12-30T07:03:14.421Z",
+  "schemaVersion": "3.3.4",
+  "updatedAt": "2022-01-01T14:38:11.614Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},
