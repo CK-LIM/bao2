@@ -747,15 +747,15 @@ class App extends Component {
     if (state == false) {
       await this.setState({ wallet: state })
 
-      let totalpendingReward = "0"
-      let bavaTokenBalance = 0
-      let userSegmentInfo = [[], []]
-      let pendingSegmentReward = [[], []]
+      // let totalpendingReward = "0"
+      // let bavaTokenBalance = 0
+      // let userSegmentInfo = [[], []]
+      // let pendingSegmentReward = [[], []]
 
-      this.setState({ bavaTokenBalance: bavaTokenBalance.toString() })
-      this.setState({ totalpendingReward: totalpendingReward.toLocaleString('fullwide', { useGrouping: false }) })
-      this.setState({ userSegmentInfo })
-      this.setState({ pendingSegmentReward })
+      // this.setState({ bavaTokenBalance: bavaTokenBalance.toString() })
+      // this.setState({ totalpendingReward: totalpendingReward.toLocaleString('fullwide', { useGrouping: false }) })
+      // this.setState({ userSegmentInfo })
+      // this.setState({ pendingSegmentReward })
       this.setState({ accountLoading: state })
     } else {
       const accounts = await window.web3.eth.getAccounts()
