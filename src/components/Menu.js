@@ -169,9 +169,9 @@ class Menu extends Component {
                                                                         </thead>
                                                                         <tbody className="textWhiteMedium" style={{ color: 'grey' }}>
                                                                             <tr>
-                                                                                <td className="">{(this.props.wallet || this.props.walletConnect) && this.props.accountLoading ? <div>{parseFloat(this.props.lpTokenBalanceAccount[0][i]).toLocaleString('en-US', { maximumFractionDigits: 3 })}</div> : <div className="center">
+                                                                                <td className="">{(this.props.wallet || this.props.walletConnect) && this.props.accountLoading ? <div>{parseFloat(this.props.lpTokenBalanceAccount[0][i]).toLocaleString('en-US', { maximumFractionDigits: 18 })}</div> : <div className="center">
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>}</td>
-                                                                                <td className="">{(this.props.wallet || this.props.walletConnect) && this.props.accountLoading ? <div>{parseFloat(this.props.userSegmentInfo[0][i]).toLocaleString('en-US', { maximumFractionDigits: 3 })}</div> : <div className="center">
+                                                                                <td className="">{(this.props.wallet || this.props.walletConnect) && this.props.accountLoading ? <div>{parseFloat(this.props.userSegmentInfo[0][i]).toLocaleString('en-US', { maximumFractionDigits: 18 })}</div> : <div className="center">
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
                                                                                 <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.apr[0][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })}%</div> : <div className="center">
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
