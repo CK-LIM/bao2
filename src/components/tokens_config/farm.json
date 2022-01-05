@@ -371,6 +371,38 @@
             "name": "JoeToken"
           }
         }
+      },
+      
+      {
+        "pid": 12,
+        "lpTokenPairsymbol": "PGL",
+        "lpName": "QI-AVAX",
+        "lpAddresses": {
+          "43114": "0xE530dC2095Ef5653205CF5ea79F8979a7028065c"
+        },
+        "icon": "QI-AVAX",
+        "platform": "Pangolin",
+        "allocPoint": 1000,
+        "projectLink": "https://app.pangolin.exchange/#/png/0x8729438EB15e2C8B576fCc6AeCdA6A148776C0F5/AVAX/2",
+        "getLPLink": "https://app.pangolin.exchange/#/add/AVAX/0x8729438EB15e2C8B576fCc6AeCdA6A148776C0F5",
+        "token": {
+          "MAINNET": {
+            "chainId": "43114",
+            "address": "0x8729438EB15e2C8B576fCc6AeCdA6A148776C0F5",
+            "decimals": "18",
+            "symbol": "QI",
+            "name": "QI Token"           
+          }         
+        },
+        "quoteToken": {
+          "MAINNET": {
+            "chainId": "43114",
+            "address": "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7",
+            "decimals": "18",
+            "symbol": "AVAX",
+            "name": "AVAX Token"            
+          }
+        }
       }
     ]
   }

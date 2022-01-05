@@ -272,7 +272,10 @@ class App extends Component {
         tokenAPrice = this.state.USDCPrice * 1000000000000
       } else if (this.state.lpTokenAsymbols[i] == "JOE") {
         tokenAPrice = this.state.JOEPrice
+      } else if (this.state.lpTokenAsymbols[i] == "QI") {
+        tokenAPrice = this.state.QIPrice
       }
+
       if (this.state.lpTokenBsymbols[i] == "BAVA") {
         tokenBPrice = this.state.BAVAPrice
       } else if (this.state.lpTokenBsymbols[i] == "AVAX") {
@@ -287,6 +290,8 @@ class App extends Component {
         tokenBPrice = this.state.USDCPrice * 1000000000000
       } else if (this.state.lpTokenBsymbols[i] == "JOE") {
         tokenBPrice = this.state.JOEPrice
+      } else if (this.state.lpTokenAsymbols[i] == "QI") {
+        tokenAPrice = this.state.QIPrice
       }
 
       if (this.state.lpTokenPairsymbols[i] == "PGL" || this.state.lpTokenPairsymbols[i] == "PNG") {
@@ -335,22 +340,24 @@ class App extends Component {
     window.web3Ava = new Web3(`https://api.avax.network/ext/bc/C/rpc`);
     // window.web3Ava = new Web3(`https://speedy-nodes-nyc.moralis.io/${process.env.REACT_APP_moralisapiKey}/avalanche/mainnet`);
     // let response = await fetch(`https://api.covalenthq.com/v1/pricing/historical_by_addresses_v2/43114/USD/0x65378b697853568dA9ff8EaB60C13E1Ee9f4a654%2C0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7%2C0x60781c2586d68229fde47564546784ab3faca982%2C0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB%2C0xc7198437980c041c805A1EDcbA50c1Ce5db95118%2C0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664/?key=${process.env.REACT_APP_covalentapikey}`);
-    let response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=joe%2Cwrapped-avax%2Cpangolin%2Cweth%2Cusd-coin%2Ctether&vs_currencies=usd`);
+    let response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=joe%2Cwrapped-avax%2Cpangolin%2Cweth%2Cusd-coin%2Ctether%2Cbenqi&vs_currencies=usd`);
     const myJson = await response.json();
     // let BAVAPrice = myJson["husky-avax"]["usd"]
     this.setState({ BAVAPrice: "0.10" })
     let AVAXPrice = myJson["wrapped-avax"]["usd"]
-    this.setState({ AVAXPrice: AVAXPrice.toFixed(5) })
+    this.setState({ AVAXPrice: AVAXPrice.toFixed(6) })
     let PNGPrice = myJson["pangolin"]["usd"]
-    this.setState({ PNGPrice: PNGPrice.toFixed(5) })
+    this.setState({ PNGPrice: PNGPrice.toFixed(6) })
     let WETHPrice = myJson["weth"]["usd"]
-    this.setState({ WETHPrice: WETHPrice.toFixed(5) })
+    this.setState({ WETHPrice: WETHPrice.toFixed(6) })
     let USDTPrice = myJson["tether"]["usd"]
-    this.setState({ USDTPrice: USDTPrice.toFixed(5) })
+    this.setState({ USDTPrice: USDTPrice.toFixed(6) })
     let USDCPrice = myJson["usd-coin"]["usd"]
-    this.setState({ USDCPrice: USDCPrice.toFixed(5) })
+    this.setState({ USDCPrice: USDCPrice.toFixed(6) })
     let JOEPrice = myJson["joe"]["usd"]
-    this.setState({ JOEPrice: JOEPrice.toFixed(5) })
+    this.setState({ JOEPrice: JOEPrice.toFixed(6) })
+    let QIPrice = myJson["benqi"]["usd"]
+    this.setState({ QIPrice: QIPrice.toFixed(6) })
     this.setState({ loading: true })
   }
 
