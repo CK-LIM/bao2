@@ -22,10 +22,10 @@ class Main extends Component {
         <div className="center textMiddle">for your LP tokens and a synthetic creation mechainsm using LP tokens.</div>
         <div className="center" style={{ marginTop: "30px" }} >
           <img src={joe} width="50" height="50" className="exLink0 mr-5" alt="" onClick={() => {
-            window.open(`https://app.pangolin.exchange/`, '_blank')
+            window.open(`https://traderjoexyz.com/#/home`, '_blank')
           }} />
           <img src={pangolin} width="50" height="50" className="exLink0" alt="" onClick={() => {
-            window.open(`https://traderjoexyz.com/#/home`, '_blank')
+            window.open(`https://app.pangolin.exchange/`, '_blank')
           }} />
         </div>
         <img src={baklava_mainBottom} height="10%" width="100%" className="navbar navbar-dark fixed-bottom flex-md-nowrap p-0" alt="" />
