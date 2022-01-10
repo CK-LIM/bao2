@@ -243,76 +243,23 @@ class App extends Component {
     let apyDaily = [[], []]
     let n = 0
 
+    let response = await fetch(`https://ap-southeast-1.aws.data.mongodb-api.com/app/bdl-uyejj/endpoint/tvl`);
+    const myJson = await response.json();
+    let tvlArray = myJson["TVL"]
+    let aprArray = myJson["APR"]
+    let apyArray = myJson["APY"]
+
     for (let i = 0; i < this.state.poolLength; i++) {
-      let lpTokenPair = new window.web3Ava.eth.Contract(IPancakePair.abi, this.state.lpTokenAddresses[i])
-      let lpTokenA = new window.web3Ava.eth.Contract(LpToken.abi, this.state.lpTokenPairAs[i])
-      let lpTokenB = new window.web3Ava.eth.Contract(LpToken.abi, this.state.lpTokenPairBs[i])
-
-      let lpTokenInContract = await this.state.bavaMasterFarmer.methods.poolInfo(i).call()
-      lpTokenInContract = window.web3Ava.utils.fromWei(lpTokenInContract.depositAmount, "ether")
-
-      let lpTokenTSupply = await lpTokenPair.methods.totalSupply().call()
-      let lpTokenABalanceContract = await lpTokenA.methods.balanceOf(this.state.lpTokenAddresses[i]).call()
-      let lpTokenBBalanceContract = await lpTokenB.methods.balanceOf(this.state.lpTokenAddresses[i]).call()
-
-      let tokenAPrice = 0
-      let tokenBPrice = 0
-
-      if (this.state.lpTokenAsymbols[i] == "BAVA") {
-        tokenAPrice = this.state.BAVAPrice
-      } else if (this.state.lpTokenAsymbols[i] == "AVAX") {
-        tokenAPrice = this.state.AVAXPrice
-      } else if (this.state.lpTokenAsymbols[i] == "PNG") {
-        tokenAPrice = this.state.PNGPrice
-      } else if (this.state.lpTokenAsymbols[i] == "WETH.e") {
-        tokenAPrice = this.state.WETHPrice
-      } else if (this.state.lpTokenAsymbols[i] == "USDT.e") {
-        tokenAPrice = this.state.USDTPrice * 1000000000000
-      } else if (this.state.lpTokenAsymbols[i] == "USDC.e") {
-        tokenAPrice = this.state.USDCPrice * 1000000000000
-      } else if (this.state.lpTokenAsymbols[i] == "JOE") {
-        tokenAPrice = this.state.JOEPrice
-      } else if (this.state.lpTokenAsymbols[i] == "QI") {
-        tokenAPrice = this.state.QIPrice
-      }
-
-      if (this.state.lpTokenBsymbols[i] == "BAVA") {
-        tokenBPrice = this.state.BAVAPrice
-      } else if (this.state.lpTokenBsymbols[i] == "AVAX") {
-        tokenBPrice = this.state.AVAXPrice
-      } else if (this.state.lpTokenBsymbols[i] == "PNG") {
-        tokenBPrice = this.state.PNGPrice
-      } else if (this.state.lpTokenBsymbols[i] == "WETH.e") {
-        tokenBPrice = this.state.WETHPrice
-      } else if (this.state.lpTokenBsymbols[i] == "USDT.e") {
-        tokenBPrice = this.state.USDTPrice * 1000000000000
-      } else if (this.state.lpTokenBsymbols[i] == "USDC.e") {
-        tokenBPrice = this.state.USDCPrice * 1000000000000
-      } else if (this.state.lpTokenBsymbols[i] == "JOE") {
-        tokenBPrice = this.state.JOEPrice
-      } else if (this.state.lpTokenAsymbols[i] == "QI") {
-        tokenAPrice = this.state.QIPrice
-      }
 
       if (this.state.lpTokenPairsymbols[i] == "PGL" || this.state.lpTokenPairsymbols[i] == "PNG") {
-        lpTokenValue[0][n] = ((lpTokenABalanceContract * tokenAPrice) + (lpTokenBBalanceContract * tokenBPrice)) / lpTokenTSupply
-        if (this.state.lpTokenPairsymbols[i] == "PNG") {
-          tvl[0][n] = tokenAPrice * lpTokenInContract
-        } else {
-          tvl[0][n] = lpTokenValue[0][n] * lpTokenInContract
-        }
-        apr[0][n] = ((28000 * 315 * 365 * this.state.allocPoints[i] * window.web3Ava.utils.fromWei(this.state.totalrewardperblock, 'ether') * this.state.BAVAPrice) / (this.state.totalallocPoint * tvl[0][n])) * 100
-        apyDaily[0][n] = (Math.pow((1 + apr[0][n] / 36500), 365) - 1) * 100
+        tvl[0][n] = tvlArray[n]["tvl"]
+        apr[0][n] = aprArray[n]["apr"]
+        apyDaily[0][n] = apyArray[n]["apyDaily"]
         n += 1
       } else {
-        lpTokenValue[1][n] = ((lpTokenABalanceContract * tokenAPrice) + (lpTokenBBalanceContract * tokenBPrice)) / lpTokenTSupply
-        if (this.state.lpTokenPairsymbols[i] == "XJOE") {
-          tvl[1][n] = tokenAPrice * lpTokenInContract
-        } else {
-          tvl[1][n] = lpTokenValue[1][n] * lpTokenInContract
-        }
-        apr[1][n] = ((28000 * 315 * 365 * this.state.allocPoints[i] * window.web3Ava.utils.fromWei(this.state.totalrewardperblock, 'ether') * this.state.BAVAPrice) / (this.state.totalallocPoint * tvl[1][n])) * 100
-        apyDaily[1][n] = (Math.pow((1 + apr[1][n] / 36500), 365) - 1) * 100
+        tvl[1][n] = tvlArray[n]["tvl"]
+        apr[1][n] = aprArray[n]["apr"]
+        apyDaily[1][n] = apyArray[n]["apyDaily"]
         n += 1
       }
     }
