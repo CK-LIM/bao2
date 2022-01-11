@@ -109,20 +109,19 @@ class Menu extends Component {
                 <br />
                 <div className="ml-auto mr-auto" style={{ width: '1000px' }}>
                     <div className="">
-                        <p className="textMiddleBold1" style={{ marginLeft: '2px' }}><big>Select Platform</big></p>
+                        <div className="textMiddleBold1 float-left" style={{ marginLeft: '2px' }}><big>Select Platform</big></div>
+                        <div className="textMiddleBold1 float-right" style={{ marginRight: '5px' }}><big>TVL ${(this.props.totalTVL / 1000).toFixed(2)}k</big></div><br /><br />
                         <span className="float-left">
-
                             <ButtonGroup>
-                                {/* <Button variant="text" size="small" color="inherit" component={Link} to="/traderjoe/">All</Button> */}
                                 <Button variant="text" size="small" color="inherit" component={Link} to="/menu/">Pangolin</Button>
                                 <Button variant="outlined" size="small" color="inherit" component={Link} to="/traderjoe/">Trader Joe</Button>
                             </ButtonGroup>
                         </span>
-                        <span className="float-right mr-4">
+                        {/* <span className="float-right mr-4">
                             <ButtonGroup>
                                 <Button variant="text" size="small" color="inherit" >Sort by</Button>
                             </ButtonGroup>
-                        </span>
+                        </span> */}
                     </div>
                     <br /><br />
 
@@ -180,7 +179,7 @@ class Menu extends Component {
                                                                                         <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
                                                                                     <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.apyDaily[1][i]).toExponential(3)}%</div> : <div className="center">
                                                                                         <div className="lds-facebook"><div></div><div></div><div></div></div></div>}</td>
-                                                                                    <td className="">${parseFloat(this.props.tvl[1][i]).toLocaleString('en-US', { maximumFractionDigits: 5 })} </td>
+                                                                                    <td className="">${parseFloat(this.props.tvl[1][i]).toLocaleString('en-US', { maximumFractionDigits: 2 })} </td>
                                                                                 </tr>
                                                                             </tbody>
                                                                         </table>

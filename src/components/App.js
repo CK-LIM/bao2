@@ -128,7 +128,6 @@ class App extends Component {
         this.setState({ totalpendingReward: totalpendingReward.toLocaleString('fullwide', { useGrouping: false }) })
         this.setState({ userSegmentInfo })
         this.setState({ pendingSegmentReward })
-        // console.log(this.state.poolLength)
         for (let i = 0; i < this.state.poolLength; i++) {
           let poolInfo = this.state.farm[i]
           let lpTokenAddress = poolInfo.lpAddresses[farmNetworkId]
@@ -137,7 +136,6 @@ class App extends Component {
           let lpTokenPairsymbol = poolInfo.lpTokenPairsymbol
           let lpTokenAsymbol = poolInfo.token[this.state.farmNetwork]["symbol"]
           let lpTokenBsymbol = poolInfo.quoteToken[this.state.farmNetwork]["symbol"]
-          // console.log(poolInfo)
           lpTokenAsymbols[i] = lpTokenAsymbol
           lpTokenBsymbols[i] = lpTokenBsymbol
           lpTokenPairAs[i] = lpTokenPairA
@@ -145,7 +143,6 @@ class App extends Component {
           lpTokenPairsymbols[i] = lpTokenPairsymbol
           lpTokenAddresses[i] = lpTokenAddress
           allocPoints[i] = poolInfo.allocPoint
-
           totalallocPoint += parseInt(poolInfo.allocPoint)
 
           if (lpTokenPairsymbol == "PGL" || lpTokenPairsymbol == "PNG") {
@@ -234,23 +231,21 @@ class App extends Component {
 
   // ***************************TVL & APR***********************************************************************
   async loadTVLAPR() {
-    // Load bavaMasterFarmer
-    const bavaMasterFarmeryData = BavaMasterFarmer.networks[this.state.networkId]
 
-    let lpTokenValue = [[], []]
     let tvl = [[], []]
     let apr = [[], []]
     let apyDaily = [[], []]
     let n = 0
+    let totalTVL = 0
 
     let response = await fetch(`https://ap-southeast-1.aws.data.mongodb-api.com/app/bdl-uyejj/endpoint/tvl`);
     const myJson = await response.json();
     let tvlArray = myJson["TVL"]
     let aprArray = myJson["APR"]
-    let apyArray = myJson["APY"]
+    let apyArray = myJson["APY"]    
 
     for (let i = 0; i < this.state.poolLength; i++) {
-
+      totalTVL += parseInt(tvlArray[n]["tvl"])
       if (this.state.lpTokenPairsymbols[i] == "PGL" || this.state.lpTokenPairsymbols[i] == "PNG") {
         tvl[0][n] = tvlArray[n]["tvl"]
         apr[0][n] = aprArray[n]["apr"]
@@ -263,7 +258,7 @@ class App extends Component {
         n += 1
       }
     }
-
+    this.setState({ totalTVL})
     this.setState({ tvl })
     this.setState({ apr })
     this.setState({ apyDaily })
@@ -286,7 +281,6 @@ class App extends Component {
     }
     window.web3Ava = new Web3(`https://api.avax.network/ext/bc/C/rpc`);
     // window.web3Ava = new Web3(`https://speedy-nodes-nyc.moralis.io/${process.env.REACT_APP_moralisapiKey}/avalanche/mainnet`);
-    // let response = await fetch(`https://api.covalenthq.com/v1/pricing/historical_by_addresses_v2/43114/USD/0x65378b697853568dA9ff8EaB60C13E1Ee9f4a654%2C0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7%2C0x60781c2586d68229fde47564546784ab3faca982%2C0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB%2C0xc7198437980c041c805A1EDcbA50c1Ce5db95118%2C0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664/?key=${process.env.REACT_APP_covalentapikey}`);
     let response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=joe%2Cwrapped-avax%2Cpangolin%2Cweth%2Cusd-coin%2Ctether%2Cbenqi&vs_currencies=usd`);
     const myJson = await response.json();
     // let BAVAPrice = myJson["husky-avax"]["usd"]
@@ -761,6 +755,7 @@ class App extends Component {
       poolLength: '0',
       startBlk: '0',
       totalallocPoint: '0',
+      totalTVL: '0',
       lockedBavaTokenBalance: '0',
       accountLoading: false
     }
@@ -794,7 +789,6 @@ class App extends Component {
           </div>
         </div>
     } else {
-      // comingSoon = <ComingSoon/>
       maincontent = <Main
         lpTokenBalance={this.state.lpTokenBalance}
         bavaTokenBalance={this.state.bavaTokenBalance}
@@ -840,6 +834,7 @@ class App extends Component {
         farmOpen={this.state.farmOpen}
         accountLoading={this.state.accountLoading}
         lockedBavaTokenBalance={this.state.lockedBavaTokenBalance}
+        totalTVL={this.state.totalTVL}
       />
       traderjoecontent = <TraderJoe
         lpTokenBalance={this.state.lpTokenBalance}
@@ -873,14 +868,13 @@ class App extends Component {
         farmOpen={this.state.farmOpen}
         accountLoading={this.state.accountLoading}
         lockedBavaTokenBalance={this.state.lockedBavaTokenBalance}
+        totalTVL={this.state.totalTVL}
       />
     }
 
     return (
       <Router>
         <div>
-          {/* <div className="container-fluid mt-3" style={{ maxWidth: '1300px' }}>
-            <div className="row">{comingSoon}</div></div> */}
           <Navb
             account={this.state.account}
             first4Account={this.state.first4Account}

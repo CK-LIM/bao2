@@ -56,9 +56,6 @@ class Navb extends Component {
                   <Link to="/menu/">
                     <Buttons className="textWhiteLarge center" style={{ width: '100px', height: '30px' }} variant="secondary" size="lg"> Menu</Buttons>
                   </Link>
-                  {/* <Button variant="info" size="sm" onClick={() => {
-                  }}>{this.props.networkName}
-                  </Button> */}
                 </div>&nbsp;&nbsp;
 
                 <div>
