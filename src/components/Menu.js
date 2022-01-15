@@ -168,9 +168,9 @@ class Menu extends Component {
                                                                         </thead>
                                                                         <tbody className="textWhiteMedium" style={{ color: 'grey' }}>
                                                                             <tr>
-                                                                                <td className="">{(this.props.wallet || this.props.walletConnect) && this.props.accountLoading ? <div>{parseFloat(this.props.lpTokenBalanceAccount[0][i]).toLocaleString('en-US', { maximumFractionDigits: 18 })}</div> : <div className="center">
+                                                                                <td className="">{(this.props.wallet || this.props.walletConnect) && this.props.accountLoading ? <div>{parseFloat(window.web3Ava.utils.fromWei(this.props.lpTokenBalanceAccount[0][i]), 'Ether').toLocaleString('en-US', { maximumFractionDigits: 18 })}</div> : <div className="center">
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>}</td>
-                                                                                <td className="">{(this.props.wallet || this.props.walletConnect) && this.props.accountLoading ? <div>{parseFloat(this.props.userSegmentInfo[0][i]).toLocaleString('en-US', { maximumFractionDigits: 18 })}</div> : <div className="center">
+                                                                                <td className="">{(this.props.wallet || this.props.walletConnect) && this.props.accountLoading ? <div>{parseFloat(window.web3Ava.utils.fromWei(this.props.userSegmentInfo[0][i], 'Ether')).toLocaleString('en-US', { maximumFractionDigits: 18 })}</div> : <div className="center">
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
                                                                                 <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.apr[0][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })}%</div> : <div className="center">
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
@@ -194,7 +194,7 @@ class Menu extends Component {
                                                                         <div className="card cardbody float-left mr-3" style={{ width: '300px' }}>
                                                                             <div className="card-body" style={{ padding: '0.5rem' }}>
                                                                                 <span className="float-left" style={{ color: 'black' }}><small>BAVA earned</small></span><br />
-                                                                                <span className="float-left" style={{ color: 'black', marginTop: '8px' }}><small>{this.props.accountLoading ? <div>{parseFloat(this.props.pendingSegmentReward[0][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })}</div> :
+                                                                                <span className="float-left" style={{ color: 'black', marginTop: '8px' }}><small>{this.props.accountLoading ? <div>{parseFloat(window.web3Ava.utils.fromWei(this.props.pendingSegmentReward[0][i], 'Ether')).toLocaleString('en-US', { maximumFractionDigits: 0 })}</div> :
                                                                                     <div className="ml-3 lds-facebook"><div></div><div></div><div></div></div>}</small></span>
                                                                                 <span className="float-right">
                                                                                     <Buttons

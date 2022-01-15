@@ -7,7 +7,6 @@ import LpToken from '../abis/Interface/LpToken.json'
 import IPancakePair from '../abis/Interface/IPancakePair.json'
 import BavaToken from '../abis/BavaToken.json'
 import BavaMasterFarmer from '../abis/BavaMasterFarmerV2.json'
-// import Farm from './tokens_config/farmTestnet.json'
 import Farm from './tokens_config/farm.json'
 
 import Navb from './Navbar'
@@ -84,12 +83,6 @@ class App extends Component {
       if (bavaTokenData) {
         const bavaToken = new web3Ava.eth.Contract(BavaToken.abi, bavaTokenData.address)
         this.setState({ bavaToken })
-        // let bavaTokenTotalSupply = await bavaToken.methods.totalSupply().call()
-        // let bavaTokenCapSupply = await bavaToken.methods.cap().call()
-        // let bavaTokenLock = await bavaToken.methods.totalLock().call()
-        // this.setState({ bavaTokenTotalSupply: bavaTokenTotalSupply.toString() })
-        // this.setState({ bavaTokenCapSupply: bavaTokenCapSupply.toString() })
-        // this.setState({ bavaTokenLock: bavaTokenLock.toString() })
       }
 
       // Load bavaMasterFarmer
@@ -99,9 +92,7 @@ class App extends Component {
         this.setState({ bavaMasterFarmer })
 
         let poolLength = await bavaMasterFarmer.methods.poolLength().call()
-        // let startBlk = await bavaMasterFarmer.methods.START_BLOCK().call()
         this.setState({ poolLength })
-        // this.setState({ startBlk })
         let totalrewardperblock = await bavaMasterFarmer.methods.REWARD_PER_BLOCK().call()
         this.setState({ totalrewardperblock: totalrewardperblock.toString() })
 
@@ -192,31 +183,37 @@ class App extends Component {
       let n = 0
       let i = 0
 
+      let response0 = []
+      let response1 = []
+      let response2 = []
+      let response3 = []
+
       for (i = 0; i < this.state.poolLength; i++) {
+        response0[i] = this.loadUserInfo(i)
+        response1[i] = this.loadUserInfo1(i)
+        response2[i] = this.loadUserInfo2(i)
+        response3[i] = this.loadUserInfo3(i)
+      }
 
-        let userInfo = await this.state.bavaMasterFarmer.methods.userInfo(i, this.state.account).call()
-        let lpTokenPair = new web3Ava.eth.Contract(IPancakePair.abi, this.state.lpTokenAddresses[i])
-        let lpTokenBalance = await lpTokenPair.methods.balanceOf(this.state.account).call()
-        let lpTokenAllowance = await lpTokenPair.methods.allowance(this.state.account, this.state.bavaMasterFarmer._address).call()
-        let pendingReward = await this.state.bavaMasterFarmer.methods.pendingReward(i, this.state.account).call()
-        totalpendingReward += parseInt(pendingReward)
-
+      for (i = 0; i < this.state.poolLength; i++) {
         if (this.state.lpTokenPairsymbols[i] == "PGL" || this.state.lpTokenPairsymbols[i] == "PNG") {
-          userSegmentInfo[0][n] = window.web3Ava.utils.fromWei(userInfo.amount, 'Ether')
+          userSegmentInfo[0][n] = (await response0[i]).amount
           poolSegmentInfo[0][n] = this.state.farm[i]
-          lpTokenBalanceAccount[0][n] = window.web3Ava.utils.fromWei(lpTokenBalance, 'Ether')
-          lpTokenSegmentAllowance[0][n] = lpTokenAllowance
-          pendingSegmentReward[0][n] = window.web3Ava.utils.fromWei(pendingReward, 'Ether')
+          lpTokenBalanceAccount[0][n] = await response1[i]
+          lpTokenSegmentAllowance[0][n] = await response2[i]
+          pendingSegmentReward[0][n] = await response3[i]
           n += 1
         } else {
-          userSegmentInfo[1][n] = window.web3Ava.utils.fromWei(userInfo.amount, 'Ether')
+          userSegmentInfo[1][n] = (await response0[i]).amount
           poolSegmentInfo[1][n] = this.state.farm[i]
-          lpTokenBalanceAccount[1][n] = window.web3Ava.utils.fromWei(lpTokenBalance, 'Ether')
-          lpTokenSegmentAllowance[1][n] = lpTokenAllowance
-          pendingSegmentReward[1][n] = window.web3Ava.utils.fromWei(pendingReward, 'Ether')
+          lpTokenBalanceAccount[1][n] = await response1[i]
+          lpTokenSegmentAllowance[1][n] = await response2[i]
+          pendingSegmentReward[1][n] = await response3[i]
           n += 1
         }
+        totalpendingReward += parseInt(await response3[i])
       }
+
       this.setState({ userSegmentInfo })
       this.setState({ poolSegmentInfo })
       this.setState({ lpTokenBalanceAccount })
@@ -228,6 +225,28 @@ class App extends Component {
     }
   }
 
+  // ***************************User Info***********************************************************************************************
+  async loadUserInfo(i) {
+    let userInfo = await this.state.bavaMasterFarmer.methods.userInfo(i, this.state.account).call()
+    return userInfo
+  }
+
+  async loadUserInfo1(i) {
+    let lpTokenPair = new window.web3Ava.eth.Contract(IPancakePair.abi, this.state.lpTokenAddresses[i])
+    let lpTokenBalance = await lpTokenPair.methods.balanceOf(this.state.account).call()
+    return  lpTokenBalance
+}
+
+  async loadUserInfo2(i) {
+    let lpTokenPair = new window.web3Ava.eth.Contract(IPancakePair.abi, this.state.lpTokenAddresses[i])
+    let lpTokenAllowance = await lpTokenPair.methods.allowance(this.state.account, this.state.bavaMasterFarmer._address).call()
+    return lpTokenAllowance
+  }
+
+  async loadUserInfo3(i) {
+    let pendingReward = await this.state.bavaMasterFarmer.methods.pendingReward(i, this.state.account).call()
+    return pendingReward
+  }
 
   // ***************************TVL & APR***********************************************************************
   async loadTVLAPR() {
@@ -493,15 +512,15 @@ class App extends Component {
       let bavaMasterFarmer = new window.web3Con.eth.Contract(BavaMasterFarmer.abi, bavaMasterFarmeryData.address)
       await bavaMasterFarmer.methods.deposit(i, amount).send({ from: this.state.account }).then(async (result) => {
         let userInfo = await this.state.bavaMasterFarmer.methods.userInfo(i, this.state.account).call()
-        this.state.userSegmentInfo[n][i] = window.web3Ava.utils.fromWei(userInfo.amount, 'Ether')
+        this.state.userSegmentInfo[n][i] = userInfo.amount
         let lpTokenAddress = this.state.poolSegmentInfo[n][i].lpAddresses[this.state.farmNetworkId]
         let lpTokenPair = new window.web3Ava.eth.Contract(IPancakePair.abi, lpTokenAddress)
         let lpTokenBalance = await lpTokenPair.methods.balanceOf(this.state.account).call()
-        this.state.lpTokenBalanceAccount[n][i] = window.web3Ava.utils.fromWei(lpTokenBalance, 'Ether')
+        this.state.lpTokenBalanceAccount[n][i] = lpTokenBalance
         let bavaTokenBalance = await this.state.bavaToken.methods.balanceOf(this.state.account).call()
         this.state.bavaTokenBalance = bavaTokenBalance
         let pendingReward = await this.state.bavaMasterFarmer.methods.pendingReward(i, this.state.account).call()
-        this.state.pendingSegmentReward[n][i] = window.web3Ava.utils.fromWei(pendingReward, 'ether')
+        this.state.pendingSegmentReward[n][i] = pendingReward
         this.componentWillMount()
       }).catch((err) => {
         if (err.code === 4001) {
@@ -517,15 +536,15 @@ class App extends Component {
       let bavaMasterFarmer = new window.web3.eth.Contract(BavaMasterFarmer.abi, bavaMasterFarmeryData.address)
       await bavaMasterFarmer.methods.deposit(i, amount).send({ from: this.state.account }).then(async (result) => {
         let userInfo = await this.state.bavaMasterFarmer.methods.userInfo(i, this.state.account).call()
-        this.state.userSegmentInfo[n][i] = window.web3Ava.utils.fromWei(userInfo.amount, 'Ether')
+        this.state.userSegmentInfo[n][i] = userInfo.amount
         let lpTokenAddress = this.state.poolSegmentInfo[n][i].lpAddresses[this.state.farmNetworkId]
         let lpTokenPair = new window.web3Ava.eth.Contract(IPancakePair.abi, lpTokenAddress)
         let lpTokenBalance = await lpTokenPair.methods.balanceOf(this.state.account).call()
-        this.state.lpTokenBalanceAccount[n][i] = window.web3Ava.utils.fromWei(lpTokenBalance, 'Ether')
+        this.state.lpTokenBalanceAccount[n][i] = lpTokenBalance
         let bavaTokenBalance = await this.state.bavaToken.methods.balanceOf(this.state.account).call()
         this.state.bavaTokenBalance = bavaTokenBalance
         let pendingReward = await this.state.bavaMasterFarmer.methods.pendingReward(i, this.state.account).call()
-        this.state.pendingSegmentReward[n][i] = window.web3Ava.utils.fromWei(pendingReward, 'ether')
+        this.state.pendingSegmentReward[n][i] = pendingReward
         this.componentWillMount()
       }).catch((err) => {
         if (err.code === 4001) {
@@ -583,15 +602,15 @@ class App extends Component {
       let bavaMasterFarmer = new window.web3Con.eth.Contract(BavaMasterFarmer.abi, bavaMasterFarmeryData.address)
       bavaMasterFarmer.methods.withdraw(i, amount).send({ from: this.state.account }).then(async (result) => {
         let userInfo = await this.state.bavaMasterFarmer.methods.userInfo(i, this.state.account).call()
-        this.state.userSegmentInfo[n][i] = window.web3Ava.utils.fromWei(userInfo.amount, 'Ether')
+        this.state.userSegmentInfo[n][i] = userInfo.amount
         let lpTokenAddress = this.state.poolSegmentInfo[n][i].lpAddresses[this.state.farmNetworkId]
         let lpTokenPair = new window.web3Ava.eth.Contract(IPancakePair.abi, lpTokenAddress)
         let lpTokenBalance = await lpTokenPair.methods.balanceOf(this.state.account).call()
-        this.state.lpTokenBalanceAccount[n][i] = window.web3Ava.utils.fromWei(lpTokenBalance, 'Ether')
+        this.state.lpTokenBalanceAccount[n][i] = lpTokenBalance
         let bavaTokenBalance = await this.state.bavaToken.methods.balanceOf(this.state.account).call()
         this.state.bavaTokenBalance = bavaTokenBalance
         let pendingReward = await this.state.bavaMasterFarmer.methods.pendingReward(i, this.state.account).call()
-        this.state.pendingSegmentReward[n][i] = window.web3.utils.fromWei(pendingReward, 'ether')
+        this.state.pendingSegmentReward[n][i] = pendingReward
         this.componentWillMount()
       }).catch((err) => {
         if (err.code === 4001) {
@@ -607,15 +626,15 @@ class App extends Component {
       let bavaMasterFarmer = new window.web3.eth.Contract(BavaMasterFarmer.abi, bavaMasterFarmeryData.address)
       bavaMasterFarmer.methods.withdraw(i, amount).send({ from: this.state.account }).then(async (result) => {
         let userInfo = await this.state.bavaMasterFarmer.methods.userInfo(i, this.state.account).call()
-        this.state.userSegmentInfo[n][i] = window.web3Ava.utils.fromWei(userInfo.amount, 'Ether')
+        this.state.userSegmentInfo[n][i] = userInfo.amount
         let lpTokenAddress = this.state.poolSegmentInfo[n][i].lpAddresses[this.state.farmNetworkId]
         let lpTokenPair = new window.web3Ava.eth.Contract(IPancakePair.abi, lpTokenAddress)
         let lpTokenBalance = await lpTokenPair.methods.balanceOf(this.state.account).call()
-        this.state.lpTokenBalanceAccount[n][i] = window.web3Ava.utils.fromWei(lpTokenBalance, 'Ether')
+        this.state.lpTokenBalanceAccount[n][i] = lpTokenBalance
         let bavaTokenBalance = await this.state.bavaToken.methods.balanceOf(this.state.account).call()
         this.state.bavaTokenBalance = bavaTokenBalance
         let pendingReward = await this.state.bavaMasterFarmer.methods.pendingReward(i, this.state.account).call()
-        this.state.pendingSegmentReward[n][i] = window.web3.utils.fromWei(pendingReward, 'ether')
+        this.state.pendingSegmentReward[n][i] = pendingReward
         this.componentWillMount()
       }).catch((err) => {
         if (err.code === 4001) {
@@ -640,7 +659,7 @@ class App extends Component {
           let bavaTokenBalance = await this.state.bavaToken.methods.balanceOf(this.state.account).call()
           this.state.bavaTokenBalance = bavaTokenBalance
           let pendingReward = await this.state.bavaMasterFarmer.methods.pendingReward(i, this.state.account).call()
-          this.state.pendingSegmentReward[n][i] = window.web3.utils.fromWei(pendingReward, 'ether')
+          this.state.pendingSegmentReward[n][i] = pendingReward
           this.setState({ loading: true })
           this.componentWillMount()
         }).catch((err) => {
@@ -663,7 +682,7 @@ class App extends Component {
           let bavaTokenBalance = await this.state.bavaToken.methods.balanceOf(this.state.account).call()
           this.state.bavaTokenBalance = bavaTokenBalance
           let pendingReward = await this.state.bavaMasterFarmer.methods.pendingReward(i, this.state.account).call()
-          this.state.pendingSegmentReward[n][i] = window.web3.utils.fromWei(pendingReward, 'ether')
+          this.state.pendingSegmentReward[n][i] = pendingReward
           this.componentWillMount()
         }).catch((err) => {
           if (err.code === 4001) {
