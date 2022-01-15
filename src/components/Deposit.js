@@ -45,7 +45,6 @@ class Deposit extends Component {
       this.setState({
         txValidAmount: false
       })
-      // console.log(this.state.txValid)
     } else if (event <= 0) {
       this.setState({
         message: 'Value need to be greater than 0'
@@ -53,15 +52,7 @@ class Deposit extends Component {
       this.setState({
         txValidAmount: false
       })
-    }
-    // else if (bigInt(window.web3Ava.utils.toWei(event, 'ether')).value > bigInt(this.props.lpTokenBalanceAccount[this.props.n][this.props.i]).value) {
-    //   this.setState({
-    //     message: 'Not enough Balance'
-    //   })
-    //   this.setState({
-    //     txValidAmount: false
-    //   })
-    // } 
+    } 
     else {
       this.setState({
         message: ''
@@ -118,6 +109,7 @@ class Deposit extends Component {
             }
           }
 
+
         }}>
           <div>
 
@@ -146,15 +138,19 @@ class Deposit extends Component {
                 <Button type="submit" className="btn btn-primary btn-sm" onClick={(event) => {
                   this.clickHandlerDeposit()
                 }}>&nbsp;Deposit&nbsp;</Button>
-                <Button type="text" variant="outline-primary" size="sm" onClick={(event) => {
+                <Button type="text" variant="outline-primary" className="btn-sm" onClick={(event1) => {
+                  this.state.txDeposit = false
+                  this.state.txWithdraw = false
                   this.input.value = window.web3Ava.utils.fromWei(this.props.lpTokenBalanceAccount[this.props.n][this.props.i], 'Ether')
                 }}>All</Button>&nbsp;&nbsp;&nbsp;
               </ButtonGroup>
               <ButtonGroup>
-                <Button type="submit" className="btn btn-primary btn-sm" onClick={(event) => {
+                <Button type="submit" className="btn btn-primary btn-sm" onClick={(event2) => {
                   this.clickHandlerWithdraw()
                 }}>Withdraw</Button>
-                <Button type="text" variant="outline-primary" size="sm" onClick={(event) => {
+                <Button type="text" variant="outline-primary" className="btn-sm" onClick={(event3) => {
+                  this.state.txDeposit = false
+                  this.state.txWithdraw = false
                   this.input.value = window.web3Ava.utils.fromWei(this.props.userSegmentInfo[this.props.n][this.props.i], 'Ether')
                 }}>All</Button>
               </ButtonGroup>
