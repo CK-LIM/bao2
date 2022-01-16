@@ -23,7 +23,7 @@ class App extends Component {
     this.loadTVLAPR()
     while (this.state.loading == true) {
       await this.loadBlockchainData()
-      await this.delay(5000);
+      await this.delay(1000);
     }
   }
 
@@ -44,7 +44,7 @@ class App extends Component {
     const bavaContract = 'https://snowtrace.io/address/0xb5a054312a73581a3c0fed148b736911c02f4539'
     this.setState({ bavaContract })
 
-    if (this.state.metamask == true) {
+    if (window.ethereum) {
       const chainId = await window.ethereum.request({ method: 'eth_chainId' });
       this.setState({ chainId })
 
@@ -69,8 +69,10 @@ class App extends Component {
       } else if (this.state.chainId == "0xa86a") {
         this.setState({ networkName: "Avalanche" })
       }
+
       window.ethereum.on('chainChanged', this.handleChainChanged);
       window.ethereum.on('accountsChanged', this.handleAccountsChanged);
+
     } else {
       this.setState({ chainID: "0x" })
       this.setState({ networkName: "Unavailable" })
@@ -93,8 +95,6 @@ class App extends Component {
 
         let poolLength = await bavaMasterFarmer.methods.poolLength().call()
         this.setState({ poolLength })
-        let totalrewardperblock = await bavaMasterFarmer.methods.REWARD_PER_BLOCK().call()
-        this.setState({ totalrewardperblock: totalrewardperblock.toString() })
 
         let poolSegmentInfo = [[], []]
         let lpTokenSegmentAsymbol = [[], []]
@@ -112,13 +112,12 @@ class App extends Component {
 
         let totalpendingReward = "0"
         let bavaTokenBalance = 0
-        let userSegmentInfo = [[], []]
         let pendingSegmentReward = [[], []]
 
         this.setState({ bavaTokenBalance: bavaTokenBalance.toString() })
         this.setState({ totalpendingReward: totalpendingReward.toLocaleString('fullwide', { useGrouping: false }) })
-        this.setState({ userSegmentInfo })
         this.setState({ pendingSegmentReward })
+
         for (let i = 0; i < this.state.poolLength; i++) {
           let poolInfo = this.state.farm[i]
           let lpTokenAddress = poolInfo.lpAddresses[farmNetworkId]
@@ -234,8 +233,8 @@ class App extends Component {
   async loadUserInfo1(i) {
     let lpTokenPair = new window.web3Ava.eth.Contract(IPancakePair.abi, this.state.lpTokenAddresses[i])
     let lpTokenBalance = await lpTokenPair.methods.balanceOf(this.state.account).call()
-    return  lpTokenBalance
-}
+    return lpTokenBalance
+  }
 
   async loadUserInfo2(i) {
     let lpTokenPair = new window.web3Ava.eth.Contract(IPancakePair.abi, this.state.lpTokenAddresses[i])
@@ -261,7 +260,7 @@ class App extends Component {
     const myJson = await response.json();
     let tvlArray = myJson["TVL"]
     let aprArray = myJson["APR"]
-    let apyArray = myJson["APY"]    
+    let apyArray = myJson["APY"]
 
     for (let i = 0; i < this.state.poolLength; i++) {
       totalTVL += parseInt(tvlArray[n]["tvl"])
@@ -277,7 +276,7 @@ class App extends Component {
         n += 1
       }
     }
-    this.setState({ totalTVL})
+    this.setState({ totalTVL })
     this.setState({ tvl })
     this.setState({ apr })
     this.setState({ apyDaily })
@@ -287,16 +286,6 @@ class App extends Component {
   async loadWeb3() {
     if (window.ethereum) {
       window.web3 = new Web3(window.ethereum)
-      // await window.ethereum.enable()
-      this.setState({ metamask: true })
-    }
-    else if (window.web3) {
-      window.web3 = new Web3(window.web3.currentProvider)
-      this.setState({ metamask: true })
-    }
-    else {
-      window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!')
-      this.setState({ metamask: false })
     }
     window.web3Ava = new Web3(`https://api.avax.network/ext/bc/C/rpc`);
     // window.web3Ava = new Web3(`https://speedy-nodes-nyc.moralis.io/${process.env.REACT_APP_moralisapiKey}/avalanche/mainnet`);
@@ -322,18 +311,16 @@ class App extends Component {
   }
 
 
-  connectWallet = () => {
-    if (this.state.metamask == true) {
+  connectMetamask = () => {
+    if (window.ethereum) {
       window.ethereum
         .request({ method: 'eth_requestAccounts' })
         .then(async () => {
           await this.switchNetwork()
           const chainId = await window.ethereum.request({ method: 'eth_chainId' });
-          // console.log(chainId)
           if (chainId == "0xa86a") {
             this.WalletDisconnect()
             this.setWalletTrigger(true)
-            await this.componentWillMount()
           }
         })
         .catch((err) => {
@@ -348,7 +335,37 @@ class App extends Component {
     } else {
       alert("No wallet provider was found")
     }
+  }
 
+  connectCoin98 = () => {
+    if (window.coin98) {
+      window.ethereum
+        .request({ method: 'eth_accounts' })
+        .then(async (accounts) => {
+          let chainId = await window.ethereum.request({ method: 'eth_chainId' });
+          if (chainId == "0xa86a") {
+            if (accounts[0]) {
+              this.WalletDisconnect()
+              this.setWalletTrigger(true)
+            } else {
+              alert("No wallet found, please create wallet")
+            }
+          } else {
+            alert("Wrong Network, please switch to Avalanche network")
+          }
+        })
+        .catch((err) => {
+          if (err.code === 4001) {
+            // EIP-1193 userRejectedRequest error
+            // If this happens, the user rejected the connection request.
+            alert("Something went wrong...Code: 4001 User rejected the request.")
+          } else {
+            console.error(err);
+          }
+        });
+    } else {
+      alert("No wallet provider was found")
+    }
   }
 
 
@@ -378,30 +395,18 @@ class App extends Component {
     if (this.state.walletConnect == true) {
       await window.provider.disconnect()
       this.setState({ walletConnect: false })
-
-      // let totalpendingReward = "0"
-      // let bavaTokenBalance = 0
-      // let userSegmentInfo = [[], []]
-      // let pendingSegmentReward = [[], []]
-
-      // this.setState({ bavaTokenBalance: bavaTokenBalance.toString() })
-      // this.setState({ totalpendingReward: totalpendingReward.toLocaleString('fullwide', { useGrouping: false }) })
-      // this.setState({ userSegmentInfo })
-      // this.setState({ pendingSegmentReward })
       this.setState({ accountLoading: false })
     }
   }
-
-
 
   switchNetwork = async () => {
     try {
       await window.ethereum.request({
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: '0xa86a' }],
-      });
-    } catch (switchError) {
-      // console.log(switchError.code)
+      })
+    }
+    catch (switchError) {
       // This error code indicates that the chain has not been added to MetaMask.
       if (switchError.code === 4902) {
         try {
@@ -452,7 +457,6 @@ class App extends Component {
   handleAccountsChanged = (accounts) => {
     if (accounts.length === 0) {
       // MetaMask is locked or the user has not connected any accounts
-      // console.log('Please connect to MetaMask.');
       this.setWalletTrigger(false)
     } else if (accounts[0] !== this.state.account) {
       this.setState({ account: accounts[0] })
@@ -468,8 +472,6 @@ class App extends Component {
 
   handleChainChanged = async (_chainId) => {
     // We recommend reloading the page, unless you must do otherwise
-    // window.location.reload();
-    // console.log("network changed")
     if (_chainId != "0xa86a") {
       this.setWalletTrigger(false)
     }
@@ -576,7 +578,7 @@ class App extends Component {
           console.error(err);
         }
       });
-    } else if (this.state.wallet == true) {      
+    } else if (this.state.wallet == true) {
       let lpTokenAddress = await this.state.poolSegmentInfo[n][i].lpAddresses[this.state.farmNetworkId]
       let lpToken = new window.web3.eth.Contract(LpToken.abi, lpTokenAddress)
       lpToken.methods.approve(this.state.bavaMasterFarmer._address, "115792089237316195423570985008687907853269984665640564039457584007913129639935").send({ from: this.state.account }).then(async (result) => {
@@ -703,26 +705,12 @@ class App extends Component {
   setI = (platform, pair, boolean) => {
     this.state.farmOpen[platform][pair] = boolean
     this.setState({ n: platform })
-    // this.setState({ i: pair })
   }
-
-  // setTrigger = (state) => {
-  //   this.setState({ buttonPopup: state })
-  // }
 
   setWalletTrigger = async (state) => {
     if (state == false) {
+      // await window.ethereum.disconnect()
       await this.setState({ wallet: state })
-
-      // let totalpendingReward = "0"
-      // let bavaTokenBalance = 0
-      // let userSegmentInfo = [[], []]
-      // let pendingSegmentReward = [[], []]
-
-      // this.setState({ bavaTokenBalance: bavaTokenBalance.toString() })
-      // this.setState({ totalpendingReward: totalpendingReward.toLocaleString('fullwide', { useGrouping: false }) })
-      // this.setState({ userSegmentInfo })
-      // this.setState({ pendingSegmentReward })
       this.setState({ accountLoading: state })
     } else {
       const accounts = await window.web3.eth.getAccounts()
@@ -752,7 +740,6 @@ class App extends Component {
       loading: false,
       farmloading: false,
       wallet: false,
-      metamask: false,
       aprloading: false,
       walletConnect: false,
       farmOpen: [[], []],
@@ -767,7 +754,6 @@ class App extends Component {
       lpTokenValue: [[], []],
       tvl: [[], []],
       apyDaily: [[], []],
-      totalrewardperblock: '0',
       totalpendingReward: '0',
       buttonPopup: false,
       networkName: "Loading",
@@ -784,7 +770,6 @@ class App extends Component {
     let maincontent
     let menucontent
     let traderjoecontent
-    // let comingSoon
     if (this.state.loading == false) {
       maincontent =
         <div className="wrap">
@@ -815,7 +800,6 @@ class App extends Component {
         withdraw={this.withdraw}
         lpTokenInContract={this.state.lpTokenInContract}
         poolLength={this.state.poolLength}
-        totalrewardperblock={this.state.totalrewardperblock}
         startBlk={this.state.startBlk}
         bavaTokenTotalSupply={this.state.bavaTokenTotalSupply}
         bavaTokenCapSupply={this.state.bavaTokenCapSupply}
@@ -832,7 +816,6 @@ class App extends Component {
         bavaContract={this.state.bavaContract}
         bavaTokenTotalSupply={this.state.bavaTokenTotalSupply}
         totalpendingReward={this.state.totalpendingReward}
-        totalrewardperblock={this.state.totalrewardperblock}
         userSegmentInfo={this.state.userSegmentInfo}
         poolSegmentInfo={this.state.poolSegmentInfo}
         lpTokenBalanceAccount={this.state.lpTokenBalanceAccount}
@@ -865,7 +848,6 @@ class App extends Component {
         bavaContract={this.state.bavaContract}
         bavaTokenTotalSupply={this.state.bavaTokenTotalSupply}
         totalpendingReward={this.state.totalpendingReward}
-        totalrewardperblock={this.state.totalrewardperblock}
         userSegmentInfo={this.state.userSegmentInfo}
         poolSegmentInfo={this.state.poolSegmentInfo}
         lpTokenBalanceAccount={this.state.lpTokenBalanceAccount}
@@ -901,9 +883,11 @@ class App extends Component {
             wallet={this.state.wallet}
             setWalletTrigger={this.setWalletTrigger}
             loadWeb3={this.loadWeb3}
-            connectWallet={this.connectWallet}
+            connectMetamask={this.connectMetamask}
             WalletConnect={this.WalletConnect}
             WalletDisconnect={this.WalletDisconnect}
+            connectCoin98={this.connectCoin98}
+            connectCoin98={this.connectCoin98}
             networkName={this.state.networkName}
             walletConnect={this.state.walletConnect}
           />

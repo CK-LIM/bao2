@@ -64,7 +64,6 @@ class Deposit extends Component {
   }
 
   clickHandlerDeposit() {
-    // console.log("clicked")
     this.setState({
       txDeposit: true,
       txWithdraw: false
@@ -72,7 +71,6 @@ class Deposit extends Component {
   }
 
   clickHandlerWithdraw() {
-    // console.log("clicked")
     this.setState({
       txDeposit: false,
       txWithdraw: true
