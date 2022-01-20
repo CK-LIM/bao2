@@ -288,11 +288,14 @@ class App extends Component {
       window.web3 = new Web3(window.ethereum)
     }
     window.web3Ava = new Web3(`https://api.avax.network/ext/bc/C/rpc`);
-    // window.web3Ava = new Web3(`https://speedy-nodes-nyc.moralis.io/${process.env.REACT_APP_moralisapiKey}/avalanche/mainnet`);
+    // window.web3AvaTest = new Web3(`https://speedy-nodes-nyc.moralis.io/${process.env.REACT_APP_moralisapiKey}/avalanche/testnet`);
+    let responseMongo = await fetch(`https://ap-southeast-1.aws.data.mongodb-api.com/app/bdl-uyejj/endpoint/tvl`);
+    const myJsonMongo = await responseMongo.json();
     let response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=joe%2Cwrapped-avax%2Cpangolin%2Cweth%2Cusd-coin%2Ctether%2Cbenqi&vs_currencies=usd`);
     const myJson = await response.json();
-    // let BAVAPrice = myJson["husky-avax"]["usd"]
-    this.setState({ BAVAPrice: "0.10" })
+    
+    let bavaPrice = myJsonMongo["BAVAPrice"]["$numberDouble"]
+    this.setState({ BAVAPrice: parseFloat(bavaPrice).toFixed(5) })
     let AVAXPrice = myJson["wrapped-avax"]["usd"]
     this.setState({ AVAXPrice: AVAXPrice.toFixed(6) })
     let PNGPrice = myJson["pangolin"]["usd"]

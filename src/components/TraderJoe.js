@@ -94,7 +94,7 @@ class Menu extends Component {
                 </div>
 
                 <div className="textMiddle center" ><b><big>BAVA Price: $ {this.props.BAVAPrice}&nbsp;&nbsp;
-                    <Popup
+                    {/* <Popup
                         trigger={open => (
                             <span><BsFillQuestionCircleFill size={13} /></span>
                         )}
@@ -103,7 +103,8 @@ class Menu extends Component {
                         offsetX={10}
                         position="right center"
                     ><span className="textInfo"><small>Initial BAVA token price to USD will be fixed at the rate $ 0.10 </small></span>
-                    </Popup></big></b></div>
+                    </Popup> */}
+                </big></b></div>
 
                 <div className="center" style={{ color: 'grey' }}><small>&nbsp;! Attention:&nbsp;Be sure to read <a href="https://baklavaspace.gitbook.io/" target="_blank">baklavaspace.gitbook</a> before using the pools so you are familiar with protocol risks and fees!</small></div>
                 <br />
