@@ -1,10 +1,10 @@
 {
   "main.css": "/static/css/main.6b52cc4c.chunk.css",
-  "main.js": "/static/js/main.150c116b.chunk.js",
-  "main.js.map": "/static/js/main.150c116b.chunk.js.map",
+  "main.js": "/static/js/main.09cedb2e.chunk.js",
+  "main.js.map": "/static/js/main.09cedb2e.chunk.js.map",
   "static/css/1.7668af13.chunk.css": "/static/css/1.7668af13.chunk.css",
-  "static/js/1.492ab402.chunk.js": "/static/js/1.492ab402.chunk.js",
-  "static/js/1.492ab402.chunk.js.map": "/static/js/1.492ab402.chunk.js.map",
+  "static/js/1.26ab0be4.chunk.js": "/static/js/1.26ab0be4.chunk.js",
+  "static/js/1.26ab0be4.chunk.js.map": "/static/js/1.26ab0be4.chunk.js.map",
   "runtime~main.js": "/static/js/runtime~main.229c360f.js",
   "runtime~main.js.map": "/static/js/runtime~main.229c360f.js.map",
   "static/media/baklava.png": "/static/media/baklava.e3501ddf.png",
@@ -22,6 +22,6 @@
   "static/css/1.7668af13.chunk.css.map": "/static/css/1.7668af13.chunk.css.map",
   "static/css/main.6b52cc4c.chunk.css.map": "/static/css/main.6b52cc4c.chunk.css.map",
   "index.html": "/index.html",
-  "precache-manifest.f7da4f12673f36fd571e09b5a6abcbb4.js": "/precache-manifest.f7da4f12673f36fd571e09b5a6abcbb4.js",
+  "precache-manifest.80c6e665369e5552cd8ee8aa1c6b7fdd.js": "/precache-manifest.80c6e665369e5552cd8ee8aa1c6b7fdd.js",
   "service-worker.js": "/service-worker.js"
 }

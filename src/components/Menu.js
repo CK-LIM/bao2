@@ -206,6 +206,7 @@ class Menu extends Component {
                                                                                         style={{ minWidth: '80px' }}
                                                                                         onClick={(event) => {
                                                                                             event.preventDefault()
+                                                                                            console.log(i)
                                                                                             this.props.harvest(i, 0, 1)
                                                                                         }}>
                                                                                         Harvest

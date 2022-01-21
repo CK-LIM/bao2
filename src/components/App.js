@@ -111,7 +111,7 @@ class App extends Component {
       let bavaLpTokenAddresses = []
       let lpTokenPairsymbols = []
       let lpTokenAddresses = []
-      
+
       let returnRatioArray = this.state.myJsonMongo["ReturnRatio"]
 
       // UserInfo
@@ -132,7 +132,7 @@ class App extends Component {
 
         if (bavaLpTokenPairsymbol == "PGL" || bavaLpTokenPairsymbol == "PNG") {
           bavaPoolSegmentInfo[0][b] = bavaPoolInfo
-          bavaReturnRatio[0][b] = 1        
+          bavaReturnRatio[0][b] = 1
           b += 1
         } else {
           bavaPoolSegmentInfo[1][b] = bavaPoolInfo
@@ -269,6 +269,7 @@ class App extends Component {
       this.setState({ bavaLpSegmentAllowance })
       this.setState({ pendingSegmentReward })
       this.setState({ bavaPendingSegmentReward })
+      console.log(this.state.pendingSegmentReward)
       this.setState({ totalpendingReward: totalpendingReward.toLocaleString('fullwide', { useGrouping: false }) })
       this.setState({ farmloading: true })
       this.setState({ accountLoading: true })
@@ -396,7 +397,7 @@ class App extends Component {
 
     let response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=joe%2Cwrapped-avax%2Cpangolin%2Cweth%2Cusd-coin%2Ctether%2Cbenqi&vs_currencies=usd`);
     const myJson = await response.json();
-    
+
     let bavaPrice = myJsonMongo["BAVAPrice"]["$numberDouble"]
     this.setState({ BAVAPrice: parseFloat(bavaPrice).toFixed(5) })
     let AVAXPrice = myJson["wrapped-avax"]["usd"]
@@ -731,36 +732,47 @@ class App extends Component {
       if (this.state.walletConnect == true) {
         if (v == 1) {
           bavaMasterFarmer = new window.web3Con.eth.Contract(BavaMasterFarmerV1.abi, process.env.REACT_APP_bavamasterfarmv1_address)
+          if (this.state.bavaPendingSegmentReward[n][i] <= 0) {
+            alert("No token to harvest! Please deposit LP to earn BAVA")
+            return
+          }
         } else if (v == 2) {
           bavaMasterFarmer = new window.web3Con.eth.Contract(BavaMasterFarmer.abi, process.env.REACT_APP_bavamasterfarmv2_address)
+          if (this.state.pendingSegmentReward[n][i] <= 0) {
+            alert("No token to harvest! Please deposit LP to earn BAVA")
+            return
+          }
         }
       } else if (this.state.wallet == true) {
         if (v == 1) {
           bavaMasterFarmer = new window.web3.eth.Contract(BavaMasterFarmerV1.abi, process.env.REACT_APP_bavamasterfarmv1_address)
+          if (this.state.bavaPendingSegmentReward[n][i] <= 0) {
+            alert("No token to harvest! Please deposit LP to earn BAVA")
+            return
+          }
         } else if (v == 2) {
           bavaMasterFarmer = new window.web3.eth.Contract(BavaMasterFarmer.abi, process.env.REACT_APP_bavamasterfarmv2_address)
+          if (this.state.pendingSegmentReward[n][i] <= 0) {
+            alert("No token to harvest! Please deposit LP to earn BAVA")
+            return
+          }
         }
       }
-
-      if (this.state.pendingSegmentReward[n][i] <= 0) {
-        alert("No token to harvest! Please deposit LP to earn BAVA")
-      } else {
-        bavaMasterFarmer.methods.claimReward(i).send({ from: this.state.account }).then(async (result) => {
-          let bavaTokenBalance = await this.state.bavaToken.methods.balanceOf(this.state.account).call()
-          this.state.bavaTokenBalance = bavaTokenBalance
-          let pendingReward = await this.state.bavaMasterFarmer.methods.pendingReward(i, this.state.account).call()
-          this.state.pendingSegmentReward[n][i] = pendingReward
-          this.componentWillMount()
-        }).catch((err) => {
-          if (err.code === 4001) {
-            // EIP-1193 userRejectedRequest error
-            // If this happens, the user rejected the connection request.
-            alert("Something went wrong...Code: 4001 User rejected the request.")
-          } else {
-            console.error(err);
-          }
-        });
-      }
+      bavaMasterFarmer.methods.claimReward(i).send({ from: this.state.account }).then(async (result) => {
+        let bavaTokenBalance = await this.state.bavaToken.methods.balanceOf(this.state.account).call()
+        this.state.bavaTokenBalance = bavaTokenBalance
+        let pendingReward = await this.state.bavaMasterFarmer.methods.pendingReward(i, this.state.account).call()
+        this.state.pendingSegmentReward[n][i] = pendingReward
+        this.componentWillMount()
+      }).catch((err) => {
+        if (err.code === 4001) {
+          // EIP-1193 userRejectedRequest error
+          // If this happens, the user rejected the connection request.
+          alert("Something went wrong...Code: 4001 User rejected the request.")
+        } else {
+          console.error(err);
+        }
+      });
     }
   }
 
