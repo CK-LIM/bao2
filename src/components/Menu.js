@@ -17,73 +17,73 @@ class Menu extends Component {
         return (
             <div id="content" className="mt-3" style={{ margin: "0", color: '#ff9a04' }}>
                 <div >
-                    <div className="ml-auto mr-auto card mb-3 cardbody" style={{ width: '1000px', height: '150px', color: 'black' }}>
+                    <div className="ml-auto mr-auto card mb-3 cardbody" style={{ width: '1000px', height: '170px', color: 'black' }}>
                         {this.props.wallet || this.props.walletConnect ?
-                            <div className="card-body" >
-                                <span>
-                                    <span className="float-left" style={{ color: 'black' }}>
-                                        Your BAVA Balance<br /><b>{parseFloat(window.web3Ava.utils.fromWei(this.props.bavaTokenBalance, 'Ether')).toLocaleString('en-US', { maximumFractionDigits: 5 })}</b>
+                            <div className="card-body">
+                                <div className='mb-5'>
+                                    <span className="float-left" style={{ color: 'black', fontSize: '16px' }}>
+                                        Your BAVA Balance<br /><b>{parseFloat(window.web3Ava.utils.fromWei(this.props.bavaTokenBalance, 'Ether')).toLocaleString('en-US', { maximumFractionDigits: 5 })} BAVA / $ {(window.web3Ava.utils.fromWei(this.props.bavaTokenBalance, 'Ether') * this.props.BAVAPrice).toLocaleString('en-US', { maximumFractionDigits: 0 })}</b>
                                     </span>
-                                    <span className="float-right" style={{ color: 'black' }}>
-                                        Your Locked BAVA<br /><b>{parseFloat(window.web3Ava.utils.fromWei(this.props.lockedBavaTokenBalance, 'Ether')).toLocaleString('en-US', { maximumFractionDigits: 5 })}</b>
+                                    <span className="float-right" style={{ color: 'black', fontSize: '16px' }}>
+                                        Your Locked BAVA<br /><b>{parseFloat(window.web3Ava.utils.fromWei(this.props.lockedBavaTokenBalance, 'Ether')).toLocaleString('en-US', { maximumFractionDigits: 0 })} BAVA / $ {(window.web3Ava.utils.fromWei(this.props.lockedBavaTokenBalance, 'Ether') * this.props.BAVAPrice).toLocaleString('en-US', { maximumFractionDigits: 0 })}</b>
                                     </span>
-                                    <br /><br /><br />
-                                </span>
-                                <span>
-                                    <small>
-                                        <span className="float-left ">Total pending harvest&nbsp;&nbsp;
-                                            <Popup
-                                                trigger={open => (
-                                                    <span><BsFillQuestionCircleFill size={13} /></span>
-                                                )}
-                                                on="hover"
-                                                offsetY={-10}
-                                                offsetX={10}
-                                                position="right center"
-                                            ><span className="textInfo"><small>Total BAVA tokens earned acrossed all farm </small></span>
-                                            </Popup>
-                                        </span><br />
-                                        <span className="float-left "><b>
-                                            {parseFloat(window.web3Ava.utils.fromWei(this.props.totalpendingReward, 'Ether')).toLocaleString('en-US', { maximumFractionDigits: 5 })}&nbsp;BAVA</b>
-                                        </span>
-                                        <span className="float-right ">
-                                            <span>All pools compound at an optimal rate</span>
-                                        </span>
-                                    </small>
-                                </span>
+                                </div><br /><br />
+                                <div>
+                                    <span className="float-left" style={{ color: 'black', fontSize: '16px' }}>Total pending harvest&nbsp;&nbsp;
+                                        <Popup
+                                            trigger={open => (
+                                                <span><BsFillQuestionCircleFill size={13} /></span>
+                                            )}
+                                            on="hover"
+                                            offsetY={-10}
+                                            offsetX={10}
+                                            position="right center"
+                                        ><span className="textInfo"><small>Total BAVA tokens earned acrossed all farm </small></span>
+                                        </Popup>
+                                    </span><br />
+                                    <span className="float-left " style={{ color: 'black', fontSize: '16px' }}><b>
+                                        {parseFloat(window.web3Ava.utils.fromWei(this.props.totalpendingReward, 'Ether')).toLocaleString('en-US', { maximumFractionDigits: 0 })} BAVA / $ {(window.web3Ava.utils.fromWei(this.props.totalpendingReward, 'Ether') * this.props.BAVAPrice).toLocaleString('en-US', { maximumFractionDigits: 0 })}</b>
+                                    </span>
+                                    <span className="float-right ">
+                                        <span><small>All pools compound at an optimal rate</small></span>
+                                    </span>
+                                </div>
                             </div>
                             :
                             <div className="card-body ">
                                 <span>
-                                    <span className="float-left" style={{ color: 'black' }}>
+                                    <span className="float-left" style={{ color: 'silver' }}>
                                         Your BAVA Balance<br />
-                                        <div style={{ color: 'black' }}><big><b>Locked</b></big></div>
+                                        <div style={{ color: 'silver' }}><b>0 BAVA</b></div>
                                     </span>
-                                    <span className="float-right" style={{ color: 'black' }}>
+                                    <span className="float-right" style={{ color: 'silver' }}>
                                         Your Locked BAVA<br />
-                                        <div style={{ color: 'black' }}><big><b>Locked</b></big></div>
+                                        <div style={{ color: 'silver' }}><b>0 BAVA</b></div>
                                     </span>
-                                    <br /><br /><br />
+                                    <br /><br />
                                 </span>
+                                <span className="center mb-1">
+                                    <Buttons className="textDarkMedium" variant="outline" size="lg" onClick={async () => {
+                                        await this.props.connectMetamask()
+                                    }}>Connect to display</Buttons></span>
                                 <span>
-                                    <small>
-                                        <span className="float-left ">Total pending harvest&nbsp;&nbsp;
-                                            <Popup
-                                                trigger={open => (
-                                                    <span><BsFillQuestionCircleFill size={13} /></span>
-                                                )}
-                                                on="hover"
-                                                offsetY={-10}
-                                                offsetX={10}
-                                                position="right center"
-                                            ><span className="textInfo"><small>Total BAVA tokens earned acrossed all farm </small></span>
-                                            </Popup>
-                                        </span></small><br />
+                                    <span className="float-left" style={{ color: 'silver' }}>Total pending harvest&nbsp;&nbsp;
+                                        <Popup
+                                            trigger={open => (
+                                                <span><BsFillQuestionCircleFill size={13} /></span>
+                                            )}
+                                            on="hover"
+                                            offsetY={-10}
+                                            offsetX={10}
+                                            position="right center"
+                                        ><span className="textInfo"><small>Total BAVA tokens earned acrossed all farm </small></span>
+                                        </Popup>
+                                    </span><br />
                                     <span className="float-left ">
-                                        <div style={{ color: 'black' }}><big><b>Locked</b></big></div>
+                                        <div style={{ color: 'silver' }}><b>0 BAVA</b></div>
                                     </span>
-                                    <span className="float-right ">
-                                        <small><span>All pools autocompound at an optimal rate</span></small>
+                                    <span className="float-right" style={{ color: 'silver' }}>
+                                        <small><span>All pools compound at an optimal rate</span></small>
                                     </span>
                                 </span>
                             </div>
@@ -327,7 +327,7 @@ class Menu extends Component {
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
                                                                                 <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.apr[0][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })}%</div> : <div className="center">
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
-                                                                                <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.apyDaily[0][i]).toExponential(3)}%</div> : <div className="center">
+                                                                                <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.apyDaily[0][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })}%</div> : <div className="center">
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>}</td>
                                                                                 <td className="">${parseFloat(this.props.tvl[0][i]).toLocaleString('en-US', { maximumFractionDigits: 2 })} </td>
                                                                             </tr>

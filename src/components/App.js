@@ -895,6 +895,7 @@ class App extends Component {
         withdraw={this.withdraw}
         approve={this.approve}
         setI={this.setI}
+        connectMetamask={this.connectMetamask}
         lpSegmentAllowance={this.state.lpSegmentAllowance}
         bavaContract={this.state.bavaContract}
         bavaTokenTotalSupply={this.state.bavaTokenTotalSupply}
@@ -938,6 +939,7 @@ class App extends Component {
         withdraw={this.withdraw}
         approve={this.approve}
         setI={this.setI}
+        connectMetamask={this.connectMetamask}
         lpSegmentAllowance={this.state.lpSegmentAllowance}
         bavaContract={this.state.bavaContract}
         bavaTokenTotalSupply={this.state.bavaTokenTotalSupply}
