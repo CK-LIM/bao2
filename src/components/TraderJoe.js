@@ -11,7 +11,7 @@ import Deposit from './Deposit'
 import './App.css';
 
 
-class Menu extends Component {
+class TraderJoe extends Component {
 
     render() {
         return (
@@ -94,7 +94,7 @@ class Menu extends Component {
                 </div>
 
                 <div className="textMiddle center" ><b><big>BAVA Price: $ {this.props.BAVAPrice}&nbsp;&nbsp;
-                    {/* <Popup
+                    <Popup
                         trigger={open => (
                             <span><BsFillQuestionCircleFill size={13} /></span>
                         )}
@@ -103,8 +103,7 @@ class Menu extends Component {
                         offsetX={10}
                         position="right center"
                     ><span className="textInfo"><small>Initial BAVA token price to USD will be fixed at the rate $ 0.10 </small></span>
-                    </Popup> */}
-                </big></b></div>
+                    </Popup></big></b></div>
 
                 <div className="center" style={{ color: 'grey' }}><small>&nbsp;! Attention:&nbsp;Be sure to read <a href="https://baklavaspace.gitbook.io/" target="_blank">baklavaspace.gitbook</a> before using the pools so you are familiar with protocol risks and fees!</small></div>
                 <br />
@@ -126,9 +125,163 @@ class Menu extends Component {
                     </div>
                     <br /><br />
 
+
+
+
+
+
+
+
+
+
+
+
                     <div>
                         {this.props.farmloading ?
                             <div className="" style={{ width: '1000px' }}>
+                                {this.props.bavaPoolSegmentInfo[1].map((bavaPoolSegmentInfo, key) => {
+                                    let i = this.props.bavaPoolSegmentInfo[1].indexOf(bavaPoolSegmentInfo)
+                                    return (
+                                        <div key={key}>
+                                            <div>
+                                                <div className="card mb-3 cardbody">
+                                                    <div className="card-body" style={{ padding: '1rem' }}>
+                                                        <div>
+                                                            <div>
+                                                                <div className="float-left">
+                                                                    <div className="textMiddle"><b>{this.props.bavaPoolSegmentInfo[1][i].lpName}</b></div>
+                                                                    <div className="textWhiteGrey exLink0" onClick={() => {
+                                                                        window.open(this.props.bavaPoolSegmentInfo[1][i].projectLink, '_blank')
+                                                                    }}>Uses: {this.props.bavaPoolSegmentInfo[1][i].platform} <img src={exlink} style={{ marginBottom: "3px" }} height='12' alt="" /></div>
+                                                                    <div className="textWhiteGrey exLink0" onClick={() => {
+                                                                        window.open(this.props.bavaPoolSegmentInfo[1][i].getLPLink, '_blank')
+                                                                    }}>Get {this.props.bavaPoolSegmentInfo[1][i].lpName} <img src={exlink} style={{ marginBottom: "3px" }} height='12' alt="" /></div>
+                                                                    <div className="textWhiteGrey exLink0" onClick={() => {
+                                                                        window.open(this.props.bavaContract, '_blank')
+                                                                    }}>View On Explorer <img src={exlink} style={{ marginBottom: "3px" }} height='12' alt="" /></div>
+                                                                </div>
+                                                                <div className="float-right mr-auto">
+                                                                    <table>
+                                                                        <thead className="textWhiteMedium" style={{ color: 'black' }}>
+                                                                            <tr>
+                                                                                <th scope="col" width="140">Wallet</th>
+                                                                                <th scope="col" width="140">Deposited</th>
+                                                                                <th scope="col">Growth</th>
+                                                                                <th scope="col">APR &nbsp;<Popup
+                                                                                    trigger={open => (<span><BsFillQuestionCircleFill style={{ marginBottom: "2px" }} size={10} /></span>)}
+                                                                                    on="hover"
+                                                                                    offsetY={-10}
+                                                                                    offsetX={10}
+                                                                                    position="right center"
+                                                                                ><span className="textInfo"><small>APR are affected by the price of BAVA which has not yet stabilized. </small></span>
+                                                                                </Popup></th>
+                                                                                <th scope="col">APY</th>
+                                                                                <th scope="col">TVL</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody className="textWhiteMedium" style={{ color: 'grey' }}>
+                                                                            <tr>
+                                                                                <td className="">{(this.props.wallet || this.props.walletConnect) && this.props.accountLoading ? <div>{parseFloat(window.web3Ava.utils.fromWei(this.props.bavaLpBalanceAccount[1][i]), 'Ether').toLocaleString('en-US', { maximumFractionDigits: 18 })}</div> : <div className="center">
+                                                                                    <div className="lds-facebook"><div></div><div></div><div></div></div></div>}</td>
+                                                                                <td className="">{(this.props.wallet || this.props.walletConnect) && this.props.accountLoading ? <div>{parseFloat(window.web3Ava.utils.fromWei(this.props.bavaUserSegmentInfo[1][i], 'Ether')).toLocaleString('en-US', { maximumFractionDigits: 18 })}</div> : <div className="center">
+                                                                                    <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
+                                                                                <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.bavaReturnRatio[1][i]).toLocaleString('en-US', { maximumFractionDigits: 4 })}</div> : <div className="center">
+                                                                                    <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
+                                                                                <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.bavaapr[1][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })}%</div> : <div className="center">
+                                                                                    <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
+                                                                                <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.bavaapyDaily[1][i]).toExponential(3)}%</div> : <div className="center">
+                                                                                    <div className="lds-facebook"><div></div><div></div><div></div></div></div>}</td>
+                                                                                <td className="">${parseFloat(this.props.bavatvl[1][i]).toLocaleString('en-US', { maximumFractionDigits: 2 })} </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                            <br /><br /><br /><br />
+                                                            {this.props.farmV1Open[i] ?
+                                                                <div>
+                                                                    <div>
+                                                                        <Buttons variant="outline-secondary" size="sm" style={{ width: '60px' }} onClick={() => {
+                                                                            this.props.setI(i, false, 1)
+                                                                        }}>Close</Buttons>&nbsp;&nbsp;&nbsp;</div>
+                                                                    {this.props.wallet || this.props.walletConnect ? <div className="borderTop "><br /><div className="rowC">
+                                                                        <div className="card cardbody float-left mr-3" style={{ width: '300px' }}>
+                                                                            <div className="card-body" style={{ padding: '0.5rem' }}>
+                                                                                <span className="float-left" style={{ color: 'black' }}><small>BAVA earned</small></span><br />
+                                                                                <span className="float-left" style={{ color: 'black', marginTop: '8px' }}><small>{this.props.accountLoading ? <div>{parseFloat(window.web3Ava.utils.fromWei(this.props.bavaPendingSegmentReward[1][i], 'Ether')).toLocaleString('en-US', { maximumFractionDigits: 0 })}</div> :
+                                                                                    <div className="ml-3 lds-facebook"><div></div><div></div><div></div></div>}</small></span>
+                                                                                <span className="float-right">
+                                                                                    <Buttons
+                                                                                        variant="success"
+                                                                                        size="sm"
+                                                                                        style={{ minWidth: '80px' }}
+                                                                                        onClick={(event) => {
+                                                                                            event.preventDefault()
+                                                                                            this.props.harvest(i, 1, 1)
+                                                                                        }}>
+                                                                                        Harvest
+                                                                                    </Buttons></span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="float-right">
+                                                                            <span className="card cardbody float-right" style={{ width: '650px' }}>
+                                                                                <div className="card-body" style={{ padding: '0.5rem' }}>
+                                                                                    {this.props.bavaLpSegmentAllowance[1][i] > 2000000000000000000000000000 ?
+                                                                                        <div><Deposit
+                                                                                            lpBalanceAccount={this.props.bavaLpBalanceAccount}
+                                                                                            poolSegmentInfo={this.props.bavaPoolSegmentInfo}
+                                                                                            userSegmentInfo={this.props.bavaUserSegmentInfo}
+                                                                                            i={i}
+                                                                                            n='1'
+                                                                                            v='1'
+                                                                                            deposit={this.props.deposit}
+                                                                                            withdraw={this.props.withdraw}
+                                                                                        /></div>
+                                                                                        :
+                                                                                        <div>
+                                                                                            <span className="float-left " style={{ color: 'black' }}><small>Enable Pool</small></span>
+                                                                                            <Buttons className="btn-block"
+                                                                                                variant="outline-primary"
+                                                                                                size="sm"
+                                                                                                style={{ minWidth: '80px' }}
+                                                                                                onClick={(event) => {
+                                                                                                    event.preventDefault()
+                                                                                                    this.props.approve(i, 1, 1)
+                                                                                                }}>
+                                                                                                Approve
+                                                                                            </Buttons>
+                                                                                        </div>}
+                                                                                </div>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                    </div> :
+                                                                        <div className="center borderTop" >
+                                                                            <br /><br />
+                                                                            <span style={{ color: 'black' }}><small>Wallet Connection to Avalanche required</small></span>
+                                                                        </div>}
+                                                                </div> :
+                                                                <div>
+                                                                    <Buttons variant="outline-secondary" size="sm" style={{ width: '60px' }} onClick={() => {
+                                                                        this.props.setI(i, true, 1)
+                                                                    }}><b>Open</b></Buttons></div>}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )
+                                })}
+
+
+
+
+
+
+
+
+
+
                                 {this.props.poolSegmentInfo[1].map((poolSegmentInfo, key) => {
                                     let i = this.props.poolSegmentInfo[1].indexOf(poolSegmentInfo)
                                     return (
@@ -155,8 +308,9 @@ class Menu extends Component {
                                                                         <table>
                                                                             <thead className="textWhiteMedium" style={{ color: 'black' }}>
                                                                                 <tr>
-                                                                                    <th scope="col" width="150">Wallet</th>
-                                                                                    <th scope="col" width="150">Deposited</th>
+                                                                                    <th scope="col" width="140">Wallet</th>
+                                                                                    <th scope="col" width="140">Deposited</th>
+                                                                                    <th scope="col">Growth</th>
                                                                                     <th scope="col">APR &nbsp;<Popup
                                                                                         trigger={open => (<span><BsFillQuestionCircleFill style={{ marginBottom: "2px" }} size={10} /></span>)}
                                                                                         on="hover"
@@ -172,9 +326,11 @@ class Menu extends Component {
                                                                             </thead>
                                                                             <tbody className="textWhiteMedium" style={{ color: 'grey' }}>
                                                                                 <tr>
-                                                                                    <td className="">{(this.props.wallet || this.props.walletConnect) && this.props.accountLoading ? <div>{parseFloat(window.web3Ava.utils.fromWei(this.props.lpTokenBalanceAccount[1][i], 'Ether')).toLocaleString('en-US', { maximumFractionDigits: 18 })}</div> : <div className="center">
+                                                                                    <td className="">{(this.props.wallet || this.props.walletConnect) && this.props.accountLoading ? <div>{parseFloat(window.web3Ava.utils.fromWei(this.props.lpBalanceAccount[1][i], 'Ether')).toLocaleString('en-US', { maximumFractionDigits: 18 })}</div> : <div className="center">
                                                                                         <div className="lds-facebook"><div></div><div></div><div></div></div></div>}</td>
                                                                                     <td className="">{(this.props.wallet || this.props.walletConnect) && this.props.accountLoading ? <div>{parseFloat(window.web3Ava.utils.fromWei(this.props.userSegmentInfo[1][i], 'Ether')).toLocaleString('en-US', { maximumFractionDigits: 18 })}</div> : <div className="center">
+                                                                                        <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
+                                                                                    <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.returnRatio[1][i]).toLocaleString('en-US', { maximumFractionDigits: 4 })}</div> : <div className="center">
                                                                                         <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
                                                                                     <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.apr[1][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })}%</div> : <div className="center">
                                                                                         <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
@@ -187,12 +343,12 @@ class Menu extends Component {
                                                                     </div>
                                                                 </div>
                                                                 <br /><br /><br /><br />
-                                                                {this.props.farmOpen[1][i] ?
+                                                                {this.props.farmV2Open[i] ?
                                                                     <div>
                                                                         <div>
                                                                             <Buttons variant="outline-secondary" size="sm" style={{ width: '60px' }} onClick={() => {
                                                                                 // this.props.setTrigger(true)
-                                                                                this.props.setI(1, i, false)
+                                                                                this.props.setI(i, false, 2)
                                                                             }}>Close</Buttons>&nbsp;&nbsp;&nbsp;</div>
                                                                         {this.props.wallet || this.props.walletConnect ? <div className="borderTop "><br /><div className="rowC">
                                                                             <div className="card cardbody float-left mr-3" style={{ width: '300px' }}>
@@ -207,7 +363,7 @@ class Menu extends Component {
                                                                                             style={{ minWidth: '80px' }}
                                                                                             onClick={(event) => {
                                                                                                 event.preventDefault()
-                                                                                                this.props.harvest(i, "1")
+                                                                                                this.props.harvest(i, 1, 2)
                                                                                             }}>
                                                                                             Harvest
                                                                                         </Buttons></span>
@@ -216,13 +372,14 @@ class Menu extends Component {
                                                                             <div className="float-right">
                                                                                 <span className="card cardbody float-right" style={{ width: '650px' }}>
                                                                                     <div className="card-body" style={{ padding: '0.5rem' }}>
-                                                                                        {this.props.lpTokenSegmentAllowance[1][i] > 2000000000000000000000000000 ?
+                                                                                        {this.props.lpSegmentAllowance[1][i] > 2000000000000000000000000000 ?
                                                                                             <div><Deposit
-                                                                                                lpTokenBalanceAccount={this.props.lpTokenBalanceAccount}
+                                                                                                lpBalanceAccount={this.props.lpBalanceAccount}
                                                                                                 poolSegmentInfo={this.props.poolSegmentInfo}
                                                                                                 userSegmentInfo={this.props.userSegmentInfo}
                                                                                                 i={i}
                                                                                                 n='1'
+                                                                                                v='2'
                                                                                                 deposit={this.props.deposit}
                                                                                                 withdraw={this.props.withdraw}
                                                                                                 approve={this.props.approve}
@@ -236,7 +393,7 @@ class Menu extends Component {
                                                                                                     style={{ minWidth: '80px' }}
                                                                                                     onClick={(event) => {
                                                                                                         event.preventDefault()
-                                                                                                        this.props.approve(i, '1')
+                                                                                                        this.props.approve(i, 1, 2)
                                                                                                     }}>
                                                                                                     Approve
                                                                                                 </Buttons>
@@ -254,7 +411,7 @@ class Menu extends Component {
                                                                     <div>
                                                                         <Buttons variant="outline-secondary" size="sm" style={{ width: '60px' }} onClick={() => {
                                                                             // this.props.setTrigger(true)
-                                                                            this.props.setI(1, i, true)
+                                                                            this.props.setI(i, true, 2)
                                                                         }}><b>Open</b></Buttons>&nbsp;&nbsp;&nbsp;</div>}
                                                             </div>
                                                         </div>
@@ -278,4 +435,4 @@ class Menu extends Component {
     }
 }
 
-export default Menu;
+export default TraderJoe;

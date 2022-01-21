@@ -93,16 +93,16 @@ class Deposit extends Component {
             amount = window.web3Ava.utils.toWei(amount, 'Ether')
 
             if (this.state.txDeposit === true && this.state.txWithdraw === false) {
-              if (bigInt(amount).value > this.props.lpTokenBalanceAccount[this.props.n][this.props.i]) {
+              if (bigInt(amount).value > this.props.lpBalanceAccount[this.props.n][this.props.i]) {
                 alert("Not enough funds")
               } else {
-                this.props.deposit(this.props.i, amount, this.props.n)
+                this.props.deposit(this.props.i, amount, this.props.n, this.props.v)
               }
             } else if (this.state.txDeposit === false && this.state.txWithdraw === true) {
               if (bigInt(amount).value > this.props.userSegmentInfo[this.props.n][this.props.i]) {
                 alert("Withdraw tokens more than deposit LP tokens")
               } else {
-                this.props.withdraw(this.props.i, amount, this.props.n)
+                this.props.withdraw(this.props.i, amount, this.props.n, this.props.v)
               }
             }
           }
@@ -110,7 +110,6 @@ class Deposit extends Component {
 
         }}>
           <div>
-
             <div className="input-group mb-4">
               <input
                 type="text"
@@ -139,7 +138,7 @@ class Deposit extends Component {
                 <Button type="text" variant="outline-primary" className="btn-sm" onClick={(event1) => {
                   this.state.txDeposit = false
                   this.state.txWithdraw = false
-                  this.input.value = window.web3Ava.utils.fromWei(this.props.lpTokenBalanceAccount[this.props.n][this.props.i], 'Ether')
+                  this.input.value = window.web3Ava.utils.fromWei(this.props.lpBalanceAccount[this.props.n][this.props.i], 'Ether')
                 }}>All</Button>&nbsp;&nbsp;&nbsp;
               </ButtonGroup>
               <ButtonGroup>
