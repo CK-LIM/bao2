@@ -269,7 +269,6 @@ class App extends Component {
       this.setState({ bavaLpSegmentAllowance })
       this.setState({ pendingSegmentReward })
       this.setState({ bavaPendingSegmentReward })
-      console.log(this.state.pendingSegmentReward)
       this.setState({ totalpendingReward: totalpendingReward.toLocaleString('fullwide', { useGrouping: false }) })
       this.setState({ farmloading: true })
       this.setState({ accountLoading: true })
@@ -489,7 +488,6 @@ class App extends Component {
     window.web3Con = await new Web3(window.provider);
     const accounts = await window.web3Con.eth.getAccounts();
     const chainId = await window.provider.request('eth_chainId');
-    console.log(chainId)
     this.setState({ account: accounts[0] })
     const first4Account = this.state.account.substring(0, 4)
     const last4Account = this.state.account.slice(-4)
