@@ -148,19 +148,19 @@ class TraderJoe extends Component {
                                                             <div>
                                                                 <div className="float-left">
                                                                     <div className="textMiddle"><b>{this.props.bavaPoolSegmentInfo[1][i].lpName}</b></div>
-                                                                    <div className="textWhiteGrey exLink0" onClick={() => {
+                                                                    <div className="textGrey exLink0" onClick={() => {
                                                                         window.open(this.props.bavaPoolSegmentInfo[1][i].projectLink, '_blank')
                                                                     }}>Uses: {this.props.bavaPoolSegmentInfo[1][i].platform} <img src={exlink} style={{ marginBottom: "3px" }} height='12' alt="" /></div>
-                                                                    <div className="textWhiteGrey exLink0" onClick={() => {
+                                                                    <div className="textGrey exLink0" onClick={() => {
                                                                         window.open(this.props.bavaPoolSegmentInfo[1][i].getLPLink, '_blank')
                                                                     }}>Get {this.props.bavaPoolSegmentInfo[1][i].lpName} <img src={exlink} style={{ marginBottom: "3px" }} height='12' alt="" /></div>
-                                                                    <div className="textWhiteGrey exLink0" onClick={() => {
+                                                                    <div className="textGrey exLink0" onClick={() => {
                                                                         window.open(this.props.bavaContract, '_blank')
                                                                     }}>View On Explorer <img src={exlink} style={{ marginBottom: "3px" }} height='12' alt="" /></div>
                                                                 </div>
                                                                 <div className="float-right mr-auto">
                                                                     <table>
-                                                                        <thead className="textWhiteMedium" style={{ color: 'black' }}>
+                                                                        <thead className="textBlackSmall" style={{ color: 'black' }}>
                                                                             <tr>
                                                                                 <th scope="col" width="140">Wallet</th>
                                                                                 <th scope="col" width="140">Deposited</th>
@@ -177,7 +177,7 @@ class TraderJoe extends Component {
                                                                                 <th scope="col">TVL</th>
                                                                             </tr>
                                                                         </thead>
-                                                                        <tbody className="textWhiteMedium" style={{ color: 'grey' }}>
+                                                                        <tbody className="textGrey">
                                                                             <tr>
                                                                                 <td className="">{(this.props.wallet || this.props.walletConnect) && this.props.accountLoading ? <div>{parseFloat(window.web3Ava.utils.fromWei(this.props.bavaLpBalanceAccount[1][i]), 'Ether').toLocaleString('en-US', { maximumFractionDigits: 18 })}</div> : <div className="center">
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>}</td>
@@ -189,7 +189,7 @@ class TraderJoe extends Component {
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
                                                                                 <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.bavaapyDaily[1][i]).toExponential(3)}%</div> : <div className="center">
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>}</td>
-                                                                                <td className="">${parseFloat(this.props.bavatvl[1][i]).toLocaleString('en-US', { maximumFractionDigits: 2 })} </td>
+                                                                                <td className="">${parseFloat(this.props.bavatvl[1][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })} </td>
                                                                             </tr>
                                                                         </tbody>
                                                                     </table>
@@ -292,19 +292,19 @@ class TraderJoe extends Component {
                                                                 <div>
                                                                     <div className="float-left">
                                                                         <div className="textMiddle"><b>{this.props.poolSegmentInfo[1][i].lpName}</b></div>
-                                                                        <div className="textWhiteGrey exLink0" onClick={() => {
+                                                                        <div className="textGrey exLink0" onClick={() => {
                                                                             window.open(this.props.poolSegmentInfo[1][i].projectLink, '_blank')
                                                                         }}>Uses: {this.props.poolSegmentInfo[1][i].platform} <img src={exlink} style={{ marginBottom: "3px" }} height='12' alt="" /></div>
-                                                                        <div className="textWhiteGrey exLink0" onClick={() => {
+                                                                        <div className="textGrey exLink0" onClick={() => {
                                                                             window.open(this.props.poolSegmentInfo[1][i].getLPLink, '_blank')
                                                                         }}>Get {this.props.poolSegmentInfo[1][i].lpName} <img src={exlink} style={{ marginBottom: "3px" }} height='12' alt="" /></div>
-                                                                        <div className="textWhiteGrey exLink0" onClick={() => {
+                                                                        <div className="textGrey exLink0" onClick={() => {
                                                                             window.open(this.props.bavaContract, '_blank')
                                                                         }}>View On Explorer <img src={exlink} style={{ marginBottom: "3px" }} height='12' alt="" /></div>
                                                                     </div>
                                                                     <div className="float-right mr-auto">
                                                                         <table>
-                                                                            <thead className="textWhiteMedium" style={{ color: 'black' }}>
+                                                                            <thead className="textBlackSmall" style={{ color: 'black' }}>
                                                                                 <tr>
                                                                                     <th scope="col" width="140">Wallet</th>
                                                                                     <th scope="col" width="140">Deposited</th>
@@ -322,7 +322,7 @@ class TraderJoe extends Component {
                                                                                     <th scope="col">TVL</th>
                                                                                 </tr>
                                                                             </thead>
-                                                                            <tbody className="textWhiteMedium" style={{ color: 'grey' }}>
+                                                                            <tbody className="textGrey">
                                                                                 <tr>
                                                                                     <td className="">{(this.props.wallet || this.props.walletConnect) && this.props.accountLoading ? <div>{parseFloat(window.web3Ava.utils.fromWei(this.props.lpBalanceAccount[1][i], 'Ether')).toLocaleString('en-US', { maximumFractionDigits: 18 })}</div> : <div className="center">
                                                                                         <div className="lds-facebook"><div></div><div></div><div></div></div></div>}</td>
@@ -334,7 +334,7 @@ class TraderJoe extends Component {
                                                                                         <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
                                                                                     <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.apyDaily[1][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })}%</div> : <div className="center">
                                                                                         <div className="lds-facebook"><div></div><div></div><div></div></div></div>}</td>
-                                                                                    <td className="">${parseFloat(this.props.tvl[1][i]).toLocaleString('en-US', { maximumFractionDigits: 2 })} </td>
+                                                                                    <td className="">${parseFloat(this.props.tvl[1][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })} </td>
                                                                                 </tr>
                                                                             </tbody>
                                                                         </table>

@@ -8,14 +8,17 @@ import IPancakePair from '../abis/Interface/IPancakePair.json'
 import BavaToken from '../abis/BavaToken.json'
 import BavaMasterFarmer from '../abis/BavaMasterFarmerV2.json'
 import BavaMasterFarmerV1 from '../abis/BavaMasterFarmerV1.json'
+import BavaAirdrop from '../abis/BavaAirdrop.json'
 
 import Farm from './tokens_config/farm.json'
 import FarmV1 from './tokens_config/farmV1.json'
+import AirdropList from './tokens_config/airdrop.json'
 
 import Navb from './Navbar'
 import Main from './Main'
 import Menu from './Menu'
 import TraderJoe from './TraderJoe'
+import Airdrop from './Airdrop'
 
 class App extends Component {
 
@@ -35,11 +38,12 @@ class App extends Component {
     this.setState({ farm })
     const farmBava = FarmV1.farm
     this.setState({ farmBava })
+    const airdropList = AirdropList
+    this.setState({ airdropList })
   }
 
   async loadBlockchainData() {
     const web3Ava = window.web3Ava
-    // const web3AvaTest = window.web3AvaTest
     const networkId = "1"
     this.setState({ networkId })
     const farmNetworkId = "43114"
@@ -49,6 +53,8 @@ class App extends Component {
 
     const bavaContract = 'https://snowtrace.io/address/0xb5a054312a73581a3c0fed148b736911c02f4539'
     this.setState({ bavaContract })
+
+
 
     if (window.ethereum) {
       const chainId = await window.ethereum.request({ method: 'eth_chainId' });
@@ -89,16 +95,36 @@ class App extends Component {
       const bavaToken = new web3Ava.eth.Contract(BavaToken.abi, process.env.REACT_APP_bavatoken_address)
       this.setState({ bavaToken })
 
-      // Load bavaMasterFarmer
+      // Load contract
       const bavaMasterFarmer = new web3Ava.eth.Contract(BavaMasterFarmer.abi, process.env.REACT_APP_bavamasterfarmv2_address)
       const bavaMasterFarmerV1 = new web3Ava.eth.Contract(BavaMasterFarmerV1.abi, process.env.REACT_APP_bavamasterfarmv1_address)
+      const bavaAirdrop = new web3Ava.eth.Contract(BavaAirdrop.abi, process.env.REACT_APP_airdrop_address)
       this.setState({ bavaMasterFarmer })
       this.setState({ bavaMasterFarmerV1 })
+      this.setState({ bavaAirdrop })
 
-      let bavaPoolLength = await bavaMasterFarmerV1.methods.poolLength().call()
-      let poolLength = await bavaMasterFarmer.methods.poolLength().call()
-      this.setState({ bavaPoolLength })
+      let response0 = this.loadPoolLength()
+      let response1 = this.loadBavaPoolLength()
+      let response2 = this.loadAirdropIteration()
+      let response3 = this.loadAirdropAmount()
+      let poolLength = await response0
+      let bavaPoolLength = await response1
+      let airdropIteration = await response2
+      let airdropAmount = await response3
       this.setState({ poolLength })
+      this.setState({ bavaPoolLength })
+      this.setState({ airdropIteration })
+      this.setState({ airdropAmount })
+
+      let response4 = this.loadTotalAirdropAmount()
+      let response5 = this.loadAirdropStart()
+      let response6 = this.loadAirdropEnd()
+      let totalAirdropAmount = await response4
+      let airdropStart = await response5
+      let airdropEnd = await response6
+      this.setState({ totalAirdropAmount })
+      this.setState({ airdropStart })
+      this.setState({ airdropEnd })
 
       let bavaPoolSegmentInfo = [[], []]
       let poolSegmentInfo = [[], []]
@@ -169,7 +195,6 @@ class App extends Component {
       this.setState({ bavaReturnRatio })
       this.setState({ farmloading: true })
     }
-
 
     // #########################################################################################################################
     else {
@@ -276,6 +301,17 @@ class App extends Component {
   }
 
   // ***************************User Info***********************************************************************************************
+  // bavaToken
+  async loadBavaTokenUserInfo(i) {
+    let bavaTokenBalance = await this.state.bavaToken.methods.balanceOf(this.state.account).call()
+    return bavaTokenBalance
+  }
+
+  async loadBavaTokenUserInfo1(i) {
+    let lockedBavaTokenBalance = await this.state.bavaToken.methods.lockOf(this.state.account).call()
+    return lockedBavaTokenBalance
+  }
+
   // bavaMasterFarmerV2
 
   async loadUserInfo(i) {
@@ -323,6 +359,44 @@ class App extends Component {
     let pendingReward = await this.state.bavaMasterFarmerV1.methods.pendingReward(i, this.state.account).call()
     return pendingReward
   }
+
+  // ***************************Airdrop***********************************************************************
+
+  async loadPoolLength() {
+    let poolLength = await this.state.bavaMasterFarmer.methods.poolLength().call()
+    return poolLength
+  }
+
+  async loadBavaPoolLength() {
+    let bavaPoolLength = await this.state.bavaMasterFarmerV1.methods.poolLength().call()
+    return bavaPoolLength
+  }
+
+  async loadAirdropIteration() {
+    let airdropIteration = await this.state.bavaAirdrop.methods.airdropIteration().call()
+    return airdropIteration
+  }
+
+  async loadAirdropAmount() {
+    let airdropAmount = await this.state.bavaAirdrop.methods.airdropAmount().call()
+    return airdropAmount
+  }
+
+  async loadTotalAirdropAmount() {
+    let totalAirdropAmount = await this.state.bavaAirdrop.methods.accumulateAirdropAmount(this.state.airdropIteration).call()
+    return totalAirdropAmount
+  }
+
+  async loadAirdropStart() {
+    let airdropStart = this.timeConverter(await this.state.bavaAirdrop.methods.startAirdrop(this.state.airdropIteration).call())
+    return airdropStart
+  }
+
+  async loadAirdropEnd() {
+    let airdropEnd = this.timeConverter(await this.state.bavaAirdrop.methods.endAirdrop(this.state.airdropIteration).call())
+    return airdropEnd
+  }
+
 
   // ***************************TVL & APR***********************************************************************
   async loadTVLAPR() {
@@ -390,6 +464,8 @@ class App extends Component {
       window.web3 = new Web3(window.ethereum)
     }
     window.web3Ava = new Web3(`https://api.avax.network/ext/bc/C/rpc`);
+    // window.web3Ava = new Web3(`https://api.avax-test.network/ext/bc/C/rpc`);
+
     let responseMongo = await fetch(`https://ap-southeast-1.aws.data.mongodb-api.com/app/bdl-uyejj/endpoint/tvl`);
     const myJsonMongo = await responseMongo.json();
     this.setState({ myJsonMongo })
@@ -561,16 +637,18 @@ class App extends Component {
   }
 
 
-  handleAccountsChanged = (accounts) => {
+  handleAccountsChanged = async (accounts) => {
     if (accounts.length === 0) {
       // MetaMask is locked or the user has not connected any accounts
       this.setWalletTrigger(false)
     } else if (accounts[0] !== this.state.account) {
+      const accounts = await window.web3.eth.getAccounts()
       this.setState({ account: accounts[0] })
       const first4Account = this.state.account.substring(0, 4)
       const last4Account = this.state.account.slice(-4)
       this.setState({ first4Account: first4Account })
       this.setState({ last4Account: last4Account })
+      this.setState({ airdropCheck: false })
       this.loadBlockchainData()
       // Do any other work!
     }
@@ -613,6 +691,19 @@ class App extends Component {
   }
 
   delay = ms => new Promise(res => setTimeout(res, ms));
+
+  timeConverter = (UNIX_timestamp) => {
+    var a = new Date(UNIX_timestamp * 1000);
+    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var year = a.getFullYear();
+    var month = months[a.getMonth()];
+    var date = a.getDate();
+    var hour = a.getHours();
+    var min = a.getMinutes();
+    var sec = a.getSeconds();
+    var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
+    return time;
+  }
 
   deposit = async (i, amount, n, v) => {
     let bavaMasterFarmer
@@ -774,6 +865,48 @@ class App extends Component {
     }
   }
 
+  checkAirdrop = async () => {
+    if (this.state.account in this.state.airdropList) {
+      this.setState({ validAirdrop: true })
+    } else {
+      this.setState({ validAirdrop: false })
+    }
+    this.setState({ airdropCheck: true })
+  }
+
+  claimAirdrop = async () => {
+    let bavaAirdrop
+    if (this.state.walletConnect == true) {
+      bavaAirdrop = new window.web3Con.eth.Contract(BavaAirdrop.abi, process.env.REACT_APP_airdrop_address)
+    } else if (this.state.wallet == true) {
+      bavaAirdrop = new window.web3.eth.Contract(BavaAirdrop.abi, process.env.REACT_APP_airdrop_address)
+    }
+    if ((Date.now() / 1000).toFixed(0) < this.state.airdropStart) {
+      alert("Distribution not started yet")
+    } else if ((Date.now() / 1000).toFixed(0) > this.state.airdropEnd) {
+      alert("Distribution already end")
+    } else {
+      if ((this.state.account in this.state.airdropList) == true) {
+        let processed = await bavaAirdrop.methods.processedAirdrops(this.state.account, this.state.airdropIteration).call()
+        if (processed == false) {
+          let hash = this.state.airdropList[this.state.account]
+          await bavaAirdrop.methods.claimTokens(hash).send({ from: this.state.account }).then(async (result) => {
+          }).catch((err) => {
+            if (err.code === 4001) {
+              // EIP-1193 userRejectedRequest error
+              // If this happens, the user rejected the connection request.
+              alert("Something went wrong...Code: 4001 User rejected the request.")
+            } else {
+              console.error(err);
+            }
+          });
+        } else {
+          alert("Airdrop already claimed from this address")
+        }
+      }
+    }
+  }
+
   setI = (pair, boolean, version) => {
     if (version == 1) {
       this.state.farmV1Open[pair] = boolean
@@ -845,7 +978,12 @@ class App extends Component {
       startBlk: '0',
       totalTVL: '0',
       lockedBavaTokenBalance: '0',
-      accountLoading: false
+      accountLoading: false,
+      totalAirdropAmount: '0',
+      airdropAmount: '0',
+      airdropStart: '0',
+      airdropEnd: '0',
+      validAirdrop: false
     }
   }
 
@@ -853,6 +991,8 @@ class App extends Component {
     let maincontent
     let menucontent
     let traderjoecontent
+    let airdropContent
+
     if (this.state.loading == false) {
       maincontent =
         <div className="wrap">
@@ -976,6 +1116,31 @@ class App extends Component {
         returnRatio={this.state.returnRatio}
         bavaReturnRatio={this.state.bavaReturnRatio}
       />
+      airdropContent = <Airdrop
+        wallet={this.state.wallet}
+        connectMetamask={this.connectMetamask}
+        claimAirdrop={this.claimAirdrop}
+        checkAirdrop={this.checkAirdrop}
+        checkClaimAmount={this.checkClaimAmount}
+        claimDistributePurse={this.claimDistributePurse}
+        account={this.state.account}
+        rewardEndTime={this.state.rewardEndTime}
+        rewardStartTime={this.state.rewardStartTime}
+        distributedAmount={this.state.distributedAmount}
+        distributedPercentage={this.state.distributedPercentage}
+        rewardStartTimeDate={this.state.rewardStartTimeDate}
+        rewardEndTimeDate={this.state.rewardEndTimeDate}
+        claimAmount={this.state.claimAmount}
+        totalTransferAmount={this.state.totalTransferAmount}
+        purseTokenTotalSupply={this.state.purseTokenTotalSupply}
+        airdropStart={this.state.airdropStart}
+        airdropEnd={this.state.airdropEnd}
+        airdropIteration={this.state.airdropIteration}
+        totalAirdropAmount={this.state.totalAirdropAmount}
+        airdropAmount={this.state.airdropAmount}
+        validAirdrop={this.state.validAirdrop}
+        airdropCheck={this.state.airdropCheck}
+      />
     }
 
     return (
@@ -1004,6 +1169,7 @@ class App extends Component {
                   <Route path="/home" exact > {maincontent} </Route>
                   <Route path="/menu" exact > {menucontent} </Route>
                   <Route path="/traderjoe/" exact > {traderjoecontent} </Route>
+                  <Route path="/airdrop/" exact > {airdropContent} </Route>
                 </Switch>
               </main>
             </div>
