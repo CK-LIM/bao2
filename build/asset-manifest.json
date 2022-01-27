@@ -1,10 +1,10 @@
 {
-  "main.css": "/static/css/main.e5a8bca4.chunk.css",
-  "main.js": "/static/js/main.8d72ef7f.chunk.js",
-  "main.js.map": "/static/js/main.8d72ef7f.chunk.js.map",
+  "main.css": "/static/css/main.e59ed94c.chunk.css",
+  "main.js": "/static/js/main.e2f1208d.chunk.js",
+  "main.js.map": "/static/js/main.e2f1208d.chunk.js.map",
   "static/css/1.6e5f533f.chunk.css": "/static/css/1.6e5f533f.chunk.css",
-  "static/js/1.0b003762.chunk.js": "/static/js/1.0b003762.chunk.js",
-  "static/js/1.0b003762.chunk.js.map": "/static/js/1.0b003762.chunk.js.map",
+  "static/js/1.2b93d2db.chunk.js": "/static/js/1.2b93d2db.chunk.js",
+  "static/js/1.2b93d2db.chunk.js.map": "/static/js/1.2b93d2db.chunk.js.map",
   "runtime~main.js": "/static/js/runtime~main.229c360f.js",
   "runtime~main.js.map": "/static/js/runtime~main.229c360f.js.map",
   "static/media/baklava.png": "/static/media/baklava.e3501ddf.png",
@@ -19,9 +19,9 @@
   "static/media/coin98.png": "/static/media/coin98.06f995b3.png",
   "static/media/walletconnect-logo.svg": "/static/media/walletconnect-logo.37f2bc6e.svg",
   "static/media/baklava_mainBottom.png": "/static/media/baklava_mainBottom.06deafb4.png",
-  "static/css/main.e5a8bca4.chunk.css.map": "/static/css/main.e5a8bca4.chunk.css.map",
   "static/css/1.6e5f533f.chunk.css.map": "/static/css/1.6e5f533f.chunk.css.map",
+  "static/css/main.e59ed94c.chunk.css.map": "/static/css/main.e59ed94c.chunk.css.map",
   "index.html": "/index.html",
-  "precache-manifest.c4f0bcec8d1b66e99826ea155bceed3c.js": "/precache-manifest.c4f0bcec8d1b66e99826ea155bceed3c.js",
+  "precache-manifest.9416050cd9147106dc565dd861d1cea0.js": "/precache-manifest.9416050cd9147106dc565dd861d1cea0.js",
   "service-worker.js": "/service-worker.js"
 }

@@ -111,7 +111,7 @@ class Airdrop extends Component {
                             </div>
                         </div>
                     }
-                </div>
+                </div><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
             </div >
 
         );

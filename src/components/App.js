@@ -470,25 +470,9 @@ class App extends Component {
     const myJsonMongo = await responseMongo.json();
     this.setState({ myJsonMongo })
 
-    let response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=joe%2Cwrapped-avax%2Cpangolin%2Cweth%2Cusd-coin%2Ctether%2Cbenqi&vs_currencies=usd`);
-    const myJson = await response.json();
-
     let bavaPrice = myJsonMongo["BAVAPrice"]["$numberDouble"]
     this.setState({ BAVAPrice: parseFloat(bavaPrice).toFixed(5) })
-    let AVAXPrice = myJson["wrapped-avax"]["usd"]
-    this.setState({ AVAXPrice: AVAXPrice.toFixed(6) })
-    let PNGPrice = myJson["pangolin"]["usd"]
-    this.setState({ PNGPrice: PNGPrice.toFixed(6) })
-    let WETHPrice = myJson["weth"]["usd"]
-    this.setState({ WETHPrice: WETHPrice.toFixed(6) })
-    let USDTPrice = myJson["tether"]["usd"]
-    this.setState({ USDTPrice: USDTPrice.toFixed(6) })
-    let USDCPrice = myJson["usd-coin"]["usd"]
-    this.setState({ USDCPrice: USDCPrice.toFixed(6) })
-    let JOEPrice = myJson["joe"]["usd"]
-    this.setState({ JOEPrice: JOEPrice.toFixed(6) })
-    let QIPrice = myJson["benqi"]["usd"]
-    this.setState({ QIPrice: QIPrice.toFixed(6) })
+
     this.setState({ loading: true })
   }
 

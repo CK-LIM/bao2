@@ -54,9 +54,24 @@ class Navb extends Component {
                 </div>
 
                 <div>
-                  <Link to="/menu/">
-                    <Buttons className="textWhiteLarge center" style={{ width: '100px', height: '30px' }} variant="secondary" size="lg"> Menu</Buttons>
-                  </Link>
+                  <Popup trigger={open => (
+                    <Link to="/menu/">
+                      <Buttons className="textWhiteLarge center" style={{ width: '100px', height: '30px' }} variant="secondary" size="lg"> Menu</Buttons>
+                    </Link>
+                  )}
+                    on="hover"
+                    position="bottom left"
+                    offsetY={0}
+                    offsetX={0}
+                    mouseLeaveDelay={100}
+                    contentStyle={{ padding: '5px', width: '120px', textDecoration: "none" }}
+                    arrow={false}
+                  ><div>
+                      <Link to="/menu/"></Link>
+                      <div className='dropdown0'><Link className="exLink0 ml-3" to="/menu/">  Farm</Link></div>
+                      <div className='dropdown'><Link className="exLink0 ml-3" to="/airdrop/">Airdrop</Link></div>
+                    </div>
+                  </Popup>
                 </div>&nbsp;&nbsp;
 
                 <div>
@@ -76,7 +91,7 @@ class Navb extends Component {
                           <div className='dropdown0' onClick={() => {
                             window.open(`https://bscscan.com/address/${this.props.account}`, '_blank')
                           }}>Wallet</div>
-                          <div className='dropdown' onClick={() => {                            
+                          <div className='dropdown' onClick={() => {
                             this.props.setWalletTrigger(false)
                             if (this.props.walletConnect == true) {
                               this.props.WalletDisconnect()

@@ -218,8 +218,15 @@ color: #ffc400;
 
 .exLink0 {
 color: grey;
+text-decoration: none;
 cursor: pointer;
 }
+
+.exLink0.active {
+  color: grey;
+  text-decoration: none;
+  cursor: pointer;
+  }
 
 .exLink0:hover {
 text-decoration: none;
@@ -425,7 +432,6 @@ tr:nth-child(even) {
 [data-popup='tooltip'].popup-overlay {
   background: transparent;
 }
-
 
 .borderTop {
   margin-top: 15px;
