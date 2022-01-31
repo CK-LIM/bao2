@@ -28,8 +28,8 @@ class Airdrop extends Component {
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td>{this.props.airdropStart}</td>
-                                            <td>{this.props.airdropEnd}</td>
+                                            <td>{this.props.timeConverter(this.props.airdropStart)}</td>
+                                            <td>{this.props.timeConverter(this.props.airdropEnd)}</td>
                                         </tr>
                                     </tbody>
                                     </table>

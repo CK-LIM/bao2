@@ -388,12 +388,12 @@ class App extends Component {
   }
 
   async loadAirdropStart() {
-    let airdropStart = this.timeConverter(await this.state.bavaAirdrop.methods.startAirdrop(this.state.airdropIteration).call())
+    let airdropStart = await this.state.bavaAirdrop.methods.startAirdrop(this.state.airdropIteration).call()
     return airdropStart
   }
 
   async loadAirdropEnd() {
-    let airdropEnd = this.timeConverter(await this.state.bavaAirdrop.methods.endAirdrop(this.state.airdropIteration).call())
+    let airdropEnd = await this.state.bavaAirdrop.methods.endAirdrop(this.state.airdropIteration).call()
     return airdropEnd
   }
 
@@ -1105,6 +1105,7 @@ class App extends Component {
         connectMetamask={this.connectMetamask}
         claimAirdrop={this.claimAirdrop}
         checkAirdrop={this.checkAirdrop}
+        timeConverter={this.timeConverter}
         checkClaimAmount={this.checkClaimAmount}
         claimDistributePurse={this.claimDistributePurse}
         account={this.state.account}
