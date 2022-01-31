@@ -1154,7 +1154,7 @@ class App extends Component {
                   <Route path="/home" exact > {maincontent} </Route>
                   <Route path="/menu" exact > {menucontent} </Route>
                   <Route path="/traderjoe/" exact > {traderjoecontent} </Route>
-                  <Route path="/airdrop/" exact > {airdropContent} </Route>
+                  <Route path="/claim/" exact > {airdropContent} </Route>
                 </Switch>
               </main>
             </div>
