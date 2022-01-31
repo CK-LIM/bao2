@@ -866,9 +866,9 @@ class App extends Component {
       bavaAirdrop = new window.web3.eth.Contract(BavaAirdrop.abi, process.env.REACT_APP_airdrop_address)
     }
     if ((Date.now() / 1000).toFixed(0) < this.state.airdropStart) {
-      alert("Distribution not started yet")
+      alert("Airdrop not started yet")
     } else if ((Date.now() / 1000).toFixed(0) > this.state.airdropEnd) {
-      alert("Distribution already end")
+      alert("Airdrop already end")
     } else {
       if ((this.state.account in this.state.airdropList) == true) {
         let processed = await bavaAirdrop.methods.processedAirdrops(this.state.account, this.state.airdropIteration).call()
