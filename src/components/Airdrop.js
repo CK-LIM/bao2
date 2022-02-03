@@ -57,7 +57,9 @@ class Airdrop extends Component {
                             </span>
                         </div>
                     </div>
+                    
                     {this.props.wallet || this.props.walletConnect ?
+                        
                         <div className="card cardbody" style={{ width: '450px', color: 'white' }}>
                             <div className="card-body">
                                 <div>
@@ -73,7 +75,7 @@ class Airdrop extends Component {
                                             style={{ minWidth: '80px' }}
                                             onClick={(event) => {
                                                 event.preventDefault()
-                                                this.props.checkAirdrop()
+                                                this.props.checkAirdrop(this.props.account)
                                             }}>Check
                                         </Button>
                                     </div>

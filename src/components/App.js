@@ -849,8 +849,9 @@ class App extends Component {
     }
   }
 
-  checkAirdrop = async () => {
-    if (this.state.account in this.state.airdropList) {
+  checkAirdrop = async (address) => {
+    let checksum = window.web3Ava.utils.toChecksumAddress(address)
+    if (checksum in this.state.airdropList) {
       this.setState({ validAirdrop: true })
     } else {
       this.setState({ validAirdrop: false })
