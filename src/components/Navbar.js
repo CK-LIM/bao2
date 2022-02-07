@@ -151,7 +151,7 @@ class Navb extends Component {
                     arrow={false}
                   ><div>
                       <div className='dropdown0' onClick={() => {
-                        window.open(`https://bscscan.com/address/${this.props.account}`, '_blank')
+                        window.open(`https://snowtrace.io/address/${this.props.account}`, '_blank')
                       }}>Wallet</div>
                       <div className='dropdown' onClick={() => {
                         this.props.setWalletTrigger(false)
