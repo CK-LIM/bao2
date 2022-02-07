@@ -151,7 +151,7 @@ class Stake extends Component {
                         {this.props.wallet || this.props.walletConnect ?
                             <div className="card-body">
                                 <div className="center ">
-                                    {this.props.bavaTokenAllowance > 2000000000000000000000000000 ?
+                                    {this.props.bavaTokenAllowance > 1000000000000000000 ?
                                         <div><Buttons className="textDarkMedium" variant="outline" size="lg" style={{ width: '160px', marginRight: '60px' }} onClick={async () => {
                                             await this.setStake(true)
                                         }}>Stake</Buttons>
