@@ -9,6 +9,7 @@ import BavaToken from '../abis/BavaToken.json'
 import BavaMasterFarmer from '../abis/BavaMasterFarmerV2.json'
 import BavaMasterFarmerV1 from '../abis/BavaMasterFarmerV1.json'
 import BavaAirdrop from '../abis/BavaAirdrop.json'
+import StakingRewards from '../abis/StakingRewards.json'
 
 import Farm from './tokens_config/farm.json'
 import FarmV1 from './tokens_config/farmV1.json'
@@ -17,6 +18,7 @@ import AirdropList from './tokens_config/airdrop.json'
 import Navb from './Navbar'
 import Main from './Main'
 import Menu from './Menu'
+import Stake from './Stake'
 import TraderJoe from './TraderJoe'
 import Airdrop from './Airdrop'
 
@@ -27,9 +29,9 @@ class App extends Component {
     await this.loadFarmData()
     await this.loadBlockchainData()
     this.loadTVLAPR()
-    while (this.state.loading == true) {
-      await this.loadBlockchainData()
-      await this.delay(2000);
+    while ((this.state.wallet || this.state.walletConnect) == true) {
+        await this.loadBlockchainUserData()
+        await this.delay(2000);
     }
   }
 
@@ -53,8 +55,6 @@ class App extends Component {
 
     const bavaContract = 'https://snowtrace.io/address/0xb5a054312a73581a3c0fed148b736911c02f4539'
     this.setState({ bavaContract })
-
-
 
     if (window.ethereum) {
       const chainId = await window.ethereum.request({ method: 'eth_chainId' });
@@ -90,41 +90,46 @@ class App extends Component {
       this.setState({ networkName: "Unavailable" })
     }
 
-    if (this.state.wallet == false && this.state.walletConnect == false) {
-      // Load bavaToken
-      const bavaToken = new web3Ava.eth.Contract(BavaToken.abi, process.env.REACT_APP_bavatoken_address)
-      this.setState({ bavaToken })
-
       // Load contract
+      const bavaToken = new web3Ava.eth.Contract(BavaToken.abi, process.env.REACT_APP_bavatoken_address)
       const bavaMasterFarmer = new web3Ava.eth.Contract(BavaMasterFarmer.abi, process.env.REACT_APP_bavamasterfarmv2_address)
       const bavaMasterFarmerV1 = new web3Ava.eth.Contract(BavaMasterFarmerV1.abi, process.env.REACT_APP_bavamasterfarmv1_address)
       const bavaAirdrop = new web3Ava.eth.Contract(BavaAirdrop.abi, process.env.REACT_APP_airdrop_address)
+      const bavaStake = new web3Ava.eth.Contract(StakingRewards.abi, process.env.REACT_APP_staking_rewards_address)
+      this.setState({ bavaToken })
       this.setState({ bavaMasterFarmer })
       this.setState({ bavaMasterFarmerV1 })
       this.setState({ bavaAirdrop })
+      this.setState({ bavaStake })
 
       let response0 = this.loadPoolLength()
       let response1 = this.loadBavaPoolLength()
       let response2 = this.loadAirdropIteration()
       let response3 = this.loadAirdropAmount()
+      let response5 = this.loadAirdropStart()
+      let response6 = this.loadAirdropEnd()
+      let response7 = this.loadTotalStake()
+      let response8 = this.loadRewardRate()
+
       let poolLength = await response0
       let bavaPoolLength = await response1
       let airdropIteration = await response2
       let airdropAmount = await response3
+      let airdropStart = await response5
+      let airdropEnd = await response6
+      let totalStake = await response7
+      let rewardRate = await response8
+
       this.setState({ poolLength })
       this.setState({ bavaPoolLength })
       this.setState({ airdropIteration })
       this.setState({ airdropAmount })
-
-      let response4 = this.loadTotalAirdropAmount()
-      let response5 = this.loadAirdropStart()
-      let response6 = this.loadAirdropEnd()
-      let totalAirdropAmount = await response4
-      let airdropStart = await response5
-      let airdropEnd = await response6
-      this.setState({ totalAirdropAmount })
+      this.setState({ totalStake })
+      this.setState({ rewardRate })
       this.setState({ airdropStart })
       this.setState({ airdropEnd })
+
+    if (this.state.wallet == false && this.state.walletConnect == false) {
 
       let bavaPoolSegmentInfo = [[], []]
       let poolSegmentInfo = [[], []]
@@ -195,121 +200,149 @@ class App extends Component {
       this.setState({ bavaReturnRatio })
       this.setState({ farmloading: true })
     }
-
+  }
     // #########################################################################################################################
-    else {
-      // Load bavaToken
-      let bavaTokenBalance = await this.state.bavaToken.methods.balanceOf(this.state.account).call()
-      this.setState({ bavaTokenBalance: bavaTokenBalance.toString() })
-      let lockedBavaTokenBalance = await this.state.bavaToken.methods.lockOf(this.state.account).call()
-      this.setState({ lockedBavaTokenBalance: lockedBavaTokenBalance.toString() })
 
-      let poolSegmentInfo = [[], []]
-      let bavaPoolSegmentInfo = [[], []]
-      let totalpendingReward = 0
+  async loadBlockchainUserData() {
+    // Load bavaToken
+    let userResponse0 = this.loadBavaTokenBalance()
+    let userResponse1 = this.loadLockedBavaTokenBalance()
+    let userResponse2 = this.loadBavaTokenAllowance()
+    let userResponse3 = this.loadEarnedAmount()
+    let userResponse4 = this.loadStakeAmount()
+    
+    let bavaTokenBalance = await userResponse0
+    let lockedBavaTokenBalance = await userResponse1
+    let bavaTokenAllowance = await userResponse2
+    let earnedAmount = await userResponse3
+    let stakeAmount =  await userResponse4
 
-      let userSegmentInfo = [[], []]
-      let lpBalanceAccount = [[], []]
-      let lpSegmentAllowance = [[], []]
-      let pendingSegmentReward = [[], []]
+    this.setState({ bavaTokenBalance: bavaTokenBalance.toString() })
+    this.setState({ lockedBavaTokenBalance: lockedBavaTokenBalance.toString() })
+    this.setState({ bavaTokenAllowance: bavaTokenAllowance.toString() })
+    this.setState({ stakeAmount: stakeAmount.amount })
+    this.setState({ earnedAmount })
 
-      let bavaUserSegmentInfo = [[], []]
-      let bavaLpBalanceAccount = [[], []]
-      let bavaLpSegmentAllowance = [[], []]
-      let bavaPendingSegmentReward = [[], []]
+    let poolSegmentInfo = [[], []]
+    let bavaPoolSegmentInfo = [[], []]
+    let totalpendingReward = 0
 
-      let b = 0
-      let n = 0
-      let i = 0
+    let userSegmentInfo = [[], []]
+    let lpBalanceAccount = [[], []]
+    let lpSegmentAllowance = [[], []]
+    let pendingSegmentReward = [[], []]
 
-      let response0 = []
-      let response1 = []
-      let response2 = []
-      let response3 = []
+    let bavaUserSegmentInfo = [[], []]
+    let bavaLpBalanceAccount = [[], []]
+    let bavaLpSegmentAllowance = [[], []]
+    let bavaPendingSegmentReward = [[], []]
 
-      let bavaResponse0 = []
-      let bavaResponse1 = []
-      let bavaResponse2 = []
-      let bavaResponse3 = []
+    let b = 0
+    let n = 0
+    let i = 0
 
-      for (i = 0; i < this.state.poolLength; i++) {
-        response0[i] = this.loadUserInfo(i)
-        response1[i] = this.loadUserInfo1(i)
-        response2[i] = this.loadUserInfo2(i)
-        response3[i] = this.loadUserInfo3(i)
-      }
+    let response0 = []
+    let response1 = []
+    let response2 = []
+    let response3 = []
 
-      for (i = 0; i < this.state.bavaPoolLength; i++) {
-        bavaResponse0[i] = this.loadBavaUserInfo(i)
-        bavaResponse1[i] = this.loadBavaUserInfo1(i)
-        bavaResponse2[i] = this.loadBavaUserInfo2(i)
-        bavaResponse3[i] = this.loadBavaUserInfo3(i)
-      }
+    let bavaResponse0 = []
+    let bavaResponse1 = []
+    let bavaResponse2 = []
+    let bavaResponse3 = []
 
-      for (i = 0; i < this.state.poolLength; i++) {
-        if (this.state.lpTokenPairsymbols[i] == "PGL" || this.state.lpTokenPairsymbols[i] == "PNG") {
-          userSegmentInfo[0][n] = (await response0[i]).amount
-          poolSegmentInfo[0][n] = this.state.farm[i]
-          lpBalanceAccount[0][n] = await response1[i]
-          lpSegmentAllowance[0][n] = await response2[i]
-          pendingSegmentReward[0][n] = await response3[i]
-          n += 1
-        } else {
-          userSegmentInfo[1][n] = (await response0[i]).amount
-          poolSegmentInfo[1][n] = this.state.farm[i]
-          lpBalanceAccount[1][n] = await response1[i]
-          lpSegmentAllowance[1][n] = await response2[i]
-          pendingSegmentReward[1][n] = await response3[i]
-          n += 1
-        }
-        totalpendingReward += parseInt(await response3[i])
-      }
-
-      for (i = 0; i < this.state.bavaPoolLength; i++) {
-        if (this.state.bavaLpTokenPairsymbols[i] == "PGL" || this.state.bavaLpTokenPairsymbols[i] == "PNG") {
-          bavaUserSegmentInfo[0][b] = (await bavaResponse0[i]).amount
-          bavaPoolSegmentInfo[0][b] = this.state.farmBava[i]
-          bavaLpBalanceAccount[0][b] = await bavaResponse1[i]
-          bavaLpSegmentAllowance[0][b] = await bavaResponse2[i]
-          bavaPendingSegmentReward[0][b] = await bavaResponse3[i]
-          b += 1
-        } else {
-          bavaUserSegmentInfo[1][b] = (await bavaResponse0[i]).amount
-          bavaPoolSegmentInfo[1][b] = this.state.farmBava[i]
-          bavaLpBalanceAccount[1][b] = await bavaResponse1[i]
-          bavaLpSegmentAllowance[1][b] = await bavaResponse2[i]
-          bavaPendingSegmentReward[1][b] = await bavaResponse3[i]
-          b += 1
-        }
-        totalpendingReward += parseInt(await bavaResponse3[i])
-      }
-
-      this.setState({ poolSegmentInfo })
-      this.setState({ bavaPoolSegmentInfo })
-      this.setState({ userSegmentInfo })
-      this.setState({ bavaUserSegmentInfo })
-      this.setState({ lpBalanceAccount })
-      this.setState({ bavaLpBalanceAccount })
-      this.setState({ lpSegmentAllowance })
-      this.setState({ bavaLpSegmentAllowance })
-      this.setState({ pendingSegmentReward })
-      this.setState({ bavaPendingSegmentReward })
-      this.setState({ totalpendingReward: totalpendingReward.toLocaleString('fullwide', { useGrouping: false }) })
-      this.setState({ farmloading: true })
-      this.setState({ accountLoading: true })
+    for (i = 0; i < this.state.poolLength; i++) {
+      response0[i] = this.loadUserInfo(i)
+      response1[i] = this.loadUserInfo1(i)
+      response2[i] = this.loadUserInfo2(i)
+      response3[i] = this.loadUserInfo3(i)
     }
+
+    for (i = 0; i < this.state.bavaPoolLength; i++) {
+      bavaResponse0[i] = this.loadBavaUserInfo(i)
+      bavaResponse1[i] = this.loadBavaUserInfo1(i)
+      bavaResponse2[i] = this.loadBavaUserInfo2(i)
+      bavaResponse3[i] = this.loadBavaUserInfo3(i)
+    }
+
+    for (i = 0; i < this.state.poolLength; i++) {
+      if (this.state.lpTokenPairsymbols[i] == "PGL" || this.state.lpTokenPairsymbols[i] == "PNG") {
+        userSegmentInfo[0][n] = (await response0[i]).amount
+        poolSegmentInfo[0][n] = this.state.farm[i]
+        lpBalanceAccount[0][n] = await response1[i]
+        lpSegmentAllowance[0][n] = await response2[i]
+        pendingSegmentReward[0][n] = await response3[i]
+        n += 1
+      } else {
+        userSegmentInfo[1][n] = (await response0[i]).amount
+        poolSegmentInfo[1][n] = this.state.farm[i]
+        lpBalanceAccount[1][n] = await response1[i]
+        lpSegmentAllowance[1][n] = await response2[i]
+        pendingSegmentReward[1][n] = await response3[i]
+        n += 1
+      }
+      totalpendingReward += parseInt(await response3[i])
+    }
+
+    for (i = 0; i < this.state.bavaPoolLength; i++) {
+      if (this.state.bavaLpTokenPairsymbols[i] == "PGL" || this.state.bavaLpTokenPairsymbols[i] == "PNG") {
+        bavaUserSegmentInfo[0][b] = (await bavaResponse0[i]).amount
+        bavaPoolSegmentInfo[0][b] = this.state.farmBava[i]
+        bavaLpBalanceAccount[0][b] = await bavaResponse1[i]
+        bavaLpSegmentAllowance[0][b] = await bavaResponse2[i]
+        bavaPendingSegmentReward[0][b] = await bavaResponse3[i]
+        b += 1
+      } else {
+        bavaUserSegmentInfo[1][b] = (await bavaResponse0[i]).amount
+        bavaPoolSegmentInfo[1][b] = this.state.farmBava[i]
+        bavaLpBalanceAccount[1][b] = await bavaResponse1[i]
+        bavaLpSegmentAllowance[1][b] = await bavaResponse2[i]
+        bavaPendingSegmentReward[1][b] = await bavaResponse3[i]
+        b += 1
+      }
+      totalpendingReward += parseInt(await bavaResponse3[i])
+    }
+
+    this.setState({ poolSegmentInfo })
+    this.setState({ bavaPoolSegmentInfo })
+    this.setState({ userSegmentInfo })
+    this.setState({ bavaUserSegmentInfo })
+    this.setState({ lpBalanceAccount })
+    this.setState({ bavaLpBalanceAccount })
+    this.setState({ lpSegmentAllowance })
+    this.setState({ bavaLpSegmentAllowance })
+    this.setState({ pendingSegmentReward })
+    this.setState({ bavaPendingSegmentReward })
+    this.setState({ totalpendingReward: totalpendingReward.toLocaleString('fullwide', { useGrouping: false }) })
+    this.setState({ farmloading: true })
+    this.setState({ accountLoading: true })
   }
 
-  // ***************************User Info***********************************************************************************************
+  // *************************** User Info***********************************************************************************************
   // bavaToken
-  async loadBavaTokenUserInfo(i) {
+  async loadBavaTokenBalance() {
     let bavaTokenBalance = await this.state.bavaToken.methods.balanceOf(this.state.account).call()
     return bavaTokenBalance
   }
 
-  async loadBavaTokenUserInfo1(i) {
+  async loadLockedBavaTokenBalance() {
     let lockedBavaTokenBalance = await this.state.bavaToken.methods.lockOf(this.state.account).call()
     return lockedBavaTokenBalance
+  }
+  
+  async loadBavaTokenAllowance() {
+    let bavaTokenAllowance = await this.state.bavaToken.methods.allowance(this.state.account, process.env.REACT_APP_staking_rewards_address).call()
+    return bavaTokenAllowance
+  }
+
+  async loadEarnedAmount() {
+    let earnedAmount = await this.state.bavaStake.methods.earned(this.state.account).call()
+    return earnedAmount
+  }
+
+  async loadStakeAmount() {
+    let stakeAmount = await this.state.bavaStake.methods.userInfo(this.state.account).call()
+    return stakeAmount
   }
 
   // bavaMasterFarmerV2
@@ -336,7 +369,7 @@ class App extends Component {
     return pendingReward
   }
 
-  // bavaMasterFarmerV1****************
+  // bavaMasterFarmerV1 
 
   async loadBavaUserInfo(i) {
     let userInfo = await this.state.bavaMasterFarmerV1.methods.userInfo(i, this.state.account).call()
@@ -360,7 +393,7 @@ class App extends Component {
     return pendingReward
   }
 
-  // ***************************Airdrop***********************************************************************
+  // ***************************************** Airdrop *************************************************************
 
   async loadPoolLength() {
     let poolLength = await this.state.bavaMasterFarmer.methods.poolLength().call()
@@ -382,21 +415,29 @@ class App extends Component {
     return airdropAmount
   }
 
-  async loadTotalAirdropAmount() {
-    let totalAirdropAmount = await this.state.bavaAirdrop.methods.accumulateAirdropAmount(this.state.airdropIteration).call()
-    return totalAirdropAmount
-  }
-
   async loadAirdropStart() {
-    let airdropStart = await this.state.bavaAirdrop.methods.startAirdrop(this.state.airdropIteration).call()
+    let airdropIteration = await this.state.bavaAirdrop.methods.airdropIteration().call()
+    let airdropStart = await this.state.bavaAirdrop.methods.startAirdrop(airdropIteration).call()
     return airdropStart
   }
 
   async loadAirdropEnd() {
-    let airdropEnd = await this.state.bavaAirdrop.methods.endAirdrop(this.state.airdropIteration).call()
+    let airdropIteration = await this.state.bavaAirdrop.methods.airdropIteration().call()
+    let airdropEnd = await this.state.bavaAirdrop.methods.endAirdrop(airdropIteration).call()
     return airdropEnd
   }
 
+  // ***************************************** BAVA Stake *************************************************************
+
+  async loadTotalStake() {
+    let totalStake = await this.state.bavaStake.methods.totalSupply().call()
+    return totalStake
+  }
+
+  async loadRewardRate() {
+    let rewardRate = await this.state.bavaStake.methods.rewardRate().call()
+    return rewardRate
+  }
 
   // ***************************TVL & APR***********************************************************************
   async loadTVLAPR() {
@@ -485,8 +526,9 @@ class App extends Component {
           await this.switchNetwork()
           const chainId = await window.ethereum.request({ method: 'eth_chainId' });
           if (chainId == "0xa86a") {
-            this.WalletDisconnect()
-            this.setWalletTrigger(true)
+            await this.WalletDisconnect()
+            await this.setWalletTrigger(true)
+            this.componentWillMount()
           }
         })
         .catch((err) => {
@@ -498,7 +540,6 @@ class App extends Component {
             console.error(err);
           }
         });
-      this.componentWillMount()
     } else {
       alert("No wallet provider was found")
     }
@@ -682,9 +723,9 @@ class App extends Component {
     var year = a.getFullYear();
     var month = months[a.getMonth()];
     var date = a.getDate();
-    var hour = a.getHours().toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping: false});
-    var min = a.getMinutes().toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping: false});
-    var sec = a.getSeconds().toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping: false});
+    var hour = a.getHours();
+    var min = a.getMinutes();
+    var sec = a.getSeconds();
     var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
     return time;
   }
@@ -867,9 +908,9 @@ class App extends Component {
       bavaAirdrop = new window.web3.eth.Contract(BavaAirdrop.abi, process.env.REACT_APP_airdrop_address)
     }
     if ((Date.now() / 1000).toFixed(0) < this.state.airdropStart) {
-      alert("Airdrop not started yet")
+      alert("Distribution not started yet")
     } else if ((Date.now() / 1000).toFixed(0) > this.state.airdropEnd) {
-      alert("Airdrop already end")
+      alert("Distribution already end")
     } else {
       if ((this.state.account in this.state.airdropList) == true) {
         let processed = await bavaAirdrop.methods.processedAirdrops(this.state.account, this.state.airdropIteration).call()
@@ -890,6 +931,113 @@ class App extends Component {
         }
       }
     }
+  }
+
+  approveStake = async () => {
+    let bavaToken
+    if (this.state.walletConnect == true) {
+      bavaToken = new window.web3Con.eth.Contract(BavaToken.abi, process.env.REACT_APP_bavatoken_address)
+    } else if (this.state.wallet == true) {
+      bavaToken = new window.web3.eth.Contract(BavaToken.abi, process.env.REACT_APP_bavatoken_address)
+    }
+    await bavaToken.methods.approve(process.env.REACT_APP_staking_rewards_address, "115792089237316195423570985008687907853269984665640564039457584007913129639935").send({ from: this.state.account }).then(async (result) => {
+      let bavaTokenAllowance = await bavaToken.methods.allowance(this.state.account, process.env.REACT_APP_staking_rewards_address).call()
+      this.state.bavaTokenAllowance = bavaTokenAllowance
+      this.componentWillMount()
+    }).catch((err) => {
+      if (err.code === 4001) {
+        // EIP-1193 userRejectedRequest error
+        // If this happens, the user rejected the connection request.
+        alert("Something went wrong...Code: 4001 User rejected the request.")
+      } else {
+        console.error(err);
+      }
+    });
+  }
+
+  stake = async (amount) => {
+    let bavaStake
+    if (this.state.walletConnect == true) {
+      bavaStake = new window.web3Con.eth.Contract(StakingRewards.abi, process.env.REACT_APP_staking_rewards_address)
+    } else if (this.state.wallet == true) {
+      bavaStake = new window.web3.eth.Contract(StakingRewards.abi, process.env.REACT_APP_staking_rewards_address)
+    }
+    await bavaStake.methods.stake(amount).send({ from: this.state.account }).then((result) => {
+      this.componentWillMount()
+    }).catch((err) => {
+      if (err.code === 4001) {
+        // EIP-1193 userRejectedRequest error
+        // If this happens, the user rejected the connection request.
+        alert("Something went wrong...Code: 4001 User rejected the request.")
+      } else {
+        console.error(err);
+      }
+      // this.componentWillMount()
+    });
+  }
+
+  unstake = async (amount) => {
+    let bavaStake
+    if (this.state.walletConnect == true) {
+      bavaStake = new window.web3Con.eth.Contract(StakingRewards.abi, process.env.REACT_APP_staking_rewards_address)
+    } else if (this.state.wallet == true) {
+      bavaStake = new window.web3.eth.Contract(StakingRewards.abi, process.env.REACT_APP_staking_rewards_address)
+    }
+    await bavaStake.methods.withdraw(amount).send({ from: this.state.account }).then(async (result) => {
+      this.componentWillMount()
+    }).catch((err) => {
+      if (err.code === 4001) {
+        // EIP-1193 userRejectedRequest error
+        // If this happens, the user rejected the connection request.
+        alert("Something went wrong...Code: 4001 User rejected the request.")
+      } else {
+        console.error(err);
+      }
+      this.componentWillMount()
+    });
+  }
+
+  getReward = async () => {
+    let bavaStake
+    if (this.state.walletConnect == true) {
+      bavaStake = new window.web3Con.eth.Contract(StakingRewards.abi, process.env.REACT_APP_staking_rewards_address)
+    } else if (this.state.wallet == true) {
+      bavaStake = new window.web3.eth.Contract(StakingRewards.abi, process.env.REACT_APP_staking_rewards_address)
+    }
+    await bavaStake.methods.getReward().send({ from: this.state.account }).then(async (result) => {
+      this.componentWillMount()
+    }).catch((err) => {
+      if (err.code === 4001) {
+        // EIP-1193 userRejectedRequest error
+        // If this happens, the user rejected the connection request.
+        alert("Something went wrong...Code: 4001 User rejected the request.")
+      } else {
+        console.error(err);
+      }
+      this.componentWillMount()
+    });
+  }
+
+  exit = async (amount) => {
+    let bavaStake
+    if (this.state.walletConnect == true) {
+      bavaStake = new window.web3Con.eth.Contract(StakingRewards.abi, process.env.REACT_APP_staking_rewards_address)
+    } else if (this.state.wallet == true) {
+      bavaStake = new window.web3.eth.Contract(StakingRewards.abi, process.env.REACT_APP_staking_rewards_address)
+    }
+    await bavaStake.methods.exit().send({ from: this.state.account }).then(async (result) => {
+      
+      this.componentWillMount()
+    }).catch((err) => {
+      if (err.code === 4001) {
+        // EIP-1193 userRejectedRequest error
+        // If this happens, the user rejected the connection request.
+        alert("Something went wrong...Code: 4001 User rejected the request.")
+      } else {
+        console.error(err);
+      }
+      this.componentWillMount()
+    });
   }
 
   setI = (pair, boolean, version) => {
@@ -968,7 +1116,12 @@ class App extends Component {
       airdropAmount: '0',
       airdropStart: '0',
       airdropEnd: '0',
-      validAirdrop: false
+      validAirdrop: false,
+      stakeAmount: '0',
+      earnedAmount: '0',
+      totalStake: '0',
+      rewardRate: '0',
+      bavaTokenAllowance: '0'
     }
   }
 
@@ -977,6 +1130,7 @@ class App extends Component {
     let menucontent
     let traderjoecontent
     let airdropContent
+    let stakeContent
 
     if (this.state.loading == false) {
       maincontent =
@@ -1121,11 +1275,29 @@ class App extends Component {
         purseTokenTotalSupply={this.state.purseTokenTotalSupply}
         airdropStart={this.state.airdropStart}
         airdropEnd={this.state.airdropEnd}
-        airdropIteration={this.state.airdropIteration}
         totalAirdropAmount={this.state.totalAirdropAmount}
         airdropAmount={this.state.airdropAmount}
         validAirdrop={this.state.validAirdrop}
         airdropCheck={this.state.airdropCheck}
+      />
+      stakeContent = <Stake
+        bavaTokenBalance={this.state.bavaTokenBalance}
+        BAVAPrice={this.state.BAVAPrice}
+        walletConnect={this.state.walletConnect}
+        wallet={this.state.wallet}
+        accountLoading={this.state.accountLoading}
+        lockedBavaTokenBalance={this.state.lockedBavaTokenBalance}
+        totalStake={this.state.totalStake}
+        stakeAmount={this.state.stakeAmount}
+        earnedAmount={this.state.earnedAmount}
+        rewardRate={this.state.rewardRate}
+        bavaTokenAllowance={this.state.bavaTokenAllowance}
+        connectMetamask={this.connectMetamask}
+        approveStake={this.approveStake}
+        stake={this.stake}
+        unstake={this.unstake}
+        getReward={this.getReward}
+        exit={this.exit}
       />
     }
 
@@ -1156,6 +1328,7 @@ class App extends Component {
                   <Route path="/menu" exact > {menucontent} </Route>
                   <Route path="/traderjoe/" exact > {traderjoecontent} </Route>
                   <Route path="/claim/" exact > {airdropContent} </Route>
+                  <Route path="/stake/" exact > {stakeContent} </Route>
                 </Switch>
               </main>
             </div>

@@ -42,8 +42,8 @@ border-color: #e4e1d3;
 .textDarkMedium {
 color: #4d4852;
 font-weight: bold;
-border: 1.5px solid #47414d;
-font-size: 16px;
+border: 1px solid #47414d;
+font-size: 15px;
 z-index: 2;
 }
 
@@ -57,8 +57,8 @@ color: #dddddd;
   background-color: #656069;
   font-weight: bold;
   cursor: not-allowed;
-  border: 1.5px solid #47414d;
-  font-size: 16px;
+  border: 1px solid #47414d;
+  font-size: 15px;
   z-index: 2;
   }
   
@@ -150,7 +150,7 @@ font-size: 20px;
 
 .textMiddleBold1:hover {
 text-decoration: none;
-color: #666565;
+color: #424242;
 }
 
 .textSmallBold1 {

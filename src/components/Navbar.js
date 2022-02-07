@@ -30,13 +30,13 @@ class Navb extends Component {
 
           <div
             style={{ marginLeft: "25px", marginTop: "13px" }}
-          ><NavLink className="textSmallBold1" activeStyle={{fontWeight: "bold", color: "#ffc400" }} to="/menu/">Farm</NavLink></div>
-          {/* <div
-            style={{ marginLeft: "25px", marginTop: "13px" }}
-          ><NavLink className="textSmallBold1" activeStyle={{fontWeight: "bold", color: "#ffc400" }} to="/stake/">Stake</NavLink></div> */}
+          ><NavLink className="textSmallBold1" activeStyle={{ fontWeight: "bold", color: "#ffc400" }} to="/menu/">Farm</NavLink></div>
           <div
             style={{ marginLeft: "25px", marginTop: "13px" }}
-          ><NavLink className="textSmallBold1" activeStyle={{fontWeight: "bold", color: "#ffc400" }} to="/claim/">Claim</NavLink></div>
+          ><NavLink className="textSmallBold1" activeStyle={{ fontWeight: "bold", color: "#ffc400" }} to="/stake/">Stake</NavLink></div>
+          <div
+            style={{ marginLeft: "25px", marginTop: "13px" }}
+          ><NavLink className="textSmallBold1" activeStyle={{ fontWeight: "bold", color: "#ffc400" }} to="/claim/">Claim</NavLink></div>
         </span>
 
 
@@ -45,31 +45,81 @@ class Navb extends Component {
             <div className="rowC" style={{ marginTop: "8px" }}>
               <div className="exLink0" style={{ marginRight: '30px' }} onClick={() => {
                 window.open(`https://baklavaspace.gitbook.io/`, '_blank')
-              }}><img src={gitbook} width="20" height="20" align="right" alt="" />
+              }}><Popup
+                trigger={open => (
+                  <img src={gitbook} width="20" height="20" align="right" alt="" />
+                )}
+                on="hover"
+                offsetY={0}
+                offsetX={0}
+                position="bottom center"
+                contentStyle={{ width: '75px' }}
+              ><span className="textInfo">Gitbook</span>
+                </Popup>
               </div>
               <div className="exLink0" style={{ marginRight: '30px' }} onClick={() => {
                 window.open(`https://twitter.com/baklavaspace`, '_blank')
-              }}><img src={twitter} width="20" height="20" align="right" alt="" />
+              }}><Popup
+                trigger={open => (
+                  <img src={twitter} width="20" height="20" align="right" alt="" />
+                )}
+                on="hover"
+                offsetY={0}
+                offsetX={0}
+                position="bottom center"
+                contentStyle={{ width: '70px' }}
+              ><span className="textInfo">Twitter</span>
+                </Popup>
               </div>
               <div className="exLink0" style={{ marginRight: '30px' }} onClick={() => {
                 window.open(`https://medium.com/@baklavaspace`, '_blank')
-              }}><img src={medium} width="20" height="20" align="right" alt="" />
+              }}><Popup
+                trigger={open => (
+                  <img src={medium} width="20" height="20" align="right" alt="" />
+                )}
+                on="hover"
+                offsetY={0}
+                offsetX={0}
+                position="bottom center"
+                contentStyle={{ width: '75px' }}
+              ><span className="textInfo">Medium</span>
+                </Popup>
               </div>
               <div className="exLink0" style={{ marginRight: '30px' }} onClick={() => {
                 window.open(`https://github.com/baklavaspace`, '_blank')
-              }}><img src={git} width="20" height="20" align="right" alt="" />
+              }}><Popup
+                trigger={open => (
+                  <img src={git} width="20" height="20" align="right" alt="" />
+                )}
+                on="hover"
+                offsetY={0}
+                offsetX={0}
+                position="bottom center"
+                contentStyle={{ width: '40px' }}
+              ><span className="textInfo">Git</span>
+                </Popup>
               </div>
               <div className="exLink0" style={{ marginRight: '60px' }} onClick={() => {
                 window.open(`https://discord.gg/E6aYX5ukAw`, '_blank')
-              }}><img src={discord} width="20" height="20" align="right" alt="" />
+              }}><Popup
+                trigger={open => (
+                  <img src={discord} width="20" height="20" align="right" alt="" />
+                )}
+                on="hover"
+                offsetY={0}
+                offsetX={0}
+                position="bottom center"
+                contentStyle={{ width: '75px' }}
+              ><span className="textInfo">Discord</span>
+                </Popup>
               </div>
             </div>
 
             <div>
               {/* <Popup trigger={open => ( */}
-                <Link to="/menu/">
-                  <Buttons className="textWhiteLarge center" style={{ width: '100px', height: '30px' }} variant="secondary" size="lg"> Menu</Buttons>
-                </Link>
+              <Link to="/menu/">
+                <Buttons className="textWhiteLarge center" style={{ width: '100px', height: '30px' }} variant="secondary" size="lg"> Menu</Buttons>
+              </Link>
               {/* )}
                 on="hover"
                 position="bottom left"
