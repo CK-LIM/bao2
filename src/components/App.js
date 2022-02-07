@@ -490,6 +490,8 @@ class App extends Component {
       }
     }
 
+    totalTVL += window.web3Ava.utils.fromWei(this.state.totalStake, 'Ether')*this.state.BAVAPrice
+
     this.setState({ totalTVL })
     this.setState({ tvl })
     this.setState({ apr })
