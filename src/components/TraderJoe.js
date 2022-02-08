@@ -108,7 +108,7 @@ class TraderJoe extends Component {
                 <div className="ml-auto mr-auto" style={{ width: '1000px' }}>
                     <div className="">
                         <div className="textMiddleBold1 float-left" style={{ marginLeft: '2px' }}><big>Select Platform</big></div>
-                        <div className="textMiddleBold1 float-right" style={{ marginRight: '5px' }}><big>TVL ${(this.props.totalTVL / 1000).toFixed(2)}k</big></div><br /><br />
+                        <div className="textMiddleBold1 float-right" style={{ marginRight: '5px' }}><big>TVL $ {parseFloat(this.props.totalTVL).toLocaleString('en-US', { maximumFractionDigits: 0 })}</big></div><br /><br />
                         <span className="float-left">
                             <ButtonGroup>
                                 <Button variant="text" size="small" color="inherit" component={Link} to="/menu/">Pangolin</Button>
@@ -189,7 +189,7 @@ class TraderJoe extends Component {
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
                                                                                 <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.bavaapyDaily[1][i]).toExponential(3)}%</div> : <div className="center">
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>}</td>
-                                                                                <td className="">${parseFloat(this.props.bavatvl[1][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })} </td>
+                                                                                <td className="">$ {parseFloat(this.props.bavatvl[1][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })} </td>
                                                                             </tr>
                                                                         </tbody>
                                                                     </table>
@@ -334,7 +334,7 @@ class TraderJoe extends Component {
                                                                                         <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
                                                                                     <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.apyDaily[1][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })}%</div> : <div className="center">
                                                                                         <div className="lds-facebook"><div></div><div></div><div></div></div></div>}</td>
-                                                                                    <td className="">${parseFloat(this.props.tvl[1][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })} </td>
+                                                                                    <td className="">$ {parseFloat(this.props.tvl[1][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })} </td>
                                                                                 </tr>
                                                                             </tbody>
                                                                         </table>
