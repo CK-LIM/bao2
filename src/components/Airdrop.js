@@ -102,13 +102,14 @@ class Airdrop extends Component {
                             </div>
                         </div>
                         :
-                        <div className="card cardbody" style={{ width: '450px', height: '200px'}}>
+                        <div className="card cardbody" style={{ width: '450px', height: '150px'}}>
                             <div className="card-body">
                                 <div>
-                                    <div className="center textBlackMedium mt-2 mb-3"><b>Connect wallet to claim BAVA airdrop</b></div>
-                                    <div className="center mt-4"><button type="submit" className="btn btn-primary btn-lg mt-3" onClick={async () => {
+                                <div className="center textBlackMedium comingSoon mt-4" style={{ color: 'black', fontSize: '18px' }}><b><big>2ND AIRDROP IS COMING SOON!</big></b></div>
+                                    {/* <div className="center textBlackMedium mt-2 mb-3"><b>Connect wallet to claim BAVA airdrop</b></div> */}
+                                    {/* <div className="center mt-4"><button type="submit" className="btn btn-primary btn-lg mt-3" onClick={async () => {
                                         await this.props.connectMetamask()
-                                    }}>Connect</button></div>
+                                    }}>Connect</button></div> */}
                                 </div>
                             </div>
                         </div>

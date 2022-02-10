@@ -325,39 +325,18 @@ width: 15px;
 }
 
 .comingSoon {
-  animation: comingSoon ease 1s;
-  animation-delay: 0.5s;
-  animation-iteration-count: 1;
-  animation-fill-mode: forwards;
-}
-
-.comingSoon1 {
-  animation: comingSoon ease 1s;
-  animation-delay: 1.5s;
-  animation-iteration-count: 1;
-  animation-fill-mode: forwards;
-}
-
-.comingSoon2 {
-  animation: comingSoon ease 1s;
-  animation-delay: 2.5s;
-  animation-iteration-count: 1;
-  animation-fill-mode: forwards;
-}
-
-.comingSoon3 {
-  animation: comingSoon ease 1s;
-  animation-delay: 3.5s;
+  animation: comingSoon ease 2.5s;
+  animation-delay: 0s;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
 }
 
 @keyframes comingSoon {
   0% {
-      opacity: 0;
+    opacity: 0;
   }
   100% {
-      opacity: 1;
+    opacity: 1;
   }
 }
 
