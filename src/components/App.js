@@ -43,7 +43,6 @@ class App extends Component {
     const farmBava = FarmV1.farm
     this.setState({ farmBava })
     const farmV2_2 = FarmV2_2.farm
-    console.log(farmV2_2)
     this.setState({ farmV2_2 })
     const airdropList = AirdropList
     this.setState({ airdropList })
@@ -658,7 +657,6 @@ class App extends Component {
     let rewardPerBlock = await this.state.bavaMasterFarmerV2_2.methods.REWARD_PER_BLOCK().call()
     lpTokenInContract = window.web3Ava.utils.fromWei(lpTokenInContract["depositAmount"], 'ether')
     let tvl = lpTokenValue * lpTokenInContract
-    console.log(window.web3Ava.utils.fromWei(rewardPerBlock, 'ether'))
     let apr = ((28000 * 365 * 645 * window.web3Ava.utils.fromWei(rewardPerBlock, 'ether') * BAVAPrice ) / tvl) * 100
     let apyDaily = ((1 + apr/36500)**365 -1) * 100
 
@@ -772,7 +770,7 @@ async loadWeb3() {
     window.provider.on("accountsChanged", this.handleAccountsChanged);
     // Subscribe to session disconnection
     window.provider.on("disconnect", (code, reason) => {
-      console.log(code, reason);
+      // console.log(code, reason);
       this.WalletDisconnect()
     });
     window.provider.on("chainChanged", async () => {
