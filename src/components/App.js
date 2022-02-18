@@ -652,7 +652,7 @@ class App extends Component {
     let lpTokenBalance = await lpTokenPair.methods.balanceOf(process.env.REACT_APP_bavamasterfarmv1_address).call()
     let lpTokenValue = bavatvlArray[0]["tvl"] / window.web3Ava.utils.fromWei(lpTokenBalance, 'ether')
 
-    let BAVAPrice = 0.038
+    let BAVAPrice = this.state.BAVAPrice
     let lpTokenInContract = await this.state.bavaMasterFarmerV2_2.methods.poolInfo(0).call()
     let rewardPerBlock = await this.state.bavaMasterFarmerV2_2.methods.REWARD_PER_BLOCK().call()
     lpTokenInContract = window.web3Ava.utils.fromWei(lpTokenInContract["depositAmount"], 'ether')
