@@ -182,7 +182,7 @@ class Navb extends Component {
                         await this.props.connectCoin98()
                       }}><img src={coin98} width="23" height="23" className="d-inline-block" alt="" />&nbsp; Coin98</div>
                       <div className='dropdown' onClick={async () => {
-                        await this.props.WalletConnect()
+                        await this.props.mobileWalletConnect()
                       }}><img src={walletconnectLogo} width="26" height="23" className="d-inline-block" alt="" />&nbsp; WalletConnect</div>
                     </div>
                   </Popup>

@@ -13,6 +13,22 @@ import './App.css';
 
 class Menu extends Component {
 
+    constructor(props) {
+        super(props)
+        this.state = {
+            farmV2_2Open: false
+        }
+        this.clickfarmOpen = this.clickfarmOpen.bind(this)
+    }
+
+    clickfarmOpen(pair, boolean) {
+        this.setState({
+            farmV2_2Open: boolean
+          })
+        // this.setState({ i: pair })  //do ntg, just to push react setstate
+    }
+
+
     render() {
         return (
             <div id="content" className="mt-3" style={{ margin: "0", color: '#ff9a04' }}>
@@ -22,7 +38,7 @@ class Menu extends Component {
                             <div className="card-body">
                                 <div className='mb-5'>
                                     <span className="float-left" style={{ color: 'black', fontSize: '16px' }}>
-                                        Your BAVA Balance<br /><b>{parseFloat(window.web3Ava.utils.fromWei(this.props.bavaTokenBalance, 'Ether')).toLocaleString('en-US', { maximumFractionDigits: 5 })} BAVA / $ {(window.web3Ava.utils.fromWei(this.props.bavaTokenBalance, 'Ether') * this.props.BAVAPrice).toLocaleString('en-US', { maximumFractionDigits: 0 })}</b>
+                                        Your BAVA Balance<br /><b>{parseFloat(window.web3Ava.utils.fromWei(this.props.bavaTokenBalance, 'Ether')).toLocaleString('en-US', { maximumFractionDigits: 0 })} BAVA / $ {(window.web3Ava.utils.fromWei(this.props.bavaTokenBalance, 'Ether') * this.props.BAVAPrice).toLocaleString('en-US', { maximumFractionDigits: 0 })}</b>
                                     </span>
                                     <span className="float-right" style={{ color: 'black', fontSize: '16px' }}>
                                         Your Locked BAVA<br /><b>{parseFloat(window.web3Ava.utils.fromWei(this.props.lockedBavaTokenBalance, 'Ether')).toLocaleString('en-US', { maximumFractionDigits: 0 })} BAVA / $ {(window.web3Ava.utils.fromWei(this.props.lockedBavaTokenBalance, 'Ether') * this.props.BAVAPrice).toLocaleString('en-US', { maximumFractionDigits: 0 })}</b>
@@ -127,6 +143,153 @@ class Menu extends Component {
                     <div>
                         {this.props.farmloading ?
                             <div className="" style={{ width: '1000px' }}>
+                                {this.props.poolSegmentInfoV2_2[0].map((poolSegmentInfoV2_2, key) => {
+                                    let i = this.props.poolSegmentInfoV2_2[0].indexOf(poolSegmentInfoV2_2)
+                                    return (
+                                        <div key={key}>
+                                            <div>
+                                                <div className="card mb-3 cardbody">
+                                                    <div className="card-body" style={{ padding: '1rem' }}>
+                                                        <div>
+                                                            <div>
+                                                                <div className="float-left">
+                                                                    <div className="textMiddle"><b>{this.props.poolSegmentInfoV2_2[0][i].lpName}(New)</b></div>
+                                                                    <div className="textGrey exLink0" onClick={() => {
+                                                                        window.open(this.props.poolSegmentInfoV2_2[0][i].projectLink, '_blank')
+                                                                    }}>Uses: {this.props.poolSegmentInfoV2_2[0][i].platform} <img src={exlink} style={{ marginBottom: "3px" }} height='12' alt="" /></div>
+                                                                    <div className="textGrey exLink0" onClick={() => {
+                                                                        window.open(this.props.poolSegmentInfoV2_2[0][i].getLPLink, '_blank')
+                                                                    }}>Get {this.props.poolSegmentInfoV2_2[0][i].lpName} <img src={exlink} style={{ marginBottom: "3px" }} height='12' alt="" /></div>
+                                                                    <div className="textGrey exLink0" onClick={() => {
+                                                                        window.open(this.props.poolSegmentInfoV2_2[0][i].farmContract, '_blank')
+                                                                    }}>View On Explorer <img src={exlink} style={{ marginBottom: "3px" }} height='12' alt="" /></div>
+                                                                </div>
+                                                                <div className="float-right mr-auto">
+                                                                    <table>
+                                                                        <thead className="textBlackSmall" style={{ color: 'black' }}>
+                                                                            <tr>
+                                                                                <th scope="col" width="140">Wallet</th>
+                                                                                <th scope="col" width="140">Deposited</th>
+                                                                                <th scope="col">Growth</th>
+                                                                                <th scope="col">APR&nbsp;<Popup
+                                                                                    trigger={open => (<span><BsFillQuestionCircleFill style={{ marginBottom: "2px" }} size={10} /></span>)}
+                                                                                    on="hover"
+                                                                                    offsetY={-5}
+                                                                                    offsetX={5}
+                                                                                    position="right center"
+                                                                                ><span className="textInfo"><small>APR are affected by the price of BAVA which has not yet stabilized. </small></span>
+                                                                                </Popup></th>
+                                                                                <th scope="col">APY</th>
+                                                                                <th scope="col">TVL</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody className="textGrey">
+                                                                            <tr>
+                                                                                <td className="">{(this.props.wallet || this.props.walletConnect) && this.props.accountLoading ? <div>{parseFloat(window.web3Ava.utils.fromWei(this.props.lpBalanceAccountV2_2[0][i]), 'Ether').toLocaleString('en-US', { maximumFractionDigits: 18 })}</div> : <div className="center">
+                                                                                    <div className="lds-facebook"><div></div><div></div><div></div></div></div>}</td>
+                                                                                <td className="">{(this.props.wallet || this.props.walletConnect) && this.props.accountLoading ? <div>{parseFloat(window.web3Ava.utils.fromWei(this.props.userSegmentInfoV2_2[0][i], 'Ether')).toLocaleString('en-US', { maximumFractionDigits: 18 })}</div> : <div className="center">
+                                                                                    <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
+                                                                                <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.returnRatioV2_2[0][i]).toLocaleString('en-US', { maximumFractionDigits: 4 })}</div> : <div className="center">
+                                                                                    <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
+                                                                                <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.aprV2_2[0][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })}%</div> : <div className="center">
+                                                                                    <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
+                                                                                <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.apyDailyV2_2[0][i]).toExponential(3)}%</div> : <div className="center">
+                                                                                    <div className="lds-facebook"><div></div><div></div><div></div></div></div>}</td>
+                                                                                <td className="">$ {parseFloat(this.props.tvlV2_2[0][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })} </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                            <br /><br /><br /><br />
+                                                            {this.state.farmV2_2Open ?
+                                                                <div>
+                                                                    <div>
+                                                                        <Buttons variant="outline-secondary" size="sm" style={{ width: '60px' }} onClick={() => {
+                                                                            this.clickfarmOpen(i, false)
+                                                                        }}>Close</Buttons>&nbsp;&nbsp;&nbsp;</div>
+                                                                    {this.props.wallet || this.props.walletConnect ? <div className="borderTop "><br /><div className="rowC">
+                                                                        <div className="card cardbody float-left mr-3" style={{ width: '300px' }}>
+                                                                            <div className="card-body" style={{ padding: '0.5rem' }}>
+                                                                                <span className="float-left" style={{ color: 'black' }}><small>BAVA earned</small></span><br />
+                                                                                <span className="float-left" style={{ color: 'black', marginTop: '8px' }}><small>{this.props.accountLoading ? <div>{parseFloat(window.web3Ava.utils.fromWei(this.props.pendingSegmentRewardV2_2[0][i], 'Ether')).toLocaleString('en-US', { maximumFractionDigits: 0 })}</div> :
+                                                                                    <div className="ml-3 lds-facebook"><div></div><div></div><div></div></div>}</small></span>
+                                                                                <span className="float-right">
+                                                                                    <Buttons
+                                                                                        variant="success"
+                                                                                        size="sm"
+                                                                                        style={{ minWidth: '80px' }}
+                                                                                        onClick={(event) => {
+                                                                                            event.preventDefault()
+                                                                                            console.log(i)
+                                                                                            this.props.harvest(i, 0, 3)
+                                                                                        }}>
+                                                                                        Harvest
+                                                                                    </Buttons></span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="float-right">
+                                                                            <span className="card cardbody float-right" style={{ width: '650px' }}>
+                                                                                <div className="card-body" style={{ padding: '0.5rem' }}>
+                                                                                    {this.props.lpSegmentAllowanceV2_2[0][i] > 2000000000000000000000000000 ?
+                                                                                        <div><Deposit
+                                                                                            lpBalanceAccount={this.props.lpBalanceAccountV2_2}
+                                                                                            poolSegmentInfo={this.props.poolSegmentInfoV2_2}
+                                                                                            userSegmentInfo={this.props.userSegmentInfoV2_2}
+                                                                                            i={i}
+                                                                                            n='0'
+                                                                                            v='3'
+                                                                                            deposit={this.props.deposit}
+                                                                                            withdraw={this.props.withdraw}
+                                                                                        /></div>
+                                                                                        :
+                                                                                        <div>
+                                                                                            <span className="float-left " style={{ color: 'black' }}><small>Enable Pool</small></span>
+                                                                                            <Buttons className="btn-block"
+                                                                                                variant="outline-primary"
+                                                                                                size="sm"
+                                                                                                style={{ minWidth: '80px' }}
+                                                                                                onClick={(event) => {
+                                                                                                    event.preventDefault()
+                                                                                                    this.props.approve(i, 0, 3)
+                                                                                                }}>
+                                                                                                Approve
+                                                                                            </Buttons>
+                                                                                        </div>}
+                                                                                </div>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                    </div> :
+                                                                        <div className="center borderTop" >
+                                                                            <br /><br />
+                                                                            <span style={{ color: 'black' }}><small>Wallet Connection to Avalanche required</small></span>
+                                                                        </div>}
+                                                                </div> :
+                                                                <div>
+                                                                    <Buttons variant="outline-secondary" size="sm" style={{ width: '60px' }} onClick={() => {
+                                                                        this.clickfarmOpen(i, true)
+                                                                    }}><b>Open</b></Buttons></div>}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )
+                                })}
+
+
+
+
+
+
+
+
+
+
+
+
+
                                 {this.props.bavaPoolSegmentInfo[0].map((bavaPoolSegmentInfo, key) => {
                                     let i = this.props.bavaPoolSegmentInfo[0].indexOf(bavaPoolSegmentInfo)
                                     return (
@@ -137,7 +300,7 @@ class Menu extends Component {
                                                         <div>
                                                             <div>
                                                                 <div className="float-left">
-                                                                    <div className="textMiddle"><b>{this.props.bavaPoolSegmentInfo[0][i].lpName}</b></div>
+                                                                    <div className="textMiddle"><b>{this.props.bavaPoolSegmentInfo[0][i].lpName}(Archived)</b></div>
                                                                     <div className="textGrey exLink0" onClick={() => {
                                                                         window.open(this.props.bavaPoolSegmentInfo[0][i].projectLink, '_blank')
                                                                     }}>Uses: {this.props.bavaPoolSegmentInfo[0][i].platform} <img src={exlink} style={{ marginBottom: "3px" }} height='12' alt="" /></div>
@@ -145,7 +308,7 @@ class Menu extends Component {
                                                                         window.open(this.props.bavaPoolSegmentInfo[0][i].getLPLink, '_blank')
                                                                     }}>Get {this.props.bavaPoolSegmentInfo[0][i].lpName} <img src={exlink} style={{ marginBottom: "3px" }} height='12' alt="" /></div>
                                                                     <div className="textGrey exLink0" onClick={() => {
-                                                                        window.open(this.props.bavaContract, '_blank')
+                                                                        window.open(this.props.bavaPoolSegmentInfo[0][i].farmContract, '_blank')
                                                                     }}>View On Explorer <img src={exlink} style={{ marginBottom: "3px" }} height='12' alt="" /></div>
                                                                 </div>
                                                                 <div className="float-right mr-auto">
@@ -155,11 +318,11 @@ class Menu extends Component {
                                                                                 <th scope="col" width="140">Wallet</th>
                                                                                 <th scope="col" width="140">Deposited</th>
                                                                                 <th scope="col">Growth</th>
-                                                                                <th scope="col">APR &nbsp;<Popup
+                                                                                <th scope="col">APR&nbsp;<Popup
                                                                                     trigger={open => (<span><BsFillQuestionCircleFill style={{ marginBottom: "2px" }} size={10} /></span>)}
                                                                                     on="hover"
-                                                                                    offsetY={-10}
-                                                                                    offsetX={10}
+                                                                                    offsetY={-5}
+                                                                                    offsetX={5}
                                                                                     position="right center"
                                                                                 ><span className="textInfo"><small>APR are affected by the price of BAVA which has not yet stabilized. </small></span>
                                                                                     {/* <span className="textInfo"><small>If it shows 'NaN' or 'Infinity', it means currently the pool has no LP token staked. </small></span> */}
@@ -304,11 +467,11 @@ class Menu extends Component {
                                                                                 <th scope="col" width="140">Wallet</th>
                                                                                 <th scope="col" width="140">Deposited</th>
                                                                                 <th scope="col">Growth</th>
-                                                                                <th scope="col">APR &nbsp;<Popup
+                                                                                <th scope="col">APR&nbsp;<Popup
                                                                                     trigger={open => (<span><BsFillQuestionCircleFill style={{ marginBottom: "2px" }} size={10} /></span>)}
                                                                                     on="hover"
-                                                                                    offsetY={-10}
-                                                                                    offsetX={10}
+                                                                                    offsetY={-5}
+                                                                                    offsetX={5}
                                                                                     position="right center"
                                                                                 ><span className="textInfo"><small>APR are affected by the price of BAVA which has not yet stabilized. </small></span>
                                                                                     {/* <span className="textInfo"><small>If it shows 'NaN' or 'Infinity', it means currently the pool has no LP token staked. </small></span> */}

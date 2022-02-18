@@ -165,11 +165,11 @@ class TraderJoe extends Component {
                                                                                 <th scope="col" width="140">Wallet</th>
                                                                                 <th scope="col" width="140">Deposited</th>
                                                                                 <th scope="col">Growth</th>
-                                                                                <th scope="col">APR &nbsp;<Popup
+                                                                                <th scope="col">APR&nbsp;<Popup
                                                                                     trigger={open => (<span><BsFillQuestionCircleFill style={{ marginBottom: "2px" }} size={10} /></span>)}
                                                                                     on="hover"
-                                                                                    offsetY={-10}
-                                                                                    offsetX={10}
+                                                                                    offsetY={-5}
+                                                                                    offsetX={5}
                                                                                     position="right center"
                                                                                 ><span className="textInfo"><small>APR are affected by the price of BAVA which has not yet stabilized. </small></span>
                                                                                 </Popup></th>
@@ -309,11 +309,11 @@ class TraderJoe extends Component {
                                                                                     <th scope="col" width="140">Wallet</th>
                                                                                     <th scope="col" width="140">Deposited</th>
                                                                                     <th scope="col">Growth</th>
-                                                                                    <th scope="col">APR &nbsp;<Popup
+                                                                                    <th scope="col">APR&nbsp;<Popup
                                                                                         trigger={open => (<span><BsFillQuestionCircleFill style={{ marginBottom: "2px" }} size={10} /></span>)}
                                                                                         on="hover"
-                                                                                        offsetY={-10}
-                                                                                        offsetX={10}
+                                                                                        offsetY={-5}
+                                                                                        offsetX={5}
                                                                                         position="right center"
                                                                                     ><span className="textInfo"><small>APR are affected by the price of BAVA which has not yet stabilized. </small></span>
                                                                                         {/* <span className="textInfo"><small>If it shows 'NaN' or 'Infinity', it means currently the pool has no LP token staked. </small></span> */}
