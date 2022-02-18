@@ -586,12 +586,12 @@ class App extends Component {
       totalTVL += parseInt(tvlArray[n]["tvl"])
       if (this.state.lpTokenPairsymbols[i] == "PGL" || this.state.lpTokenPairsymbols[i] == "PNG") {
         tvl[0][n] = tvlArray[n]["tvl"]
-        apr[0][n] = parseFloat(aprArray[n]["apr"]) + parseFloat(this.state.poolSegmentInfo[0][n].total3rdPartyAPR)
+        apr[0][n] = parseFloat(aprArray[n]["apr"])
         apyDaily[0][n] = apyArray[n]["apyDaily"]
         n += 1
       } else {
         tvl[1][n] = tvlArray[n]["tvl"]
-        apr[1][n] = parseFloat(aprArray[n]["apr"]) + parseFloat(this.state.poolSegmentInfo[1][n].total3rdPartyAPR)
+        apr[1][n] = parseFloat(aprArray[n]["apr"])
         apyDaily[1][n] = apyArray[n]["apyDaily"]
         n += 1
       }
@@ -601,12 +601,12 @@ class App extends Component {
       totalTVL += parseInt(bavatvlArray[b]["tvl"])
       if (this.state.bavaLpTokenPairsymbols[i] == "PGL" || this.state.bavaLpTokenPairsymbols[i] == "PNG") {
         bavatvl[0][b] = bavatvlArray[b]["tvl"]
-        bavaapr[0][b] = parseFloat(bavaaprArray[b]["apr"]) + parseFloat(this.state.bavaPoolSegmentInfo[0][b].total3rdPartyAPR)
+        bavaapr[0][b] = parseFloat(bavaaprArray[b]["apr"])
         bavaapyDaily[0][b] = bavaapyArray[b]["apyDaily"]
         b += 1
       } else {
         bavatvl[1][b] = bavatvlArray[b]["tvl"]
-        bavaapr[1][b] = parseFloat(bavaaprArray[b]["apr"]) + parseFloat(this.state.bavaPoolSegmentInfo[1][b].total3rdPartyAPR)
+        bavaapr[1][b] = parseFloat(bavaaprArray[b]["apr"]) 
         bavaapyDaily[1][b] = bavaapyArray[b]["apyDaily"]
         b += 1
       }
@@ -616,12 +616,12 @@ class App extends Component {
       totalTVL += parseInt(tvlArrayV2_2[c]["tvl"])
       if (this.state.lpTokenPairsymbolsV2_2[i] == "PGL" || this.state.lpTokenPairsymbolsV2_2[i] == "PNG") {
         tvlV2_2[0][c] = tvlArrayV2_2[c]["tvl"]
-        aprV2_2[0][c] = parseFloat(aprArrayV2_2[c]["apr"]) + parseFloat(this.state.poolSegmentInfoV2_2[0][c].total3rdPartyAPR)
+        aprV2_2[0][c] = parseFloat(aprArrayV2_2[c]["apr"])
         apyDailyV2_2[0][c] = apyArrayV2_2[c]["apyDaily"]
         c += 1
       } else {
         tvlV2_2[1][c] = tvlArrayV2_2[c]["tvl"]
-        aprV2_2[1][c] = parseFloat(aprArrayV2_2[c]["apr"]) + parseFloat(this.state.poolSegmentInfoV2_2[0][c].total3rdPartyAPR)
+        aprV2_2[1][c] = parseFloat(aprArrayV2_2[c]["apr"])
         apyDailyV2_2[1][c] = apyArrayV2_2[c]["apyDaily"]
         c += 1
       }

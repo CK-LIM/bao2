@@ -168,10 +168,13 @@ class TraderJoe extends Component {
                                                                                 <th scope="col">APR&nbsp;<Popup
                                                                                     trigger={open => (<span><BsFillQuestionCircleFill style={{ marginBottom: "2px" }} size={10} /></span>)}
                                                                                     on="hover"
-                                                                                    offsetY={-5}
+                                                                                    offsetY={-8}
                                                                                     offsetX={5}
                                                                                     position="right center"
-                                                                                ><span className="textInfo"><small>APR are affected by the price of BAVA which has not yet stabilized. </small></span>
+                                                                                    contentStyle={{ width: '150px' }}
+                                                                                ><div className="textInfo">APR Breakdown: </div><br />
+                                                                                    <div className="textInfo">Baklava   : {parseFloat(this.props.bavaapr[1][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })} %</div><br />
+                                                                                    <div className="textInfo">TraderJoe : {parseFloat(this.props.bavaPoolSegmentInfo[1][i].total3rdPartyAPR).toLocaleString('en-US', { maximumFractionDigits: 0 })} %</div>
                                                                                 </Popup></th>
                                                                                 <th scope="col">APY</th>
                                                                                 <th scope="col">TVL</th>
@@ -312,11 +315,13 @@ class TraderJoe extends Component {
                                                                                     <th scope="col">APR&nbsp;<Popup
                                                                                         trigger={open => (<span><BsFillQuestionCircleFill style={{ marginBottom: "2px" }} size={10} /></span>)}
                                                                                         on="hover"
-                                                                                        offsetY={-5}
+                                                                                        offsetY={-8}
                                                                                         offsetX={5}
                                                                                         position="right center"
-                                                                                    ><span className="textInfo"><small>APR are affected by the price of BAVA which has not yet stabilized. </small></span>
-                                                                                        {/* <span className="textInfo"><small>If it shows 'NaN' or 'Infinity', it means currently the pool has no LP token staked. </small></span> */}
+                                                                                        contentStyle={{ width: '150px' }}
+                                                                                    ><div className="textInfo">APR Breakdown: </div><br />
+                                                                                        <div className="textInfo">Baklava   : {parseFloat(this.props.apr[1][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })} %</div><br />
+                                                                                        <div className="textInfo">TraderJoe : {parseFloat(this.props.poolSegmentInfo[1][i].total3rdPartyAPR).toLocaleString('en-US', { maximumFractionDigits: 0 })} %</div>
                                                                                     </Popup></th>
                                                                                     <th scope="col">APY</th>
                                                                                     <th scope="col">TVL</th>
@@ -330,7 +335,7 @@ class TraderJoe extends Component {
                                                                                         <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
                                                                                     <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.returnRatio[1][i]).toLocaleString('en-US', { maximumFractionDigits: 4 })}</div> : <div className="center">
                                                                                         <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
-                                                                                    <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.apr[1][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })}%</div> : <div className="center">
+                                                                                    <td className="">{this.props.aprloading ? <div>{(parseFloat(this.props.apr[1][i]) + + parseFloat(this.props.poolSegmentInfo[1][i].total3rdPartyAPR)).toLocaleString('en-US', { maximumFractionDigits: 0 })}%</div> : <div className="center">
                                                                                         <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
                                                                                     <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.apyDaily[1][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })}%</div> : <div className="center">
                                                                                         <div className="lds-facebook"><div></div><div></div><div></div></div></div>}</td>
