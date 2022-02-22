@@ -16,18 +16,19 @@ class Menu extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            farmV2_2Open: false
+            farmV2_2Open: []
         }
         this.clickfarmOpen = this.clickfarmOpen.bind(this)
     }
 
     clickfarmOpen(pair, boolean) {
-        this.setState({
-            farmV2_2Open: boolean
-        })
-        // this.setState({ i: pair })  //do ntg, just to push react setstate
+        // this.setState({
+        //     farmV2_2Open[pair]: boolean
+        // })
+        let ntg = 0
+        this.state.farmV2_2Open[pair] = boolean
+        this.setState({ ntg })  //do ntg, just to push react setstate
     }
-
 
     render() {
         return (
@@ -153,7 +154,7 @@ class Menu extends Component {
                                                         <div>
                                                             <div>
                                                                 <div className="float-left">
-                                                                    <div className="textMiddle"><b>{this.props.poolSegmentInfoV2_2[0][i].lpName}(New)</b></div>
+                                                                    <div className="textMiddle"><b>{this.props.poolSegmentInfoV2_2[0][i].lpName}</b></div>
                                                                     <div className="textGrey exLink0" onClick={() => {
                                                                         window.open(this.props.poolSegmentInfoV2_2[0][i].projectLink, '_blank')
                                                                     }}>Uses: {this.props.poolSegmentInfoV2_2[0][i].platform} <img src={exlink} style={{ marginBottom: "3px" }} height='12' alt="" /></div>
@@ -205,7 +206,7 @@ class Menu extends Component {
                                                                 </div>
                                                             </div>
                                                             <br /><br /><br /><br />
-                                                            {this.state.farmV2_2Open ?
+                                                            {this.state.farmV2_2Open[i] ?
                                                                 <div>
                                                                     <div>
                                                                         <Buttons variant="outline-secondary" size="sm" style={{ width: '60px' }} onClick={() => {
@@ -480,7 +481,7 @@ class Menu extends Component {
                                                                                     position="right center"
                                                                                     contentStyle={{ width: '150px' }}
                                                                                 ><div className="textInfo">APR Breakdown: </div><br />
-                                                                                    <div className="textInfo">Baklava   : {parseFloat(this.props.apr[0][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })} %</div><br />
+                                                                                    <div className="textInfo">Baklava : {parseFloat(this.props.apr[0][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })} %</div><br />
                                                                                     <div className="textInfo">Pangolin : {parseFloat(this.props.poolSegmentInfo[0][i].total3rdPartyAPR).toLocaleString('en-US', { maximumFractionDigits: 0 })} %</div>
                                                                                 </Popup></th>
                                                                                 <th scope="col">APY</th>

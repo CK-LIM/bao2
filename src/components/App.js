@@ -158,6 +158,7 @@ class App extends Component {
       let lpTokenAddressesV2_2 = []
 
       let returnRatioArray = this.state.myJsonMongo["ReturnRatio"]
+      let returnRatioArrayV2_2 = this.state.myJsonMongo["ReturnRatioV2_2"]
 
       // UserInfo
       let totalpendingReward = "0"
@@ -213,11 +214,11 @@ class App extends Component {
 
         if (lpTokenPairsymbol == "PGL" || lpTokenPairsymbol == "PNG") {
           poolSegmentInfoV2_2[0][c] = poolInfo
-          returnRatioV2_2[0][c] = returnRatioArray[c]["returnRatio"]
+          returnRatioV2_2[0][c] = returnRatioArrayV2_2[c]["returnRatio"]
           c += 1
         } else {
           poolSegmentInfoV2_2[1][c] = poolInfo
-          returnRatioV2_2[1][c] = returnRatioArray[c]["returnRatio"]
+          returnRatioV2_2[1][c] = returnRatioArrayV2_2[c]["returnRatio"]
           c += 1
         }
       }
@@ -577,10 +578,10 @@ class App extends Component {
     let bavaaprArray = this.state.myJsonMongo["BAVAAPR"]
     let bavaapyArray = this.state.myJsonMongo["BAVAAPY"]
 
-    let responseV2_2 = await this.loadTVLAPRV2_2()
-    let tvlArrayV2_2 =  responseV2_2["TVL"]
-    let aprArrayV2_2 =  responseV2_2["APR"]
-    let apyArrayV2_2 =  responseV2_2["APY"]
+    // let responseV2_2 = await this.loadTVLAPRV2_2()
+    let tvlArrayV2_2 =  this.state.myJsonMongo["TVLV2_2"]
+    let aprArrayV2_2 =  this.state.myJsonMongo["APRV2_2"]
+    let apyArrayV2_2 =  this.state.myJsonMongo["APYV2_2"]
 
     for (let i = 0; i < this.state.poolLength; i++) {
       totalTVL += parseInt(tvlArray[n]["tvl"])
@@ -627,7 +628,7 @@ class App extends Component {
       }
     }
 
-    totalTVL += window.web3Ava.utils.fromWei(this.state.totalStake, 'Ether') * this.state.BAVAPrice
+    totalTVL += (window.web3Ava.utils.fromWei(this.state.totalStake, 'Ether') * this.state.BAVAPrice)
 
     this.setState({ totalTVL })
     this.setState({ tvl })

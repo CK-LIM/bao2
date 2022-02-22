@@ -429,6 +429,7 @@ class TraderJoe extends Component {
                             <div className="center">
                                 <div className="bounceball"></div> &nbsp;
                                 <div className="textLoadingSmall">NETWORK IS Loading...</div>
+                                {/* <div className="textLoadingSmall">Sorry, we're down for scheduled mainenance right now.</div> */}
                             </div>
                         }
                     </div>
