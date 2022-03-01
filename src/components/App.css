@@ -326,12 +326,28 @@ width: 15px;
 
 .comingSoon {
   animation: comingSoon ease 2.5s;
-  animation-delay: 0s;
+  animation-delay: 0.5s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+
+.comingSoon2 {
+  animation: comingSoon2 ease 2.5s;
+  animation-delay: 1.5s;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
 }
 
 @keyframes comingSoon {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes comingSoon2 {
   0% {
     opacity: 0;
   }

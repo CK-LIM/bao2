@@ -37,6 +37,12 @@ class Navb extends Component {
           <div
             style={{ marginLeft: "25px", marginTop: "13px" }}
           ><NavLink className="textSmallBold1" activeStyle={{ fontWeight: "bold", color: "#ffc400" }} to="/claim/">Claim</NavLink></div>
+          <div
+            style={{ marginLeft: "25px", marginTop: "13px" }}
+          ><NavLink className="textSmallBold1" activeStyle={{ fontWeight: "bold", color: "#ffc400" }} to="/litepaper/">LitePaper</NavLink></div>
+          <div
+            style={{ marginLeft: "25px", marginTop: "13px" }}
+          ><NavLink className="textSmallBold1" activeStyle={{ fontWeight: "bold", color: "#ffc400" }} to="/synthetic/">Synthetic</NavLink></div>
         </span>
 
 

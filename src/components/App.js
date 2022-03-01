@@ -23,6 +23,8 @@ import Menu from './Menu'
 import Stake from './Stake'
 import TraderJoe from './TraderJoe'
 import Airdrop from './Airdrop'
+import LitePaper from './LitePaper'
+import Synthetic from './Synthetic'
 
 class App extends Component {
 
@@ -1306,6 +1308,8 @@ async loadWeb3() {
     let traderjoecontent
     let airdropContent
     let stakeContent
+    let litepaperContent
+    let syntheticContent
 
     if (this.state.loading == false) {
       maincontent =
@@ -1485,6 +1489,10 @@ async loadWeb3() {
         getReward={this.getReward}
         exit={this.exit}
       />
+      litepaperContent = <LitePaper 
+      />
+      syntheticContent = <Synthetic
+      />
     }
 
     return (
@@ -1514,6 +1522,8 @@ async loadWeb3() {
                   <Route path="/traderjoe/" exact > {traderjoecontent} </Route>
                   <Route path="/claim/" exact > {airdropContent} </Route>
                   <Route path="/stake/" exact > {stakeContent} </Route>
+                  <Route path="/litepaper" exact > {litepaperContent} </Route>
+                  <Route path="/synthetic" exact > {syntheticContent} </Route>
                 </Switch>
               </main>
             </div>
