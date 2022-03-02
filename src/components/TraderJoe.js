@@ -147,7 +147,7 @@ class TraderJoe extends Component {
                                                         <div>
                                                             <div>
                                                                 <div className="float-left">
-                                                                    <div className="textMiddle"><b>{this.props.bavaPoolSegmentInfo[1][i].lpName}</b></div>
+                                                                    <div className="textMiddle"><b>{this.props.bavaPoolSegmentInfo[1][i].lpName}{this.props.bavaPoolSegmentInfo[1][i].status}</b></div>
                                                                     <div className="textGrey exLink0" onClick={() => {
                                                                         window.open(this.props.bavaPoolSegmentInfo[1][i].projectLink, '_blank')
                                                                     }}>Uses: {this.props.bavaPoolSegmentInfo[1][i].platform} <img src={exlink} style={{ marginBottom: "3px" }} height='12' alt="" /></div>
@@ -294,7 +294,7 @@ class TraderJoe extends Component {
                                                             <div>
                                                                 <div>
                                                                     <div className="float-left">
-                                                                        <div className="textMiddle"><b>{this.props.poolSegmentInfo[1][i].lpName}</b></div>
+                                                                        <div className="textMiddle"><b>{this.props.poolSegmentInfo[1][i].lpName}{this.props.poolSegmentInfo[1][i].status}</b></div>
                                                                         <div className="textGrey exLink0" onClick={() => {
                                                                             window.open(this.props.poolSegmentInfo[1][i].projectLink, '_blank')
                                                                         }}>Uses: {this.props.poolSegmentInfo[1][i].platform} <img src={exlink} style={{ marginBottom: "3px" }} height='12' alt="" /></div>

@@ -154,7 +154,7 @@ class Menu extends Component {
                                                         <div>
                                                             <div>
                                                                 <div className="float-left">
-                                                                    <div className="textMiddle"><b>{this.props.poolSegmentInfoV2_2[0][i].lpName}</b></div>
+                                                                    <div className="textMiddle"><b>{this.props.poolSegmentInfoV2_2[0][i].lpName}{this.props.poolSegmentInfoV2_2[0][i].status}</b></div>
                                                                     <div className="textGrey exLink0" onClick={() => {
                                                                         window.open(this.props.poolSegmentInfoV2_2[0][i].projectLink, '_blank')
                                                                     }}>Uses: {this.props.poolSegmentInfoV2_2[0][i].platform} <img src={exlink} style={{ marginBottom: "3px" }} height='12' alt="" /></div>
@@ -304,7 +304,7 @@ class Menu extends Component {
                                                         <div>
                                                             <div>
                                                                 <div className="float-left">
-                                                                    <div className="textMiddle"><b>{this.props.bavaPoolSegmentInfo[0][i].lpName}(Archived)</b></div>
+                                                                    <div className="textMiddle"><b>{this.props.bavaPoolSegmentInfo[0][i].lpName}{this.props.bavaPoolSegmentInfo[0][i].status}</b></div>
                                                                     <div className="textGrey exLink0" onClick={() => {
                                                                         window.open(this.props.bavaPoolSegmentInfo[0][i].projectLink, '_blank')
                                                                     }}>Uses: {this.props.bavaPoolSegmentInfo[0][i].platform} <img src={exlink} style={{ marginBottom: "3px" }} height='12' alt="" /></div>
@@ -455,7 +455,7 @@ class Menu extends Component {
                                                         <div>
                                                             <div>
                                                                 <div className="float-left">
-                                                                    <div className="textMiddle"><b>{this.props.poolSegmentInfo[0][i].lpName}</b></div>
+                                                                    <div className="textMiddle"><b>{this.props.poolSegmentInfo[0][i].lpName}{this.props.poolSegmentInfo[0][i].status}</b></div>
                                                                     <div className="textGrey exLink0" onClick={() => {
                                                                         window.open(this.props.poolSegmentInfo[0][i].projectLink, '_blank')
                                                                     }}>Uses: {this.props.poolSegmentInfo[0][i].platform} <img src={exlink} style={{ marginBottom: "3px" }} height='12' alt="" /></div>
