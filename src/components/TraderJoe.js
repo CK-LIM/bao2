@@ -357,7 +357,7 @@ class TraderJoe extends Component {
                                                                             <div className="card cardbody float-left mr-3" style={{ width: '300px' }}>
                                                                                 <div className="card-body" style={{ padding: '0.5rem' }}>
                                                                                     <span className="float-left" style={{ color: 'black' }}><small>BAVA earned</small></span><br />
-                                                                                    <span className="float-left" style={{ color: 'black', marginTop: '8px' }}><small>{this.props.accountLoading ? <div>{parseFloat(window.web3Ava.utils.fromWei(this.props.pendingSegmentReward[1][i], 'Ether')).toFixed(3)}</div> :
+                                                                                    <span className="float-left" style={{ color: 'black', marginTop: '8px' }}><small>{this.props.accountLoading ? <div>{parseFloat(window.web3Ava.utils.fromWei(this.props.pendingSegmentReward[1][i], 'Ether')).toLocaleString('en-US', { maximumFractionDigits: 0 })}</div> :
                                                                                         <div className="ml-3 lds-facebook"><div></div><div></div><div></div></div>}</small></span>
                                                                                     <span className="float-right">
                                                                                         <Buttons

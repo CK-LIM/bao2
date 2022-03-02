@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "28a73f2c18aa3a817050",
+    "revision": "fda696c52e16db745059",
     "url": "/static/css/main.bf2900a5.chunk.css"
   },
   {
-    "revision": "28a73f2c18aa3a817050",
-    "url": "/static/js/main.28a73f2c.chunk.js"
+    "revision": "fda696c52e16db745059",
+    "url": "/static/js/main.fda696c5.chunk.js"
   },
   {
     "revision": "218ccbad3c4cd6b2f601",
@@ -76,7 +76,7 @@ self.__precacheManifest = [
     "url": "/static/media/Litepaper_Protocol.e76b451a.pdf"
   },
   {
-    "revision": "272b40ac1dc940a264365fb2dc391cf6",
+    "revision": "667b9b2753710fde14e52c1ff050f5f5",
     "url": "/index.html"
   }
 ];
