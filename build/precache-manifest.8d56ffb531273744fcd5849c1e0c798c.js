@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "cabe894b2363aa5c2cd4",
+    "revision": "4019c95ff3dc430e7285",
     "url": "/static/css/main.bf2900a5.chunk.css"
   },
   {
-    "revision": "cabe894b2363aa5c2cd4",
-    "url": "/static/js/main.cabe894b.chunk.js"
+    "revision": "4019c95ff3dc430e7285",
+    "url": "/static/js/main.4019c95f.chunk.js"
   },
   {
     "revision": "218ccbad3c4cd6b2f601",
@@ -72,11 +72,11 @@ self.__precacheManifest = [
     "url": "/static/media/baklava_mainBottom.06deafb4.png"
   },
   {
-    "revision": "e76b451ab17e76e86adf13c425168913",
-    "url": "/static/media/Litepaper_Protocol.e76b451a.pdf"
+    "revision": "55022142192d81bd57e7a601fb4f0e8a",
+    "url": "/static/media/Litepaper_Protocol.55022142.pdf"
   },
   {
-    "revision": "40ce2037ba3d83a1683551a67f283cda",
+    "revision": "00274e1fb4cf5a1bb79e9cd499e82909",
     "url": "/index.html"
   }
 ];

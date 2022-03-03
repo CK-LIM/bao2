@@ -1,7 +1,7 @@
 {
   "main.css": "/static/css/main.bf2900a5.chunk.css",
-  "main.js": "/static/js/main.cabe894b.chunk.js",
-  "main.js.map": "/static/js/main.cabe894b.chunk.js.map",
+  "main.js": "/static/js/main.4019c95f.chunk.js",
+  "main.js.map": "/static/js/main.4019c95f.chunk.js.map",
   "static/css/1.e58aabf8.chunk.css": "/static/css/1.e58aabf8.chunk.css",
   "static/js/1.218ccbad.chunk.js": "/static/js/1.218ccbad.chunk.js",
   "static/js/1.218ccbad.chunk.js.map": "/static/js/1.218ccbad.chunk.js.map",
@@ -20,10 +20,10 @@
   "static/media/coin98.png": "/static/media/coin98.06f995b3.png",
   "static/media/walletconnect-logo.svg": "/static/media/walletconnect-logo.37f2bc6e.svg",
   "static/media/baklava_mainBottom.png": "/static/media/baklava_mainBottom.06deafb4.png",
-  "static/media/Litepaper_Protocol.pdf": "/static/media/Litepaper_Protocol.e76b451a.pdf",
-  "static/css/1.e58aabf8.chunk.css.map": "/static/css/1.e58aabf8.chunk.css.map",
+  "static/media/Litepaper_Protocol.pdf": "/static/media/Litepaper_Protocol.55022142.pdf",
   "static/css/main.bf2900a5.chunk.css.map": "/static/css/main.bf2900a5.chunk.css.map",
+  "static/css/1.e58aabf8.chunk.css.map": "/static/css/1.e58aabf8.chunk.css.map",
   "index.html": "/index.html",
-  "precache-manifest.145f78242adab8702b08b7898a8ae2c0.js": "/precache-manifest.145f78242adab8702b08b7898a8ae2c0.js",
+  "precache-manifest.8d56ffb531273744fcd5849c1e0c798c.js": "/precache-manifest.8d56ffb531273744fcd5849c1e0c798c.js",
   "service-worker.js": "/service-worker.js"
 }
