@@ -11,11 +11,9 @@ class Main extends Component {
   render() {
     return (
       <div id="content" className="mt-5">
-        <br />
         <div className="text-center">
           <img src={baklava} width="200" height="200" className="" alt="" />
         </div>
-
         <div className="center text" >BAKLAVA SPACE</div>
         <div className="center textMiddleBold" ><b>Baklava stands for "layered, rich, and sweet". </b></div>
         <div className="center textMiddle">Baklava Space is designed as a combination of automated yield farming</div>
@@ -28,7 +26,7 @@ class Main extends Component {
             window.open(`https://app.pangolin.exchange/`, '_blank')
           }} />
         </div>
-        <img src={baklava_mainBottom} height="10%" width="100%" className="navbar navbar-dark fixed-bottom flex-md-nowrap p-0" alt="" />
+        <img src={baklava_mainBottom} height="8%" width="100%" className="navbar navbar-dark fixed-bottom flex-md-nowrap p-0" alt="" />
         <br />
       </div>
 
