@@ -27,9 +27,7 @@ class Main extends Component {
           }} />
         </div>
         <img src={baklava_mainBottom} height="8%" width="100%" className="navbar navbar-dark fixed-bottom flex-md-nowrap p-0" alt="" />
-        <br />
       </div>
-
     );
   }
 }
