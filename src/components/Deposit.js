@@ -123,8 +123,7 @@ class Deposit extends Component {
                 required />
               <div className="input-group-append">
                 <div className="input-group-text cardbody" style={{ color: 'silver' }}>
-                  {this.props.poolSegmentInfo[this.props.n][this.props.i].platform == 'Pangolin' ? <img src={pangolin} height='25' className="mr-1" alt="" /> : <img src={joe} height='28' className="mr-1" alt="" />}
-
+                  {this.props.poolSegmentInfo[this.props.n][this.props.i].platform == 'Pangolin' ? <img src={pangolin} height='30' className="" alt="" /> : <img src={joe} height='30' className="" alt="" />}
                 </div>
               </div>
             </div >

@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "c06238326d49a4e18398",
+    "revision": "730bdecec52b12e66b4d",
     "url": "/static/css/main.bf2900a5.chunk.css"
   },
   {
-    "revision": "c06238326d49a4e18398",
-    "url": "/static/js/main.c0623832.chunk.js"
+    "revision": "730bdecec52b12e66b4d",
+    "url": "/static/js/main.730bdece.chunk.js"
   },
   {
     "revision": "218ccbad3c4cd6b2f601",
@@ -28,8 +28,8 @@ self.__precacheManifest = [
     "url": "/static/media/joe.7fa2ed8e.png"
   },
   {
-    "revision": "9e9f2844fd030a3542404da8278eb088",
-    "url": "/static/media/pangolin.9e9f2844.png"
+    "revision": "915ca3a1d31934150b345e4d72fcdb58",
+    "url": "/static/media/pangolin.915ca3a1.png"
   },
   {
     "revision": "fd1275fe3bafe8f24cb18ffd7f23f678",
@@ -76,7 +76,7 @@ self.__precacheManifest = [
     "url": "/static/media/Litepaper_Protocol.55022142.pdf"
   },
   {
-    "revision": "9cc5fa3c520aae6b782d96f5428467e5",
+    "revision": "5c691bd8b9b67e69e93e9d7d67b28bb9",
     "url": "/index.html"
   }
 ];
