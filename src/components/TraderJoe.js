@@ -475,19 +475,19 @@ class TraderJoe extends Component {
 
                 <div className="center" style={{ marginTop: "15px" }}>
                     <div className="rowC">
-                        <div className="exLink0" style={{ marginRight: '35px' }} onClick={() => {
+                        <div className="exLink0" style={{ marginRight: '40px' }} onClick={() => {
                             window.open(`https://baklavaspace.gitbook.io/`, '_blank')
                         }}><div className="center mb-2"><img src={gitbook} width="20" height="20" align="right" alt="" /></div>
                         </div>
-                        <div className="exLink0" style={{ marginRight: '35px' }} onClick={() => {
+                        <div className="exLink0" style={{ marginRight: '40px' }} onClick={() => {
                             window.open(`https://twitter.com/baklavaspace`, '_blank')
                         }}><div className="center mb-2"><img src={twitter} width="20" height="20" align="right" alt="" /></div>
                         </div>
-                        <div className="exLink0" style={{ marginRight: '35px' }} onClick={() => {
+                        <div className="exLink0" style={{ marginRight: '40px' }} onClick={() => {
                             window.open(`https://medium.com/@baklavaspace`, '_blank')
                         }}><div className="center mb-2"><img src={medium} width="20" height="20" align="right" alt="" /></div>
                         </div>
-                        <div className="exLink0" style={{ marginRight: '35px' }} onClick={() => {
+                        <div className="exLink0" style={{ marginRight: '40px' }} onClick={() => {
                             window.open(`https://github.com/baklavaspace`, '_blank')
                         }}><div className="center mb-2"><img src={git} width="20" height="20" align="right" alt="" /></div>
                         </div>
