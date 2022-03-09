@@ -209,7 +209,7 @@ class TraderJoe extends Component {
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
                                                                                 <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.bavaapr[1][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })}%</div> : <div className="center">
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
-                                                                                <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.bavaapyDaily[1][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })}%</div> : <div className="center">
+                                                                                <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.bavaapyDaily[1][i])>1000000 ? <div>&#x3e;100,000%</div> : <div>{parseFloat(this.props.bavaapyDaily[1][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })}%</div>}</div> : <div className="center">
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>}</td>
                                                                                 <td className="">$ {parseFloat(this.props.bavatvl[1][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })} </td>
                                                                             </tr>
@@ -365,7 +365,7 @@ class TraderJoe extends Component {
                                                                                         <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
                                                                                     <td className="">{this.props.aprloading ? <div>{(parseFloat(this.props.apr[1][i]) + + parseFloat(this.props.poolSegmentInfo[1][i].total3rdPartyAPR)).toLocaleString('en-US', { maximumFractionDigits: 0 })}%</div> : <div className="center">
                                                                                         <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
-                                                                                    <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.apyDaily[1][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })}%</div> : <div className="center">
+                                                                                    <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.apyDaily[1][i])>1000000 ? <div>&#x3e;100,000%</div> : <div>{parseFloat(this.props.apyDaily[1][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })}%</div>}</div> : <div className="center">
                                                                                         <div className="lds-facebook"><div></div><div></div><div></div></div></div>}</td>
                                                                                     <td className="">$ {parseFloat(this.props.tvl[1][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })} </td>
                                                                                 </tr>
