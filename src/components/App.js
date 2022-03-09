@@ -1861,7 +1861,7 @@ class App extends Component {
             networkName={this.state.networkName}
             walletConnect={this.state.walletConnect}
           />
-          <div className="container-fluid mt-4">
+          <div className="container-fluid mt-2">
             <div className="row">
               <main role="main" className="content ml-auto mr-auto" >
                 <Switch>
