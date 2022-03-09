@@ -29,6 +29,7 @@ import TraderJoe from './TraderJoe'
 import Airdrop from './Airdrop'
 import LitePaper from './LitePaper'
 import Synthetic from './Synthetic'
+import './App.css';
 
 class App extends Component {
 
@@ -189,7 +190,7 @@ class App extends Component {
       this.setState({ totalpendingReward: totalpendingReward.toLocaleString('fullwide', { useGrouping: false }) })
       this.setState({ pendingSegmentReward })
 
-      let responseV2_3 = [] 
+      let responseV2_3 = []
       for (let i = 0; i < this.state.poolLengthV2_3; i++) {
         responseV2_3[i] = this.loadFarmReinvest(i)
       }
@@ -735,12 +736,12 @@ class App extends Component {
       if (this.state.lpTokenPairsymbols[i] == "PGL" || this.state.lpTokenPairsymbols[i] == "PNG") {
         tvl[0][n] = tvlArray[n]["tvl"]
         apr[0][n] = parseFloat(aprArray[n]["apr"])
-        apyDaily[0][n] = ((1 + (apr[0][n] * 0.05 + parseFloat(this.state.poolSegmentInfo[0][n].total3rdPartyAPR))/36500)**365 -1) * 100 + apr[0][n]
+        apyDaily[0][n] = ((1 + (apr[0][n] * 0.05 + parseFloat(this.state.poolSegmentInfo[0][n].total3rdPartyAPR)) / 36500) ** 365 - 1) * 100 + apr[0][n]
         n += 1
       } else {
         tvl[1][n] = tvlArray[n]["tvl"]
         apr[1][n] = parseFloat(aprArray[n]["apr"])
-        apyDaily[1][n] = ((1 + (apr[1][n] * 0.05 + parseFloat(this.state.poolSegmentInfo[1][n].total3rdPartyAPR))/36500)**365 -1) * 100 + apr[1][n]
+        apyDaily[1][n] = ((1 + (apr[1][n] * 0.05 + parseFloat(this.state.poolSegmentInfo[1][n].total3rdPartyAPR)) / 36500) ** 365 - 1) * 100 + apr[1][n]
         n += 1
       }
     }
@@ -750,12 +751,12 @@ class App extends Component {
       if (this.state.bavaLpTokenPairsymbols[i] == "PGL" || this.state.bavaLpTokenPairsymbols[i] == "PNG") {
         bavatvl[0][b] = bavatvlArray[b]["tvl"]
         bavaapr[0][b] = parseFloat(bavaaprArray[b]["apr"])
-        bavaapyDaily[0][b] = ((1 + (bavaapr[0][b] * 0.05 + parseFloat(this.state.bavaPoolSegmentInfo[0][b].total3rdPartyAPR))/36500)**365 -1) * 100 + bavaapr[0][b]
+        bavaapyDaily[0][b] = ((1 + (bavaapr[0][b] * 0.05 + parseFloat(this.state.bavaPoolSegmentInfo[0][b].total3rdPartyAPR)) / 36500) ** 365 - 1) * 100 + bavaapr[0][b]
         b += 1
       } else {
         bavatvl[1][b] = bavatvlArray[b]["tvl"]
         bavaapr[1][b] = parseFloat(bavaaprArray[b]["apr"])
-        bavaapyDaily[1][b] = ((1 + (bavaapr[1][b] * 0.05 + parseFloat(this.state.bavaPoolSegmentInfo[1][b].total3rdPartyAPR))/36500)**365 -1) * 100 + bavaapr[1][b]
+        bavaapyDaily[1][b] = ((1 + (bavaapr[1][b] * 0.05 + parseFloat(this.state.bavaPoolSegmentInfo[1][b].total3rdPartyAPR)) / 36500) ** 365 - 1) * 100 + bavaapr[1][b]
         b += 1
       }
     }
@@ -765,12 +766,12 @@ class App extends Component {
       if (this.state.lpTokenPairsymbolsV2_2[i] == "PGL" || this.state.lpTokenPairsymbolsV2_2[i] == "PNG") {
         tvlV2_2[0][c] = tvlArrayV2_2[c]["tvl"]
         aprV2_2[0][c] = parseFloat(aprArrayV2_2[c]["apr"])
-        apyDailyV2_2[0][c] = ((1 + (aprV2_2[0][c] * 0.05 + parseFloat(this.state.poolSegmentInfoV2_2[0][c].total3rdPartyAPR))/36500)**365 -1) * 100 + aprV2_2[0][c]
+        apyDailyV2_2[0][c] = ((1 + (aprV2_2[0][c] * 0.05 + parseFloat(this.state.poolSegmentInfoV2_2[0][c].total3rdPartyAPR)) / 36500) ** 365 - 1) * 100 + aprV2_2[0][c]
         c += 1
       } else {
         tvlV2_2[1][c] = tvlArrayV2_2[c]["tvl"]
         aprV2_2[1][c] = parseFloat(aprArrayV2_2[c]["apr"])
-        apyDailyV2_2[1][c] = ((1 + (aprV2_2[1][c] * 0.05 + parseFloat(this.state.poolSegmentInfoV2_2[1][c].total3rdPartyAPR))/36500)**365 -1) * 100 + + aprV2_2[1][c]
+        apyDailyV2_2[1][c] = ((1 + (aprV2_2[1][c] * 0.05 + parseFloat(this.state.poolSegmentInfoV2_2[1][c].total3rdPartyAPR)) / 36500) ** 365 - 1) * 100 + + aprV2_2[1][c]
         c += 1
       }
     }
@@ -780,12 +781,12 @@ class App extends Component {
       if (this.state.lpTokenPairsymbolsV2_3[i] == "PGL" || this.state.lpTokenPairsymbolsV2_3[i] == "PNG") {
         tvlV2_3[0][d] = tvlArrayV2_3[d]["tvl"]
         aprV2_3[0][d] = parseFloat(aprArrayV2_3[d]["apr"])
-        apyDailyV2_3[0][d] = ((1 + (aprV2_3[0][d] * 0.05 + parseFloat(this.state.poolSegmentInfoV2_3[0][d].total3rdPartyAPR))/36500)**365 -1) * 100 + aprV2_3[0][d]
+        apyDailyV2_3[0][d] = ((1 + (aprV2_3[0][d] * 0.05 + parseFloat(this.state.poolSegmentInfoV2_3[0][d].total3rdPartyAPR)) / 36500) ** 365 - 1) * 100 + aprV2_3[0][d]
         d += 1
       } else {
         tvlV2_3[1][d] = tvlArrayV2_3[d]["tvl"]
         aprV2_3[1][d] = parseFloat(aprArrayV2_3[d]["apr"])
-        apyDailyV2_3[1][d] = ((1 + (aprV2_3[1][d] * 0.05 + parseFloat(this.state.poolSegmentInfoV2_3[1][d].total3rdPartyAPR))/36500)**365 -1) * 100 + aprV2_3[1][d]
+        apyDailyV2_3[1][d] = ((1 + (aprV2_3[1][d] * 0.05 + parseFloat(this.state.poolSegmentInfoV2_3[1][d].total3rdPartyAPR)) / 36500) ** 365 - 1) * 100 + aprV2_3[1][d]
         d += 1
       }
     }
@@ -1615,22 +1616,22 @@ class App extends Component {
 
     if (this.state.loading == false) {
       mainContent =
-        <div className="wrap">
+        <div className="wrap" style={{ marginBottom: '300px' }}>
           <div className="loading">
             <div className="bounceball"></div>
             <div className="textLoading">NETWORK IS Loading...</div>
           </div>
         </div>
       menuContent =
-        <div className="wrap">
-          <div className="loading">
-            <div className="bounceball"></div>
+        <div className="wrap" style={{ marginBottom: '300px' }}>
+          <div style={{ marginBottom: '300px' }}>
+            <div className="bounceball" style={{ marginBottom: '300px' }}></div>
             <div className="textLoading">NETWORK IS Loading...</div>
           </div>
         </div>
       traderjoeContent =
-        <div className="wrap">
-          <div className="loading">
+        <div className="wrap" style={{ marginBottom: '300px' }}>
+          <div className="loading" style={{ marginBottom: '300px' }}>
             <div className="bounceball"></div>
             <div className="textLoading">NETWORK IS Loading...</div>
           </div>
@@ -1863,7 +1864,7 @@ class App extends Component {
           />
           <div className="container-fluid mt-2">
             <div className="row">
-              <main role="main" className="content ml-auto mr-auto" >
+              <main role="main" className="content ml-auto mr-auto">
                 <Switch>
                   <Route path="/" exact > {mainContent} </Route>
                   <Route path="/home" exact > {mainContent} </Route>
