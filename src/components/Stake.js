@@ -5,7 +5,13 @@ import logo from '../logo.png'
 import Buttons from 'react-bootstrap/Button'
 import 'reactjs-popup/dist/index.css';
 import './App.css';
-
+import Popup from 'reactjs-popup';
+import baklava from '../baklava.png'
+import discord from '../discord.svg'
+import twitter from '../twitter.svg'
+import medium from '../medium.svg'
+import git from '../github.svg'
+import gitbook from '../docs.svg'
 
 class Stake extends Component {
 
@@ -185,9 +191,13 @@ class Stake extends Component {
                             </div> :
                             <div className="card-body">
                                 <div className="center">
-                                    <Buttons className="textDarkMedium" variant="outline" size="lg" onClick={async () => {
-                                        await this.props.connectMetamask()
-                                    }}>Connect to display</Buttons></div>
+                                    {this.props.farmloading ?
+                                        <Buttons className="textDarkMedium" variant="outline" size="lg" onClick={async () => {
+                                            await this.props.connectMetamask()
+                                        }}>Connect to display</Buttons> :
+                                        <Buttons className="textDarkMedium1" variant="outline" size="lg" >Connect to display</Buttons>
+                                    }
+                                </div>
                             </div>
                         }
                     </div>
@@ -287,8 +297,88 @@ class Stake extends Component {
                     </div> :
                     <div>
                     </div>}
+                    <br /><br /><br /><br />
+                <div className="rowS center">
+                    <img className="center" src={baklava} width="30" alt="" />&nbsp;&nbsp;
+                    <div className="center" style={{ color: "black", fontSize: '20px', marginRight: "25px" }}><b>BAKLAVA.SPACE</b></div>
+                </div>
+                <div className="center" style={{ color: "black", fontSize: '14px', marginTop: "5px" }}>Tools for defi users.</div>
+                <div className="center" style={{ color: "black", fontSize: '14px', marginTop: "5px" }}>Baklava Farms autocompound farm rewards.</div>
+                <div className="center" style={{ color: "black", fontSize: '14px', marginTop: "5px" }}>Use at your own risk.</div>
 
-                <br /><br /><br /><br /><br /><br />
+                <div className="center" style={{ marginTop: "20px" }}>
+                    <div className="rowC" style={{ marginTop: "8px" }}>
+                        <div className="exLink0" style={{ marginRight: '40px' }} onClick={() => {
+                            window.open(`https://baklavaspace.gitbook.io/`, '_blank')
+                        }}><Popup
+                            trigger={open => (
+                                <img src={gitbook} width="20" height="20" align="right" alt="" />
+                            )}
+                            on="hover"
+                            offsetY={0}
+                            offsetX={0}
+                            position="bottom center"
+                            contentStyle={{ width: '75px' }}
+                        ><span className="textInfo">Gitbook</span>
+                            </Popup>
+                        </div>
+                        <div className="exLink0" style={{ marginRight: '40px' }} onClick={() => {
+                            window.open(`https://twitter.com/baklavaspace`, '_blank')
+                        }}><Popup
+                            trigger={open => (
+                                <img src={twitter} width="20" height="20" align="right" alt="" />
+                            )}
+                            on="hover"
+                            offsetY={0}
+                            offsetX={0}
+                            position="bottom center"
+                            contentStyle={{ width: '70px' }}
+                        ><span className="textInfo">Twitter</span>
+                            </Popup>
+                        </div>
+                        <div className="exLink0" style={{ marginRight: '40px' }} onClick={() => {
+                            window.open(`https://medium.com/@baklavaspace`, '_blank')
+                        }}><Popup
+                            trigger={open => (
+                                <img src={medium} width="20" height="20" align="right" alt="" />
+                            )}
+                            on="hover"
+                            offsetY={0}
+                            offsetX={0}
+                            position="bottom center"
+                            contentStyle={{ width: '75px' }}
+                        ><span className="textInfo">Medium</span>
+                            </Popup>
+                        </div>
+                        <div className="exLink0" style={{ marginRight: '40px' }} onClick={() => {
+                            window.open(`https://github.com/baklavaspace`, '_blank')
+                        }}><Popup
+                            trigger={open => (
+                                <img src={git} width="20" height="20" align="right" alt="" />
+                            )}
+                            on="hover"
+                            offsetY={0}
+                            offsetX={0}
+                            position="bottom center"
+                            contentStyle={{ width: '40px' }}
+                        ><span className="textInfo">Git</span>
+                            </Popup>
+                        </div>
+                        <div className="exLink0" style={{ marginRight: '0px' }} onClick={() => {
+                            window.open(`https://discord.gg/E6aYX5ukAw`, '_blank')
+                        }}><Popup
+                            trigger={open => (
+                                <img src={discord} width="20" height="20" align="right" alt="" />
+                            )}
+                            on="hover"
+                            offsetY={0}
+                            offsetX={0}
+                            position="bottom center"
+                            contentStyle={{ width: '75px' }}
+                        ><span className="textInfo">Discord</span>
+                            </Popup>
+                        </div>
+                    </div></div><br /><br />
             </div >
         );
     }

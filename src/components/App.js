@@ -8,18 +8,22 @@ import IPancakePair from '../abis/Interface/IPancakePair.json'
 import BavaToken from '../abis/BavaToken.json'
 import BavaMasterFarmer from '../abis/BavaMasterFarmerV2.json'
 import BavaMasterFarmerV1 from '../abis/BavaMasterFarmerV1.json'
+import BavaMasterFarmerV2_2 from '../abis/BavaMasterFarmerV2_2.json'
+import BavaMasterFarmerV2_3 from '../abis/BavaMasterFarmerV2_3.json'
+import BavaCompoundPool from '../abis/BavaCompoundPool.json'
 import BavaAirdrop from '../abis/BavaAirdrop.json'
 import StakingRewards from '../abis/StakingRewards.json'
-import BavaMasterFarmerV2_2 from '../abis/BavaMasterFarmerV2_2.json'
 
 import Farm from './tokens_config/farm.json'
 import FarmV1 from './tokens_config/farmV1.json'
 import FarmV2_2 from './tokens_config/farmV2_2.json'
+import FarmV2_3 from './tokens_config/farmV2_3.json'
 import AirdropList from './tokens_config/airdrop.json'
 
 import Navb from './Navbar'
 import Main from './Main'
 import Menu from './Menu'
+import MenuV2 from './MenuV2'
 import Stake from './Stake'
 import TraderJoe from './TraderJoe'
 import Airdrop from './Airdrop'
@@ -46,6 +50,8 @@ class App extends Component {
     this.setState({ farmBava })
     const farmV2_2 = FarmV2_2.farm
     this.setState({ farmV2_2 })
+    const farmV2_3 = FarmV2_3.farm
+    this.setState({ farmV2_3 })
     const airdropList = AirdropList
     this.setState({ airdropList })
   }
@@ -102,13 +108,16 @@ class App extends Component {
     const bavaMasterFarmerV1 = new web3Ava.eth.Contract(BavaMasterFarmerV1.abi, process.env.REACT_APP_bavamasterfarmv1_address)
     const bavaAirdrop = new web3Ava.eth.Contract(BavaAirdrop.abi, process.env.REACT_APP_airdrop_address)
     const bavaStake = new web3Ava.eth.Contract(StakingRewards.abi, process.env.REACT_APP_staking_rewards_address)
-    const bavaMasterFarmerV2_2 = new web3Ava.eth.Contract(BavaMasterFarmerV2_2.abi,process.env.REACT_APP_bavamasterfarmv2_2address)
+    const bavaMasterFarmerV2_2 = new web3Ava.eth.Contract(BavaMasterFarmerV2_2.abi, process.env.REACT_APP_bavamasterfarmv2_2address)
+    const bavaMasterFarmerV2_3 = new web3Ava.eth.Contract(BavaMasterFarmerV2_3.abi, process.env.REACT_APP_bavamasterfarmv2_3address)
+
     this.setState({ bavaToken })
     this.setState({ bavaMasterFarmer })
     this.setState({ bavaMasterFarmerV1 })
     this.setState({ bavaAirdrop })
     this.setState({ bavaStake })
     this.setState({ bavaMasterFarmerV2_2 })
+    this.setState({ bavaMasterFarmerV2_3 })
 
     let response0 = this.loadPoolLength()
     let response1 = this.loadBavaPoolLength()
@@ -119,6 +128,7 @@ class App extends Component {
     let response7 = this.loadTotalStake()
     let response8 = this.loadRewardRate()
     let response9 = this.loadPoolLengthV2_2()
+    let response10 = this.loadPoolLengthV2_3()
 
     let poolLength = await response0
     let bavaPoolLength = await response1
@@ -129,6 +139,7 @@ class App extends Component {
     let totalStake = await response7
     let rewardRate = await response8
     let poolLengthV2_2 = await response9
+    let poolLengthV2_3 = await response10
 
     this.setState({ poolLength })
     this.setState({ bavaPoolLength })
@@ -139,28 +150,35 @@ class App extends Component {
     this.setState({ airdropStart })
     this.setState({ airdropEnd })
     this.setState({ poolLengthV2_2 })
+    this.setState({ poolLengthV2_3 })
 
     if (this.state.wallet == false && this.state.walletConnect == false) {
 
       let bavaPoolSegmentInfo = [[], []]
       let poolSegmentInfo = [[], []]
       let poolSegmentInfoV2_2 = [[], []]
+      let poolSegmentInfoV2_3 = [[], []]
       let returnRatio = [[], []]
       let bavaReturnRatio = [[], []]
       let returnRatioV2_2 = [[], []]
+      let returnRatioV2_3 = [[], []]
+      let reinvestAmount = [[], []]
       let n = 0
       let b = 0
       let c = 0
+      let d = 0
 
       let bavaLpTokenPairsymbols = []
-      let bavaLpTokenAddresses = []
       let lpTokenPairsymbols = []
-      let lpTokenAddresses = []
       let lpTokenPairsymbolsV2_2 = []
+      let lpTokenPairsymbolsV2_3 = []
+      let bavaLpTokenAddresses = []
+      let lpTokenAddresses = []
       let lpTokenAddressesV2_2 = []
-
+      let lpTokenAddressesV2_3 = []
       let returnRatioArray = this.state.myJsonMongo["ReturnRatio"]
       let returnRatioArrayV2_2 = this.state.myJsonMongo["ReturnRatioV2_2"]
+      let returnRatioArrayV2_3 = this.state.myJsonMongo["ReturnRatioV2_3"]
 
       // UserInfo
       let totalpendingReward = "0"
@@ -170,6 +188,31 @@ class App extends Component {
       this.setState({ bavaTokenBalance: bavaTokenBalance.toString() })
       this.setState({ totalpendingReward: totalpendingReward.toLocaleString('fullwide', { useGrouping: false }) })
       this.setState({ pendingSegmentReward })
+
+      let responseV2_3 = [] 
+      for (let i = 0; i < this.state.poolLengthV2_3; i++) {
+        responseV2_3[i] = this.loadFarmReinvest(i)
+      }
+
+      for (let i = 0; i < this.state.poolLengthV2_3; i++) {
+        let poolInfo = this.state.farmV2_3[i]
+        let lpTokenAddress = poolInfo.lpAddresses[farmNetworkId]
+        let lpTokenPairsymbol = poolInfo.lpTokenPairsymbol
+        lpTokenPairsymbolsV2_3[i] = lpTokenPairsymbol
+        lpTokenAddressesV2_3[i] = lpTokenAddress
+
+        if (lpTokenPairsymbol == "PGL" || lpTokenPairsymbol == "PNG") {
+          poolSegmentInfoV2_3[0][d] = poolInfo
+          returnRatioV2_3[0][d] = returnRatioArrayV2_3[d]["returnRatio"]
+          reinvestAmount[0][d] = await responseV2_3[i]
+          d += 1
+        } else {
+          poolSegmentInfoV2_3[1][d] = poolInfo
+          returnRatioV2_3[1][d] = returnRatioArrayV2_3[d]["returnRatio"]
+          reinvestAmount[1][d] = await responseV2_3[i]
+          d += 1
+        }
+      }
 
       for (let i = 0; i < this.state.bavaPoolLength; i++) {
         let bavaPoolInfo = this.state.farmBava[i]
@@ -227,21 +270,29 @@ class App extends Component {
 
       this.setState({ poolSegmentInfo })
       this.setState({ poolSegmentInfoV2_2 })
+      this.setState({ poolSegmentInfoV2_3 })
       this.setState({ bavaPoolSegmentInfo })
+
       this.setState({ lpTokenPairsymbols })
       this.setState({ lpTokenPairsymbolsV2_2 })
+      this.setState({ lpTokenPairsymbolsV2_3 })
       this.setState({ bavaLpTokenPairsymbols })
+
       this.setState({ lpTokenAddresses })
       this.setState({ lpTokenAddressesV2_2 })
+      this.setState({ lpTokenAddressesV2_3 })
       this.setState({ bavaLpTokenAddresses })
+
       this.setState({ returnRatio })
       this.setState({ returnRatioV2_2 })
+      this.setState({ returnRatioV2_3 })
       this.setState({ bavaReturnRatio })
 
+      this.setState({ reinvestAmount })
       this.setState({ farmloading: true })
     }
   }
-  // #########################################################################################################################
+  // ############ Load User blockchain data #############################################################################################################
 
   async loadBlockchainUserData() {
     // Load bavaToken
@@ -265,6 +316,7 @@ class App extends Component {
 
     let poolSegmentInfo = [[], []]
     let poolSegmentInfoV2_2 = [[], []]
+    let poolSegmentInfoV2_3 = [[], []]
     let bavaPoolSegmentInfo = [[], []]
     let totalpendingReward = 0
 
@@ -278,6 +330,11 @@ class App extends Component {
     let lpSegmentAllowanceV2_2 = [[], []]
     let pendingSegmentRewardV2_2 = [[], []]
 
+    let userSegmentInfoV2_3 = [[], []]
+    let lpBalanceAccountV2_3 = [[], []]
+    let lpSegmentAllowanceV2_3 = [[], []]
+    let pendingSegmentRewardV2_3 = [[], []]
+
     let bavaUserSegmentInfo = [[], []]
     let bavaLpBalanceAccount = [[], []]
     let bavaLpSegmentAllowance = [[], []]
@@ -286,6 +343,7 @@ class App extends Component {
     let b = 0
     let n = 0
     let c = 0
+    let d = 0
     let i = 0
 
     let response0 = []
@@ -296,6 +354,10 @@ class App extends Component {
     let response1V2_2 = []
     let response2V2_2 = []
     let response3V2_2 = []
+    let response0V2_3 = []
+    let response1V2_3 = []
+    let response2V2_3 = []
+    let response3V2_3 = []
     let bavaResponse0 = []
     let bavaResponse1 = []
     let bavaResponse2 = []
@@ -313,6 +375,13 @@ class App extends Component {
       response1V2_2[i] = this.loadUserInfo1V2_2(i)
       response2V2_2[i] = this.loadUserInfo2V2_2(i)
       response3V2_2[i] = this.loadUserInfo3V2_2(i)
+    }
+
+    for (i = 0; i < this.state.poolLengthV2_3; i++) {
+      response0V2_3[i] = this.loadUserInfoV2_3(i)
+      response1V2_3[i] = this.loadUserInfo1V2_3(i)
+      response2V2_3[i] = this.loadUserInfo2V2_3(i)
+      response3V2_3[i] = this.loadUserInfo3V2_3(i)
     }
 
     for (i = 0; i < this.state.bavaPoolLength; i++) {
@@ -355,9 +424,28 @@ class App extends Component {
         lpBalanceAccountV2_2[1][c] = await response1V2_2[i]
         lpSegmentAllowanceV2_2[1][c] = await response2V2_2[i]
         pendingSegmentRewardV2_2[1][c] = await response3V2_2[i]
-        n += 1
+        c += 1
       }
       totalpendingReward += parseInt(await response3V2_2[i])
+    }
+
+    for (i = 0; i < this.state.poolLengthV2_3; i++) {
+      if (this.state.lpTokenPairsymbolsV2_3[i] == "PGL" || this.state.lpTokenPairsymbolsV2_3[i] == "PNG") {
+        userSegmentInfoV2_3[0][d] = await response0V2_3[i]
+        poolSegmentInfoV2_3[0][d] = this.state.farmV2_3[i]
+        lpBalanceAccountV2_3[0][d] = await response1V2_3[i]
+        lpSegmentAllowanceV2_3[0][d] = await response2V2_3[i]
+        pendingSegmentRewardV2_3[0][d] = await response3V2_3[i]
+        d += 1
+      } else {
+        userSegmentInfoV2_3[1][d] = await response0V2_3[i]
+        poolSegmentInfoV2_3[1][d] = this.state.farmV2_3[i]
+        lpBalanceAccountV2_3[1][d] = await response1V2_3[i]
+        lpSegmentAllowanceV2_3[1][d] = await response2V2_3[i]
+        pendingSegmentRewardV2_3[1][d] = await response3V2_3[i]
+        d += 1
+      }
+      totalpendingReward += parseInt(await response3V2_3[i])
     }
 
     for (i = 0; i < this.state.bavaPoolLength; i++) {
@@ -391,6 +479,12 @@ class App extends Component {
     this.setState({ lpSegmentAllowanceV2_2 })
     this.setState({ pendingSegmentRewardV2_2 })
 
+    this.setState({ poolSegmentInfoV2_3 })
+    this.setState({ userSegmentInfoV2_3 })
+    this.setState({ lpBalanceAccountV2_3 })
+    this.setState({ lpSegmentAllowanceV2_3 })
+    this.setState({ pendingSegmentRewardV2_3 })
+
     this.setState({ bavaPoolSegmentInfo })
     this.setState({ bavaUserSegmentInfo })
     this.setState({ bavaLpBalanceAccount })
@@ -402,7 +496,7 @@ class App extends Component {
     this.setState({ accountLoading: true })
   }
 
-  // *************************** User Info***********************************************************************************************
+  // *************************** Async User Info ***********************************************************************************************
   // bavaToken
   async loadBavaTokenBalance() {
     let bavaTokenBalance = await this.state.bavaToken.methods.balanceOf(this.state.account).call()
@@ -453,38 +547,60 @@ class App extends Component {
     return pendingReward
   }
 
-    // bavaMasterFarmerV2_2
-
-    async loadUserInfoV2_2(i) {
-      let userInfo = await this.state.bavaMasterFarmerV2_2.methods.userInfo(i, this.state.account).call()
-      return userInfo
-    }
-  
-    async loadUserInfo1V2_2(i) {
-      let lpTokenPair = new window.web3Ava.eth.Contract(IPancakePair.abi, this.state.lpTokenAddressesV2_2[i])
-      let lpTokenBalance = await lpTokenPair.methods.balanceOf(this.state.account).call()
-      return lpTokenBalance
-    }
-  
-    async loadUserInfo2V2_2(i) {
-      let lpTokenPair = new window.web3Ava.eth.Contract(IPancakePair.abi, this.state.lpTokenAddressesV2_2[i])
-      let lpTokenAllowance = await lpTokenPair.methods.allowance(this.state.account, this.state.bavaMasterFarmerV2_2._address).call()
-      return lpTokenAllowance
-    }
-  
-    async loadUserInfo3V2_2(i) {
-      let pendingReward = await this.state.bavaMasterFarmerV2_2.methods.pendingReward(i, this.state.account).call()
-      return pendingReward
-    }
-
   // bavaMasterFarmerV2_2
 
-  async loadPoolLengthV2_2() {
-    let poolLengthV2_2 = await this.state.bavaMasterFarmerV2_2.methods.poolLength().call()
-    return poolLengthV2_2
+  async loadUserInfoV2_2(i) {
+    let userInfo = await this.state.bavaMasterFarmerV2_2.methods.userInfo(i, this.state.account).call()
+    return userInfo
   }
-  // bavaMasterFarmerV1 
 
+  async loadUserInfo1V2_2(i) {
+    let lpTokenPair = new window.web3Ava.eth.Contract(IPancakePair.abi, this.state.lpTokenAddressesV2_2[i])
+    let lpTokenBalance = await lpTokenPair.methods.balanceOf(this.state.account).call()
+    return lpTokenBalance
+  }
+
+  async loadUserInfo2V2_2(i) {
+    let lpTokenPair = new window.web3Ava.eth.Contract(IPancakePair.abi, this.state.lpTokenAddressesV2_2[i])
+    let lpTokenAllowance = await lpTokenPair.methods.allowance(this.state.account, this.state.bavaMasterFarmerV2_2._address).call()
+    return lpTokenAllowance
+  }
+
+  async loadUserInfo3V2_2(i) {
+    let pendingReward = await this.state.bavaMasterFarmerV2_2.methods.pendingReward(i, this.state.account).call()
+    return pendingReward
+  }
+  // #############################################################################################################
+  // bavaMasterFarmerV2_3
+  async loadUserInfoV2_3(i) {
+    let poolAddress = (await this.state.bavaMasterFarmerV2_3.methods.poolInfo(i).call()).poolContract
+    let bavaCompoundPool = new window.web3Ava.eth.Contract(BavaCompoundPool.abi, poolAddress)
+    let userInfo = await bavaCompoundPool.methods.balanceOf(this.state.account).call()
+    console.log(userInfo)
+    return userInfo
+  }
+
+  async loadUserInfo1V2_3(i) {
+    let lpTokenPair = new window.web3Ava.eth.Contract(IPancakePair.abi, this.state.lpTokenAddressesV2_3[i])
+    let lpTokenBalance = await lpTokenPair.methods.balanceOf(this.state.account).call()
+    return lpTokenBalance
+  }
+
+  async loadUserInfo2V2_3(i) {
+    let lpTokenPair = new window.web3Ava.eth.Contract(IPancakePair.abi, this.state.lpTokenAddressesV2_3[i])
+    let poolAddress = (await this.state.bavaMasterFarmerV2_3.methods.poolInfo(i).call()).poolContract
+    let lpTokenAllowance = await lpTokenPair.methods.allowance(this.state.account, poolAddress).call()
+    return lpTokenAllowance
+  }
+
+  async loadUserInfo3V2_3(i) {
+    let poolAddress = (await this.state.bavaMasterFarmerV2_3.methods.poolInfo(i).call()).poolContract
+    let bavaCompoundPool = new window.web3Ava.eth.Contract(BavaCompoundPool.abi, poolAddress)
+    let pendingReward = await bavaCompoundPool.methods.pendingReward(this.state.account).call()
+    return pendingReward
+  }
+  // #############################################################################################################
+  // bavaMasterFarmerV1 
   async loadBavaUserInfo(i) {
     let userInfo = await this.state.bavaMasterFarmerV1.methods.userInfo(i, this.state.account).call()
     return userInfo
@@ -507,7 +623,27 @@ class App extends Component {
     return pendingReward
   }
 
-  // ***************************************** Airdrop *************************************************************
+  // bavaMasterFarmerV2_2 poolLength
+  async loadPoolLengthV2_2() {
+    let poolLengthV2_2 = await this.state.bavaMasterFarmerV2_2.methods.poolLength().call()
+    return poolLengthV2_2
+  }
+
+  // bavaMasterFarmerV2_3
+  async loadPoolLengthV2_3() {
+    let poolLengthV2_3 = await this.state.bavaMasterFarmerV2_3.methods.poolLength().call()
+    return poolLengthV2_3
+  }
+
+  async loadFarmReinvest(i) {
+    let poolAddress = (await this.state.bavaMasterFarmerV2_3.methods.poolInfo(i).call()).poolContract
+    let bavaCompoundPool = new window.web3Ava.eth.Contract(BavaCompoundPool.abi, poolAddress)
+    let reinvestAmount = await bavaCompoundPool.methods.checkReward().call()
+    reinvestAmount = reinvestAmount * this.state.PNGPrice / this.state.AVAXPrice
+    return (reinvestAmount.toFixed(0)).toString()
+  }
+
+  // ***************************************** Async Airdrop *************************************************************
 
   async loadPoolLength() {
     let poolLength = await this.state.bavaMasterFarmer.methods.poolLength().call()
@@ -568,9 +704,14 @@ class App extends Component {
     let aprV2_2 = [[], []]
     let apyDailyV2_2 = [[], []]
 
+    let tvlV2_3 = [[], []]
+    let aprV2_3 = [[], []]
+    let apyDailyV2_3 = [[], []]
+
     let n = 0
     let b = 0
     let c = 0
+    let d = 0
     let totalTVL = 0
 
     let tvlArray = this.state.myJsonMongo["TVL"]
@@ -581,21 +722,25 @@ class App extends Component {
     let bavaapyArray = this.state.myJsonMongo["BAVAAPY"]
 
     // let responseV2_2 = await this.loadTVLAPRV2_2()
-    let tvlArrayV2_2 =  this.state.myJsonMongo["TVLV2_2"]
-    let aprArrayV2_2 =  this.state.myJsonMongo["APRV2_2"]
-    let apyArrayV2_2 =  this.state.myJsonMongo["APYV2_2"]
+    let tvlArrayV2_2 = this.state.myJsonMongo["TVLV2_2"]
+    let aprArrayV2_2 = this.state.myJsonMongo["APRV2_2"]
+    let apyArrayV2_2 = this.state.myJsonMongo["APYV2_2"]
+
+    let tvlArrayV2_3 = this.state.myJsonMongo["TVLV2_3"]
+    let aprArrayV2_3 = this.state.myJsonMongo["APRV2_3"]
+    let apyArrayV2_3 = this.state.myJsonMongo["APYV2_3"]
 
     for (let i = 0; i < this.state.poolLength; i++) {
       totalTVL += parseInt(tvlArray[n]["tvl"])
       if (this.state.lpTokenPairsymbols[i] == "PGL" || this.state.lpTokenPairsymbols[i] == "PNG") {
         tvl[0][n] = tvlArray[n]["tvl"]
         apr[0][n] = parseFloat(aprArray[n]["apr"])
-        apyDaily[0][n] = apyArray[n]["apyDaily"]
+        apyDaily[0][n] = ((1 + (apr[0][n] * 0.05 + parseFloat(this.state.poolSegmentInfo[0][n].total3rdPartyAPR))/36500)**365 -1) * 100 + apr[0][n]
         n += 1
       } else {
         tvl[1][n] = tvlArray[n]["tvl"]
         apr[1][n] = parseFloat(aprArray[n]["apr"])
-        apyDaily[1][n] = apyArray[n]["apyDaily"]
+        apyDaily[1][n] = ((1 + (apr[1][n] * 0.05 + parseFloat(this.state.poolSegmentInfo[1][n].total3rdPartyAPR))/36500)**365 -1) * 100 + apr[1][n]
         n += 1
       }
     }
@@ -605,12 +750,12 @@ class App extends Component {
       if (this.state.bavaLpTokenPairsymbols[i] == "PGL" || this.state.bavaLpTokenPairsymbols[i] == "PNG") {
         bavatvl[0][b] = bavatvlArray[b]["tvl"]
         bavaapr[0][b] = parseFloat(bavaaprArray[b]["apr"])
-        bavaapyDaily[0][b] = bavaapyArray[b]["apyDaily"]
+        bavaapyDaily[0][b] = ((1 + (bavaapr[0][b] * 0.05 + parseFloat(this.state.bavaPoolSegmentInfo[0][b].total3rdPartyAPR))/36500)**365 -1) * 100 + bavaapr[0][b]
         b += 1
       } else {
         bavatvl[1][b] = bavatvlArray[b]["tvl"]
-        bavaapr[1][b] = parseFloat(bavaaprArray[b]["apr"]) 
-        bavaapyDaily[1][b] = bavaapyArray[b]["apyDaily"]
+        bavaapr[1][b] = parseFloat(bavaaprArray[b]["apr"])
+        bavaapyDaily[1][b] = ((1 + (bavaapr[1][b] * 0.05 + parseFloat(this.state.bavaPoolSegmentInfo[1][b].total3rdPartyAPR))/36500)**365 -1) * 100 + bavaapr[1][b]
         b += 1
       }
     }
@@ -620,13 +765,28 @@ class App extends Component {
       if (this.state.lpTokenPairsymbolsV2_2[i] == "PGL" || this.state.lpTokenPairsymbolsV2_2[i] == "PNG") {
         tvlV2_2[0][c] = tvlArrayV2_2[c]["tvl"]
         aprV2_2[0][c] = parseFloat(aprArrayV2_2[c]["apr"])
-        apyDailyV2_2[0][c] = apyArrayV2_2[c]["apyDaily"]
+        apyDailyV2_2[0][c] = ((1 + (aprV2_2[0][c] * 0.05 + parseFloat(this.state.poolSegmentInfoV2_2[0][c].total3rdPartyAPR))/36500)**365 -1) * 100 + aprV2_2[0][c]
         c += 1
       } else {
         tvlV2_2[1][c] = tvlArrayV2_2[c]["tvl"]
         aprV2_2[1][c] = parseFloat(aprArrayV2_2[c]["apr"])
-        apyDailyV2_2[1][c] = apyArrayV2_2[c]["apyDaily"]
+        apyDailyV2_2[1][c] = ((1 + (aprV2_2[1][c] * 0.05 + parseFloat(this.state.poolSegmentInfoV2_2[1][c].total3rdPartyAPR))/36500)**365 -1) * 100 + + aprV2_2[1][c]
         c += 1
+      }
+    }
+
+    for (let i = 0; i < this.state.poolLengthV2_3; i++) {
+      totalTVL += parseInt(tvlArrayV2_3[d]["tvl"])
+      if (this.state.lpTokenPairsymbolsV2_3[i] == "PGL" || this.state.lpTokenPairsymbolsV2_3[i] == "PNG") {
+        tvlV2_3[0][d] = tvlArrayV2_3[d]["tvl"]
+        aprV2_3[0][d] = parseFloat(aprArrayV2_3[d]["apr"])
+        apyDailyV2_3[0][d] = ((1 + (aprV2_3[0][d] * 0.05 + parseFloat(this.state.poolSegmentInfoV2_3[0][d].total3rdPartyAPR))/36500)**365 -1) * 100 + aprV2_3[0][d]
+        d += 1
+      } else {
+        tvlV2_3[1][d] = tvlArrayV2_3[d]["tvl"]
+        aprV2_3[1][d] = parseFloat(aprArrayV2_3[d]["apr"])
+        apyDailyV2_3[1][d] = ((1 + (aprV2_3[1][d] * 0.05 + parseFloat(this.state.poolSegmentInfoV2_3[1][d].total3rdPartyAPR))/36500)**365 -1) * 100 + aprV2_3[1][d]
+        d += 1
       }
     }
 
@@ -636,9 +796,14 @@ class App extends Component {
     this.setState({ tvl })
     this.setState({ apr })
     this.setState({ apyDaily })
+
     this.setState({ tvlV2_2 })
     this.setState({ aprV2_2 })
     this.setState({ apyDailyV2_2 })
+
+    this.setState({ tvlV2_3 })
+    this.setState({ aprV2_3 })
+    this.setState({ apyDailyV2_3 })
 
     this.setState({ bavatvl })
     this.setState({ bavaapr })
@@ -660,16 +825,16 @@ class App extends Component {
     let rewardPerBlock = await this.state.bavaMasterFarmerV2_2.methods.REWARD_PER_BLOCK().call()
     lpTokenInContract = window.web3Ava.utils.fromWei(lpTokenInContract["depositAmount"], 'ether')
     let tvl = lpTokenValue * lpTokenInContract
-    let apr = ((28000 * 365 * 645 * window.web3Ava.utils.fromWei(rewardPerBlock, 'ether') * BAVAPrice ) / tvl) * 100
-    let apyDaily = ((1 + apr/36500)**365 -1) * 100
+    let apr = ((28000 * 365 * 645 * window.web3Ava.utils.fromWei(rewardPerBlock, 'ether') * BAVAPrice) / tvl) * 100
+    let apyDaily = ((1 + apr / 36500) ** 365 - 1) * 100
 
-    let array = {'TVL':[{'tvl':tvl}], 'APR':[{'apr':apr}], 'APY':[{'apyDaily':apyDaily}]}
+    let array = { 'TVL': [{ 'tvl': tvl }], 'APR': [{ 'apr': apr }], 'APY': [{ 'apyDaily': apyDaily }] }
     return array
   }
 
-// ***********************************************************************************************************************************************
+  // ***********************************************************************************************************************************************
 
-async loadWeb3() {
+  async loadWeb3() {
     if (window.ethereum) {
       window.web3 = new Web3(window.ethereum)
     }
@@ -680,9 +845,10 @@ async loadWeb3() {
     const myJsonMongo = await responseMongo.json();
     this.setState({ myJsonMongo })
 
-    let bavaPrice = myJsonMongo["BAVAPrice"]["$numberDouble"]
-    this.setState({ BAVAPrice: parseFloat(bavaPrice).toFixed(5) })
-
+    let tokenPrice = myJsonMongo["TokenPrice"]
+    this.setState({ AVAXPrice: parseFloat(tokenPrice[0].avaxPrice).toFixed(5) })
+    this.setState({ BAVAPrice: parseFloat(tokenPrice[1].bavaPrice).toFixed(5) })
+    this.setState({ PNGPrice: parseFloat(tokenPrice[2].pngPrice).toFixed(5) })
     this.setState({ loading: true })
   }
 
@@ -912,6 +1078,7 @@ async loadWeb3() {
 
   deposit = async (i, amount, n, v) => {
     let bavaMasterFarmer
+    let bavaCompoundPool
     if (this.state.walletConnect == true) {
       if (v == 1) {
         bavaMasterFarmer = new window.web3Con.eth.Contract(BavaMasterFarmerV1.abi, process.env.REACT_APP_bavamasterfarmv1_address)
@@ -919,6 +1086,10 @@ async loadWeb3() {
         bavaMasterFarmer = new window.web3Con.eth.Contract(BavaMasterFarmer.abi, process.env.REACT_APP_bavamasterfarmv2_address)
       } else if (v == 3) {
         bavaMasterFarmer = new window.web3Con.eth.Contract(BavaMasterFarmerV2_2.abi, process.env.REACT_APP_bavamasterfarmv2_2address)
+      } else if (v == 4) {
+        bavaMasterFarmer = new window.web3Con.eth.Contract(BavaMasterFarmerV2_3.abi, process.env.REACT_APP_bavamasterfarmv2_3address)
+        let poolAddress = (await bavaMasterFarmer.methods.poolInfo(i).call()).poolContract
+        bavaCompoundPool = new window.web3Con.eth.Contract(BavaCompoundPool.abi, poolAddress)
       }
     } else if (this.state.wallet == true) {
       if (v == 1) {
@@ -927,19 +1098,36 @@ async loadWeb3() {
         bavaMasterFarmer = new window.web3.eth.Contract(BavaMasterFarmer.abi, process.env.REACT_APP_bavamasterfarmv2_address)
       } else if (v == 3) {
         bavaMasterFarmer = new window.web3.eth.Contract(BavaMasterFarmerV2_2.abi, process.env.REACT_APP_bavamasterfarmv2_2address)
+      } else if (v == 4) {
+        bavaMasterFarmer = new window.web3.eth.Contract(BavaMasterFarmerV2_3.abi, process.env.REACT_APP_bavamasterfarmv2_3address)
+        let poolAddress = (await bavaMasterFarmer.methods.poolInfo(i).call()).poolContract
+        bavaCompoundPool = new window.web3.eth.Contract(BavaCompoundPool.abi, poolAddress)
       }
+    } if (v == 4) {
+      await bavaCompoundPool.methods.deposit(amount).send({ from: this.state.account }).then(async (result) => {
+        this.componentWillMount()
+      }).catch((err) => {
+        if (err.code === 4001) {
+          // EIP-1193 userRejectedRequest error
+          // If this happens, the user rejected the connection request.
+          alert("Something went wrong...Code: 4001 User rejected the request.")
+        } else {
+          console.error(err);
+        }
+      });
+    } else {
+      await bavaMasterFarmer.methods.deposit(i, amount).send({ from: this.state.account }).then(async (result) => {
+        this.componentWillMount()
+      }).catch((err) => {
+        if (err.code === 4001) {
+          // EIP-1193 userRejectedRequest error
+          // If this happens, the user rejected the connection request.
+          alert("Something went wrong...Code: 4001 User rejected the request.")
+        } else {
+          console.error(err);
+        }
+      });
     }
-    await bavaMasterFarmer.methods.deposit(i, amount).send({ from: this.state.account }).then(async (result) => {
-      this.componentWillMount()
-    }).catch((err) => {
-      if (err.code === 4001) {
-        // EIP-1193 userRejectedRequest error
-        // If this happens, the user rejected the connection request.
-        alert("Something went wrong...Code: 4001 User rejected the request.")
-      } else {
-        console.error(err);
-      }
-    });
   }
 
   approve = async (i, n, v) => {
@@ -955,6 +1143,13 @@ async loadWeb3() {
     } else if (v == 3) {
       lpTokenAddress = this.state.poolSegmentInfoV2_2[n][i].lpAddresses[this.state.farmNetworkId]
       bavaMasterFarmerAddress = this.state.bavaMasterFarmerV2_2._address
+    } else if (v == 4) {
+      console.log(i)
+      let bavaMasterFarmer = new window.web3.eth.Contract(BavaMasterFarmerV2_3.abi, process.env.REACT_APP_bavamasterfarmv2_3address)
+      lpTokenAddress = (await bavaMasterFarmer.methods.poolInfo(i).call()).lpToken
+      bavaMasterFarmerAddress = (await bavaMasterFarmer.methods.poolInfo(i).call()).poolContract
+      console.log(bavaMasterFarmerAddress)
+      console.log(lpTokenAddress)
     }
     if (this.state.walletConnect == true) {
       lpToken = new window.web3Con.eth.Contract(LpToken.abi, lpTokenAddress)
@@ -976,6 +1171,7 @@ async loadWeb3() {
 
   withdraw = async (i, amount, n, v) => {
     let bavaMasterFarmer
+    let bavaCompoundPool
     if (this.state.walletConnect == true) {
       if (v == 1) {
         bavaMasterFarmer = new window.web3Con.eth.Contract(BavaMasterFarmerV1.abi, process.env.REACT_APP_bavamasterfarmv1_address)
@@ -983,6 +1179,10 @@ async loadWeb3() {
         bavaMasterFarmer = new window.web3Con.eth.Contract(BavaMasterFarmer.abi, process.env.REACT_APP_bavamasterfarmv2_address)
       } else if (v == 3) {
         bavaMasterFarmer = new window.web3Con.eth.Contract(BavaMasterFarmerV2_2.abi, process.env.REACT_APP_bavamasterfarmv2_2address)
+      } else if (v == 4) {
+        bavaMasterFarmer = new window.web3Con.eth.Contract(BavaMasterFarmerV2_3.abi, process.env.REACT_APP_bavamasterfarmv2_3address)
+        let poolAddress = (await bavaMasterFarmer.methods.poolInfo(i).call()).poolContract
+        bavaCompoundPool = new window.web3Con.eth.Contract(BavaCompoundPool.abi, poolAddress)
       }
     } else if (this.state.wallet == true) {
       if (v == 1) {
@@ -991,23 +1191,41 @@ async loadWeb3() {
         bavaMasterFarmer = new window.web3.eth.Contract(BavaMasterFarmer.abi, process.env.REACT_APP_bavamasterfarmv2_address)
       } else if (v == 3) {
         bavaMasterFarmer = new window.web3.eth.Contract(BavaMasterFarmerV2_2.abi, process.env.REACT_APP_bavamasterfarmv2_2address)
+      } else if (v == 4) {
+        bavaMasterFarmer = new window.web3.eth.Contract(BavaMasterFarmerV2_3.abi, process.env.REACT_APP_bavamasterfarmv2_3address)
+        let poolAddress = (await bavaMasterFarmer.methods.poolInfo(i).call()).poolContract
+        bavaCompoundPool = new window.web3.eth.Contract(BavaCompoundPool.abi, poolAddress)
       }
+    } if (v == 4) {
+      await bavaCompoundPool.methods.withdraw(amount).send({ from: this.state.account }).then(async (result) => {
+        this.componentWillMount()
+      }).catch((err) => {
+        if (err.code === 4001) {
+          // EIP-1193 userRejectedRequest error
+          // If this happens, the user rejected the connection request.
+          alert("Something went wrong...Code: 4001 User rejected the request.")
+        } else {
+          console.error(err);
+        }
+      });
+    } else {
+      await bavaMasterFarmer.methods.withdraw(i, amount).send({ from: this.state.account }).then(async (result) => {
+        this.componentWillMount()
+      }).catch((err) => {
+        if (err.code === 4001) {
+          // EIP-1193 userRejectedRequest error
+          // If this happens, the user rejected the connection request.
+          alert("Something went wrong...Code: 4001 User rejected the request.")
+        } else {
+          console.error(err);
+        }
+      });
     }
-    await bavaMasterFarmer.methods.withdraw(i, amount).send({ from: this.state.account }).then(async (result) => {
-      this.componentWillMount()
-    }).catch((err) => {
-      if (err.code === 4001) {
-        // EIP-1193 userRejectedRequest error
-        // If this happens, the user rejected the connection request.
-        alert("Something went wrong...Code: 4001 User rejected the request.")
-      } else {
-        console.error(err);
-      }
-    });
   }
 
   harvest = async (i, n, v) => {
     let bavaMasterFarmer
+    let bavaCompoundPool
     if (this.state.walletConnect == false && this.state.wallet == false) {
       alert("Wallet is not connected")
     } else {
@@ -1027,6 +1245,14 @@ async loadWeb3() {
         } else if (v == 3) {
           bavaMasterFarmer = new window.web3Con.eth.Contract(BavaMasterFarmerV2_2.abi, process.env.REACT_APP_bavamasterfarmv2_2address)
           if (this.state.pendingSegmentRewardV2_2[n][i] <= 0) {
+            alert("No token to harvest! Please deposit LP to earn BAVA")
+            return
+          }
+        } else if (v == 4) {
+          bavaMasterFarmer = new window.web3Con.eth.Contract(BavaMasterFarmerV2_3.abi, process.env.REACT_APP_bavamasterfarmv2_3address)
+          let poolAddress = (await bavaMasterFarmer.methods.poolInfo(i).call()).poolContract
+          bavaCompoundPool = new window.web3Con.eth.Contract(BavaCompoundPool.abi, poolAddress)
+          if (this.state.pendingSegmentRewardV2_3[n][i] <= 0) {
             alert("No token to harvest! Please deposit LP to earn BAVA")
             return
           }
@@ -1050,9 +1276,74 @@ async loadWeb3() {
             alert("No token to harvest! Please deposit LP to earn BAVA")
             return
           }
+        } else if (v == 4) {
+          bavaMasterFarmer = new window.web3.eth.Contract(BavaMasterFarmerV2_3.abi, process.env.REACT_APP_bavamasterfarmv2_3address)
+          let poolAddress = (await bavaMasterFarmer.methods.poolInfo(i).call()).poolContract
+          bavaCompoundPool = new window.web3.eth.Contract(BavaCompoundPool.abi, poolAddress)
+          console.log(this.state.pendingSegmentRewardV2_3[n][i])
+          if (this.state.pendingSegmentRewardV2_3[n][i] <= 0) {
+            alert("No token to harvest! Please deposit LP to earn BAVA")
+            return
+          }
         }
       }
-      bavaMasterFarmer.methods.claimReward(i).send({ from: this.state.account }).then(async (result) => {
+      if (v == 4) {
+        bavaCompoundPool.methods.claimReward().send({ from: this.state.account }).then(async (result) => {
+          this.componentWillMount()
+        }).catch((err) => {
+          if (err.code === 4001) {
+            // EIP-1193 userRejectedRequest error
+            // If this happens, the user rejected the connection request.
+            alert("Something went wrong...Code: 4001 User rejected the request.")
+          } else {
+            console.error(err);
+          }
+        });
+      } else {
+        bavaMasterFarmer.methods.claimReward(i).send({ from: this.state.account }).then(async (result) => {
+          this.componentWillMount()
+        }).catch((err) => {
+          if (err.code === 4001) {
+            // EIP-1193 userRejectedRequest error
+            // If this happens, the user rejected the connection request.
+            alert("Something went wrong...Code: 4001 User rejected the request.")
+          } else {
+            console.error(err);
+          }
+        });
+      }
+    }
+  }
+
+
+
+
+
+
+  reinvest = async (i, n) => {
+    let bavaMasterFarmer
+    let bavaCompoundPool
+    if (this.state.walletConnect == false && this.state.wallet == false) {
+      alert("Wallet is not connected")
+    } else {
+      if (this.state.walletConnect == true) {
+        bavaMasterFarmer = new window.web3Con.eth.Contract(BavaMasterFarmerV2_3.abi, process.env.REACT_APP_bavamasterfarmv2_3address)
+        let poolAddress = (await bavaMasterFarmer.methods.poolInfo(i).call()).poolContract
+        bavaCompoundPool = new window.web3Con.eth.Contract(BavaCompoundPool.abi, poolAddress)
+        if (this.state.pendingSegmentRewardV2_3[n][i] <= 0) {
+          alert("No token to harvest! Please deposit LP to earn BAVA")
+          return
+        }
+      } else if (this.state.wallet == true) {
+        bavaMasterFarmer = new window.web3.eth.Contract(BavaMasterFarmerV2_3.abi, process.env.REACT_APP_bavamasterfarmv2_3address)
+        let poolAddress = (await bavaMasterFarmer.methods.poolInfo(i).call()).poolContract
+        bavaCompoundPool = new window.web3.eth.Contract(BavaCompoundPool.abi, poolAddress)
+        if (this.state.pendingSegmentRewardV2_3[n][i] <= 0) {
+          alert("No token to harvest! Please deposit LP to earn BAVA")
+          return
+        }
+      }
+      bavaCompoundPool.methods.reinvest().send({ from: this.state.account }).then(async (result) => {
         this.componentWillMount()
       }).catch((err) => {
         if (err.code === 4001) {
@@ -1065,6 +1356,11 @@ async loadWeb3() {
       });
     }
   }
+
+
+
+
+
 
   checkAirdrop = async (address) => {
     let checksum = window.web3Ava.utils.toChecksumAddress(address)
@@ -1260,13 +1556,14 @@ async loadWeb3() {
       farmV2Open: [],
       userSegmentInfo: [[], []],
       poolSegmentInfo: [[], []],
-      poolSegmentInfoV2_2:[[], []],
+      poolSegmentInfoV2_2: [[], []],
       lpTokenSegmentInContract: [[], []],
       lpBalanceAccount: [[], []],
       lpTokenSegmentBsymbol: [[], []],
       pendingSegmentReward: [[], []],
       lpSegmentAllowance: [[], []],
       lpSegmentAllowanceV2_2: [[], []],
+      lpSegmentAllowanceV2_3: [[], []],
       bavaLpSegmentAllowance: [[], []],
       bavaLpBalanceAccount: [[], []],
       lpTokenValue: [[], []],
@@ -1276,11 +1573,15 @@ async loadWeb3() {
       tvlV2_2: [[], []],
       aprV2_2: [[], []],
       apyDailyV2_2: [[], []],
+      tvlV2_3: [[], []],
+      aprV2_3: [[], []],
+      apyDailyV2_3: [[], []],
       bavatvl: [[], []],
       bavaapr: [[], []],
       bavaapyDaily: [[], []],
       returnRatio: [[], []],
       bavaReturnRatio: [[], []],
+      reinvestAmount: [[], []],
       totalpendingReward: '0',
       buttonPopup: false,
       networkName: "Loading",
@@ -1303,30 +1604,31 @@ async loadWeb3() {
   }
 
   render() {
-    let maincontent
-    let menucontent
-    let traderjoecontent
+    let mainContent
+    let menuContent
+    let menuV2Content
+    let traderjoeContent
     let airdropContent
     let stakeContent
     let litepaperContent
     let syntheticContent
 
     if (this.state.loading == false) {
-      maincontent =
+      mainContent =
         <div className="wrap">
           <div className="loading">
             <div className="bounceball"></div>
             <div className="textLoading">NETWORK IS Loading...</div>
           </div>
         </div>
-      menucontent =
+      menuContent =
         <div className="wrap">
           <div className="loading">
             <div className="bounceball"></div>
             <div className="textLoading">NETWORK IS Loading...</div>
           </div>
         </div>
-      traderjoecontent =
+      traderjoeContent =
         <div className="wrap">
           <div className="loading">
             <div className="bounceball"></div>
@@ -1334,7 +1636,7 @@ async loadWeb3() {
           </div>
         </div>
     } else {
-      maincontent = <Main
+      mainContent = <Main
         lpTokenBalance={this.state.lpTokenBalance}
         bavaTokenBalance={this.state.bavaTokenBalance}
         deposit={this.deposit}
@@ -1346,7 +1648,7 @@ async loadWeb3() {
         bavaTokenCapSupply={this.state.bavaTokenCapSupply}
         bavaTokenLock={this.state.bavaTokenLock}
       />
-      menucontent = <Menu
+      menuContent = <Menu
         lpTokenBalance={this.state.lpTokenBalance}
         bavaTokenBalance={this.state.bavaTokenBalance}
         deposit={this.deposit}
@@ -1395,13 +1697,59 @@ async loadWeb3() {
         returnRatioV2_2={this.state.returnRatioV2_2}
         tvlV2_2={this.state.tvlV2_2}
         aprV2_2={this.state.aprV2_2}
-        apyDailyV2_2={this.state.apyDailyV2_2} 
+        apyDailyV2_2={this.state.apyDailyV2_2}
         userSegmentInfoV2_2={this.state.userSegmentInfoV2_2}
         lpBalanceAccountV2_2={this.state.lpBalanceAccountV2_2}
         lpSegmentAllowanceV2_2={this.state.lpSegmentAllowanceV2_2}
         pendingSegmentRewardV2_2={this.state.pendingSegmentRewardV2_2}
       />
-      traderjoecontent = <TraderJoe
+      menuV2Content = <MenuV2
+        lpTokenBalance={this.state.lpTokenBalance}
+        bavaTokenBalance={this.state.bavaTokenBalance}
+        deposit={this.deposit}
+        withdraw={this.withdraw}
+        approve={this.approve}
+        setI={this.setI}
+        connectMetamask={this.connectMetamask}
+        lpSegmentAllowance={this.state.lpSegmentAllowance}
+        bavaContract={this.state.bavaContract}
+        bavaTokenTotalSupply={this.state.bavaTokenTotalSupply}
+        totalpendingReward={this.state.totalpendingReward}
+        poolSegmentInfo={this.state.poolSegmentInfo}
+        buttonPopup={this.state.buttonPopup}
+        harvest={this.harvest}
+        reinvest={this.reinvest}
+        reinvestAmount={this.state.reinvestAmount}
+        BAVAPrice={this.state.BAVAPrice}
+        PNGPrice={this.state.PNGPrice}
+        AVAXPrice={this.state.AVAXPrice}
+        tvl={this.state.tvl}
+        apr={this.state.apr}
+        apyDaily={this.state.apyDaily}
+        farmloading={this.state.farmloading}
+        aprloading={this.state.aprloading}
+        walletConnect={this.state.walletConnect}
+        wallet={this.state.wallet}
+        farmV1Open={this.state.farmV1Open}
+        farmV2Open={this.state.farmV2Open}
+        accountLoading={this.state.accountLoading}
+        lockedBavaTokenBalance={this.state.lockedBavaTokenBalance}
+        totalTVL={this.state.totalTVL}
+        returnRatio={this.state.returnRatio}
+        bavaReturnRatio={this.state.bavaReturnRatio}
+        poolSegmentInfoV2_3={this.state.poolSegmentInfoV2_3}
+        lpTokenPairsymbolsV2_3={this.state.lpTokenPairsymbolsV2_3}
+        lpTokenAddressesV2_3={this.state.lpTokenAddressesV2_3}
+        returnRatioV2_3={this.state.returnRatioV2_3}
+        tvlV2_3={this.state.tvlV2_3}
+        aprV2_3={this.state.aprV2_3}
+        apyDailyV2_3={this.state.apyDailyV2_3}
+        userSegmentInfoV2_3={this.state.userSegmentInfoV2_3}
+        lpBalanceAccountV2_3={this.state.lpBalanceAccountV2_3}
+        lpSegmentAllowanceV2_3={this.state.lpSegmentAllowanceV2_3}
+        pendingSegmentRewardV2_3={this.state.pendingSegmentRewardV2_3}
+      />
+      traderjoeContent = <TraderJoe
         lpTokenBalance={this.state.lpTokenBalance}
         bavaTokenBalance={this.state.bavaTokenBalance}
         deposit={this.deposit}
@@ -1482,6 +1830,7 @@ async loadWeb3() {
         earnedAmount={this.state.earnedAmount}
         rewardRate={this.state.rewardRate}
         bavaTokenAllowance={this.state.bavaTokenAllowance}
+        farmloading={this.state.farmloading}
         connectMetamask={this.connectMetamask}
         approveStake={this.approveStake}
         stake={this.stake}
@@ -1489,7 +1838,7 @@ async loadWeb3() {
         getReward={this.getReward}
         exit={this.exit}
       />
-      litepaperContent = <LitePaper 
+      litepaperContent = <LitePaper
       />
       syntheticContent = <Synthetic
       />
@@ -1516,10 +1865,11 @@ async loadWeb3() {
             <div className="row">
               <main role="main" className="content ml-auto mr-auto" >
                 <Switch>
-                  <Route path="/" exact > {maincontent} </Route>
-                  <Route path="/home" exact > {maincontent} </Route>
-                  <Route path="/menu" exact > {menucontent} </Route>
-                  <Route path="/traderjoe/" exact > {traderjoecontent} </Route>
+                  <Route path="/" exact > {mainContent} </Route>
+                  <Route path="/home" exact > {mainContent} </Route>
+                  <Route path="/menu" exact > {menuContent} </Route>
+                  <Route path="/menu/v2" exact > {menuV2Content} </Route>
+                  <Route path="/menu/traderjoe/" exact > {traderjoeContent} </Route>
                   <Route path="/claim/" exact > {airdropContent} </Route>
                   <Route path="/stake/" exact > {stakeContent} </Route>
                   <Route path="/litepaper" exact > {litepaperContent} </Route>

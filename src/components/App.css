@@ -4,6 +4,18 @@
   justify-content: center;
   align-items: center;
 }
+.left {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
 @import url(https://fonts.googleapis.com/css?family=Montserrat);
 body {
 position: relative;
@@ -87,6 +99,12 @@ display: flex;
 flex-direction: row;
 align-items: flex-start;
 }
+
+.rowS{
+  display: flex; 
+  flex-direction: row;
+  align-items: center;
+  }
 
 .loading {
 position: relative;
@@ -468,4 +486,31 @@ tr:nth-child(even) {
 .borderTop {
   margin-top: 15px;
   border-top: 0.1px solid rgb(221, 221, 221);
+}
+
+.arrow {
+  border: solid rgb(158, 141, 141);
+  border-width: 0 0 2px 2px;
+  display: inline-block;
+  padding: 4px;
+}
+
+.down {
+  transform: rotate(45deg);
+  -webkit-transform: rotate(-45deg);
+}
+
+.down2 {
+  transform: rotate(45deg);
+  -webkit-transform: rotate(-45deg);
+  border-width: 0 0 0 0;
+}
+
+.arrow-down {
+  width: 0; 
+  height: 0; 
+  border-right: 20px solid transparent;
+  border-left: 20px solid transparent; 
+  border-top: 20px solid #ffc400; 
+  /* border-width: 0 2px 2px 0; */
 }

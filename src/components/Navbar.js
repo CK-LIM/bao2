@@ -19,7 +19,7 @@ class Navb extends Component {
   render() {
     return (
       <nav className="navbar navbar-dark top flex-md-nowrap p-0 mt-2">
-        <span className="rowC" style={{ textDecoration: 'none', marginLeft: "15px", marginTop: "8px" }}>
+        <span className="rowS" style={{ textDecoration: 'none', marginLeft: "15px", marginTop: "8px" }}>
           <a
             className="textMiddleBold1"
             href="https://baklava.space/"
@@ -29,26 +29,42 @@ class Navb extends Component {
           ><img src={baklava} width="50" height="50" alt="" />&nbsp;BAKLAVA.SPACE</a>
 
           <div
-            style={{ marginLeft: "25px", marginTop: "13px" }}
-          ><NavLink className="textSmallBold1" activeStyle={{ fontWeight: "bold", color: "#ffc400" }} to="/menu/">Farm</NavLink></div>
+            style={{ marginLeft: "25px"}}
+          ><Popup trigger={open => (
+            <NavLink className="textSmallBold1"  activeClassName=" " activeStyle={{ fontWeight: "bold", color: "#ffc400" }} to="/menu/">Farm &#8595;</NavLink>
+           )}
+                on="hover"
+                position="bottom center"
+                offsetY={0}
+                offsetX={0}
+                mouseLeaveDelay={100}
+                contentStyle={{ padding: '3px', width: '90px', textDecoration: "none" }}
+                arrow={false}
+              ><div>
+                  <Link to="/traderjoe/"></Link>
+                  <div className='dropdown0'><Link className="textInfo center" to="/menu/">Version 1</Link></div>
+                  <div className='dropdown'><Link className="textInfo center" to="/menu/v2/">Version 2</Link></div>
+                </div>
+              </Popup>
+          </div>
           <div
-            style={{ marginLeft: "25px", marginTop: "13px" }}
-          ><NavLink className="textSmallBold1" activeStyle={{ fontWeight: "bold", color: "#ffc400" }} to="/stake/">Stake</NavLink></div>
+            style={{ marginLeft: "25px"}}
+          ><NavLink className="textSmallBold1" activeClassName=" " activeStyle={{ fontWeight: "bold", color: "#ffc400" }} to="/stake/">Stake</NavLink></div>
           <div
-            style={{ marginLeft: "25px", marginTop: "13px" }}
-          ><NavLink className="textSmallBold1" activeStyle={{ fontWeight: "bold", color: "#ffc400" }} to="/claim/">Claim</NavLink></div>
+            style={{ marginLeft: "25px"}}
+          ><NavLink className="textSmallBold1" activeClassName=" " activeStyle={{ fontWeight: "bold", color: "#ffc400" }} to="/claim/">Claim</NavLink></div>
           <div
-            style={{ marginLeft: "25px", marginTop: "13px" }}
-          ><NavLink className="textSmallBold1" activeStyle={{ fontWeight: "bold", color: "#ffc400" }} to="/litepaper/">LitePaper</NavLink></div>
+            style={{ marginLeft: "25px"}}
+          ><NavLink className="textSmallBold1" activeClassName=" " activeStyle={{ fontWeight: "bold", color: "#ffc400" }} to="/litepaper/">LitePaper</NavLink></div>
           <div
-            style={{ marginLeft: "25px", marginTop: "13px" }}
-          ><NavLink className="textSmallBold1" activeStyle={{ fontWeight: "bold", color: "#ffc400" }} to="/synthetic/">Synthetic</NavLink></div>
+            style={{ marginLeft: "25px"}}
+          ><NavLink className="textSmallBold1" activeClassName=" " activeStyle={{ fontWeight: "bold", color: "#ffc400" }} to="/synthetic/">Synthetic</NavLink></div>
         </span>
 
 
         <span>
           <div className="navbar-nav px-3 text-light rowC">
-            <div className="rowC" style={{ marginTop: "8px" }}>
+            {/* <div className="rowC" style={{ marginTop: "8px" }}>
               <div className="exLink0" style={{ marginRight: '30px' }} onClick={() => {
                 window.open(`https://baklavaspace.gitbook.io/`, '_blank')
               }}><Popup
@@ -119,7 +135,7 @@ class Navb extends Component {
               ><span className="textInfo">Discord</span>
                 </Popup>
               </div>
-            </div>
+            </div> */}
 
             <div>
               {/* <Popup trigger={open => ( */}

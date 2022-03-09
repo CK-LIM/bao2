@@ -9,7 +9,12 @@ import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import Deposit from './Deposit'
 import './App.css';
-
+import baklava from '../baklava.png'
+import discord from '../discord.svg'
+import twitter from '../twitter.svg'
+import medium from '../medium.svg'
+import git from '../github.svg'
+import gitbook from '../docs.svg'
 
 class Menu extends Component {
 
@@ -80,9 +85,13 @@ class Menu extends Component {
                                     <br /><br />
                                 </span>
                                 <span className="center mb-1">
-                                    <Buttons className="textDarkMedium" variant="outline" size="lg" onClick={async () => {
-                                        await this.props.connectMetamask()
-                                    }}>Connect to display</Buttons></span>
+                                    {this.props.farmloading ?
+                                        <Buttons className="textDarkMedium" variant="outline" size="lg" onClick={async () => {
+                                            await this.props.connectMetamask()
+                                        }}>Connect to display</Buttons> :
+                                        <Buttons className="textDarkMedium1" variant="outline" size="lg" >Connect to display</Buttons>
+                                    }
+                                </span>
                                 <span>
                                     <span className="float-left" style={{ color: 'silver' }}>Total pending harvest&nbsp;&nbsp;
                                         <Popup
@@ -129,7 +138,7 @@ class Menu extends Component {
                         <span className="float-left">
                             <ButtonGroup>
                                 <Button variant="outlined" size="small" color="inherit" component={Link} to="/menu/">Pangolin</Button>
-                                <Button variant="text" size="small" color="inherit" component={Link} to="/traderjoe/">Trader Joe</Button>
+                                <Button variant="text" size="small" color="inherit" component={Link} to="/menu/traderjoe/">Trader Joe</Button>
                             </ButtonGroup>
                         </span>
                     </div>
@@ -172,7 +181,7 @@ class Menu extends Component {
                                                                                 <th scope="col" width="140">Wallet</th>
                                                                                 <th scope="col" width="140">Deposited</th>
                                                                                 <th scope="col">Growth</th>
-                                                                                <th scope="col">APR&nbsp;<Popup
+                                                                                <th scope="col">APR <Popup
                                                                                     trigger={open => (<span><BsFillQuestionCircleFill style={{ marginBottom: "2px" }} size={10} /></span>)}
                                                                                     on="hover"
                                                                                     offsetY={-8}
@@ -183,7 +192,16 @@ class Menu extends Component {
                                                                                     <div className="textInfo">Baklava   : {parseFloat(this.props.aprV2_2[0][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })} %</div><br />
                                                                                     <div className="textInfo">Pangolin : {parseFloat(this.props.poolSegmentInfoV2_2[0][i].total3rdPartyAPR).toLocaleString('en-US', { maximumFractionDigits: 0 })} %</div>
                                                                                 </Popup></th>
-                                                                                <th scope="col">APY</th>
+                                                                                <th scope="col">APY <Popup
+                                                                                    trigger={open => (<span><BsFillQuestionCircleFill style={{ marginBottom: "2px" }} size={10} /></span>)}
+                                                                                    on="hover"
+                                                                                    offsetY={-8}
+                                                                                    offsetX={5}
+                                                                                    position="right center"
+                                                                                    contentStyle={{ width: '150px' }}
+                                                                                ><div className="textInfo"><small>APY are calculated based on the compound APR number excluded locked reward.</small></div><br />
+                                                                                    <div className="textInfo"><small>The value shown is based on daily compounding frequency.</small></div>
+                                                                                </Popup></th>
                                                                                 <th scope="col">TVL</th>
                                                                             </tr>
                                                                         </thead>
@@ -195,7 +213,7 @@ class Menu extends Component {
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
                                                                                 <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.returnRatioV2_2[0][i]).toLocaleString('en-US', { maximumFractionDigits: 4 })}</div> : <div className="center">
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
-                                                                                <td className="">{this.props.aprloading ? <div>{(parseFloat(this.props.aprV2_2[0][i]) + parseFloat(this.props.poolSegmentInfoV2_2[0][i].total3rdPartyAPR)).toLocaleString('en-US', { maximumFractionDigits: 0 }) }%</div> : <div className="center">
+                                                                                <td className="">{this.props.aprloading ? <div>{(parseFloat(this.props.aprV2_2[0][i]) + parseFloat(this.props.poolSegmentInfoV2_2[0][i].total3rdPartyAPR)).toLocaleString('en-US', { maximumFractionDigits: 0 })}%</div> : <div className="center">
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
                                                                                 <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.apyDailyV2_2[0][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })}%</div> : <div className="center">
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>}</td>
@@ -333,7 +351,16 @@ class Menu extends Component {
                                                                                     <div className="textInfo">Baklava   : {parseFloat(this.props.bavaapr[0][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })} %</div><br />
                                                                                     <div className="textInfo">Pangolin : {parseFloat(this.props.bavaPoolSegmentInfo[0][i].total3rdPartyAPR).toLocaleString('en-US', { maximumFractionDigits: 0 })} %</div>
                                                                                 </Popup></th>
-                                                                                <th scope="col">APY</th>
+                                                                                <th scope="col">APY <Popup
+                                                                                    trigger={open => (<span><BsFillQuestionCircleFill style={{ marginBottom: "2px" }} size={10} /></span>)}
+                                                                                    on="hover"
+                                                                                    offsetY={-8}
+                                                                                    offsetX={5}
+                                                                                    position="right center"
+                                                                                    contentStyle={{ width: '150px' }}
+                                                                                ><div className="textInfo"><small>APY are calculated based on the compound APR number excluded locked reward.</small></div><br />
+                                                                                    <div className="textInfo"><small>The value shown is based on daily compounding frequency.</small></div>
+                                                                                </Popup></th>
                                                                                 <th scope="col">TVL</th>
                                                                             </tr>
                                                                         </thead>
@@ -484,7 +511,16 @@ class Menu extends Component {
                                                                                     <div className="textInfo">Baklava : {parseFloat(this.props.apr[0][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })} %</div><br />
                                                                                     <div className="textInfo">Pangolin : {parseFloat(this.props.poolSegmentInfo[0][i].total3rdPartyAPR).toLocaleString('en-US', { maximumFractionDigits: 0 })} %</div>
                                                                                 </Popup></th>
-                                                                                <th scope="col">APY</th>
+                                                                                <th scope="col">APY <Popup
+                                                                                    trigger={open => (<span><BsFillQuestionCircleFill style={{ marginBottom: "2px" }} size={10} /></span>)}
+                                                                                    on="hover"
+                                                                                    offsetY={-8}
+                                                                                    offsetX={5}
+                                                                                    position="right center"
+                                                                                    contentStyle={{ width: '150px' }}
+                                                                                ><div className="textInfo"><small>APY are calculated based on the compound APR number excluded locked reward.</small></div><br />
+                                                                                    <div className="textInfo"><small>The value shown is based on daily compounding frequency.</small></div>
+                                                                                </Popup></th>
                                                                                 <th scope="col">TVL</th>
                                                                             </tr>
                                                                         </thead>
@@ -496,7 +532,7 @@ class Menu extends Component {
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
                                                                                 <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.returnRatio[0][i]).toLocaleString('en-US', { maximumFractionDigits: 4 })}</div> : <div className="center">
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
-                                                                                <td className="">{this.props.aprloading ? <div>{(parseFloat(this.props.apr[0][i]) +  + parseFloat(this.props.poolSegmentInfo[0][i].total3rdPartyAPR)).toLocaleString('en-US', { maximumFractionDigits: 0 })}%</div> : <div className="center">
+                                                                                <td className="">{this.props.aprloading ? <div>{(parseFloat(this.props.apr[0][i]) + + parseFloat(this.props.poolSegmentInfo[0][i].total3rdPartyAPR)).toLocaleString('en-US', { maximumFractionDigits: 0 })}%</div> : <div className="center">
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
                                                                                 <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.apyDaily[0][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })}%</div> : <div className="center">
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>}</td>
@@ -585,12 +621,95 @@ class Menu extends Component {
                             </div>
                             :
                             <div className="center">
-                                <div className="bounceball"></div> &nbsp;
-                                <div className="textLoadingSmall">NETWORK IS Loading...</div>
+                                <div style={{ marginBottom: '300px' }}>
+                                    <div className="bounceball"></div> &nbsp;
+                                    <div className="textLoadingSmall">NETWORK IS Loading...</div>
+                                </div>
                             </div>
                         }
                     </div>
-                </div><br /><br /><br /><br /><br />
+                </div><br /><br /><br />
+                <div className="rowS center">
+                    <img className="center" src={baklava} width="30" alt="" />&nbsp;&nbsp;
+                    <div className="center" style={{ color: "black", fontSize: '20px', marginRight: "25px" }}><b>BAKLAVA.SPACE</b></div>
+                </div>
+                <div className="center" style={{ color: "black", fontSize: '14px', marginTop: "5px" }}>Tools for defi users.</div>
+                <div className="center" style={{ color: "black", fontSize: '14px', marginTop: "5px" }}>Baklava Farms autocompound farm rewards.</div>
+                <div className="center" style={{ color: "black", fontSize: '14px', marginTop: "5px" }}>Use at your own risk.</div>
+
+                <div className="center" style={{ marginTop: "20px" }}>
+                    <div className="rowC" style={{ marginTop: "8px" }}>
+                        <div className="exLink0" style={{ marginRight: '40px' }} onClick={() => {
+                            window.open(`https://baklavaspace.gitbook.io/`, '_blank')
+                        }}><Popup
+                            trigger={open => (
+                                <img src={gitbook} width="20" height="20" align="right" alt="" />
+                            )}
+                            on="hover"
+                            offsetY={0}
+                            offsetX={0}
+                            position="bottom center"
+                            contentStyle={{ width: '75px' }}
+                        ><span className="textInfo">Gitbook</span>
+                            </Popup>
+                        </div>
+                        <div className="exLink0" style={{ marginRight: '40px' }} onClick={() => {
+                            window.open(`https://twitter.com/baklavaspace`, '_blank')
+                        }}><Popup
+                            trigger={open => (
+                                <img src={twitter} width="20" height="20" align="right" alt="" />
+                            )}
+                            on="hover"
+                            offsetY={0}
+                            offsetX={0}
+                            position="bottom center"
+                            contentStyle={{ width: '70px' }}
+                        ><span className="textInfo">Twitter</span>
+                            </Popup>
+                        </div>
+                        <div className="exLink0" style={{ marginRight: '40px' }} onClick={() => {
+                            window.open(`https://medium.com/@baklavaspace`, '_blank')
+                        }}><Popup
+                            trigger={open => (
+                                <img src={medium} width="20" height="20" align="right" alt="" />
+                            )}
+                            on="hover"
+                            offsetY={0}
+                            offsetX={0}
+                            position="bottom center"
+                            contentStyle={{ width: '75px' }}
+                        ><span className="textInfo">Medium</span>
+                            </Popup>
+                        </div>
+                        <div className="exLink0" style={{ marginRight: '40px' }} onClick={() => {
+                            window.open(`https://github.com/baklavaspace`, '_blank')
+                        }}><Popup
+                            trigger={open => (
+                                <img src={git} width="20" height="20" align="right" alt="" />
+                            )}
+                            on="hover"
+                            offsetY={0}
+                            offsetX={0}
+                            position="bottom center"
+                            contentStyle={{ width: '40px' }}
+                        ><span className="textInfo">Git</span>
+                            </Popup>
+                        </div>
+                        <div className="exLink0" style={{ marginRight: '0px' }} onClick={() => {
+                            window.open(`https://discord.gg/E6aYX5ukAw`, '_blank')
+                        }}><Popup
+                            trigger={open => (
+                                <img src={discord} width="20" height="20" align="right" alt="" />
+                            )}
+                            on="hover"
+                            offsetY={0}
+                            offsetX={0}
+                            position="bottom center"
+                            contentStyle={{ width: '75px' }}
+                        ><span className="textInfo">Discord</span>
+                            </Popup>
+                        </div>
+                    </div></div><br /><br />
             </div >
         );
     }
