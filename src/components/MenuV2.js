@@ -211,7 +211,7 @@ class Menu extends Component {
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
                                                                                 <td className="">{this.props.aprloading ? <div>{(parseFloat(this.props.aprV2_3[0][i]) + parseFloat(this.props.poolSegmentInfoV2_3[0][i].total3rdPartyAPR)).toLocaleString('en-US', { maximumFractionDigits: 0 })}%</div> : <div className="center">
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
-                                                                                <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.apyDailyV2_3[0][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })}%</div> : <div className="center">
+                                                                                <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.apyDailyV2_3[0][i])>100000 ? <div>&#x3e;10,000%</div> : <div>{parseFloat(this.props.apyDailyV2_3[0][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })}%</div>}</div> : <div className="center">
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>}</td>
                                                                                 <td className="">$ {parseFloat(this.props.tvlV2_3[0][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })} </td>
                                                                             </tr>
