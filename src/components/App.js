@@ -1331,18 +1331,10 @@ class App extends Component {
         bavaMasterFarmer = new window.web3Con.eth.Contract(BavaMasterFarmerV2_3.abi, process.env.REACT_APP_bavamasterfarmv2_3address)
         let poolAddress = (await bavaMasterFarmer.methods.poolInfo(i).call()).poolContract
         bavaCompoundPool = new window.web3Con.eth.Contract(BavaCompoundPool.abi, poolAddress)
-        if (this.state.pendingSegmentRewardV2_3[n][i] <= 0) {
-          alert("No token to harvest! Please deposit LP to earn BAVA")
-          return
-        }
       } else if (this.state.wallet == true) {
         bavaMasterFarmer = new window.web3.eth.Contract(BavaMasterFarmerV2_3.abi, process.env.REACT_APP_bavamasterfarmv2_3address)
         let poolAddress = (await bavaMasterFarmer.methods.poolInfo(i).call()).poolContract
         bavaCompoundPool = new window.web3.eth.Contract(BavaCompoundPool.abi, poolAddress)
-        if (this.state.pendingSegmentRewardV2_3[n][i] <= 0) {
-          alert("No token to harvest! Please deposit LP to earn BAVA")
-          return
-        }
       }
       bavaCompoundPool.methods.reinvest().send({ from: this.state.account }).then(async (result) => {
         this.componentWillMount()
