@@ -633,6 +633,8 @@ class App extends Component {
   // bavaMasterFarmerV2_3
   async loadPoolLengthV2_3() {
     let poolLengthV2_3 = await this.state.bavaMasterFarmerV2_3.methods.poolLength().call()
+    console.log(poolLengthV2_3)
+    poolLengthV2_3 = 6;
     return poolLengthV2_3
   }
 
