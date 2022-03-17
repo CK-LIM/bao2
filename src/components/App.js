@@ -11,6 +11,7 @@ import BavaMasterFarmerV1 from '../abis/BavaMasterFarmerV1.json'
 import BavaMasterFarmerV2_2 from '../abis/BavaMasterFarmerV2_2.json'
 import BavaMasterFarmerV2_3 from '../abis/BavaMasterFarmerV2_3.json'
 import BavaCompoundPool from '../abis/BavaCompoundPool.json'
+import BavaCompoundPoolVariable from '../abis/BavaCompoundPoolVariable.json'
 import BavaAirdrop from '../abis/BavaAirdrop.json'
 import StakingRewards from '../abis/StakingRewards.json'
 
@@ -40,7 +41,7 @@ class App extends Component {
     this.loadTVLAPR()
     while ((this.state.wallet || this.state.walletConnect) == true) {
       await this.loadBlockchainUserData()
-      await this.delay(5000);
+      await this.delay(10000);
     }
   }
 
@@ -577,7 +578,6 @@ class App extends Component {
     let poolAddress = (await this.state.bavaMasterFarmerV2_3.methods.poolInfo(i).call()).poolContract
     let bavaCompoundPool = new window.web3Ava.eth.Contract(BavaCompoundPool.abi, poolAddress)
     let userInfo = await bavaCompoundPool.methods.balanceOf(this.state.account).call()
-    console.log(userInfo)
     return userInfo
   }
 
@@ -634,16 +634,42 @@ class App extends Component {
   async loadPoolLengthV2_3() {
     let poolLengthV2_3 = await this.state.bavaMasterFarmerV2_3.methods.poolLength().call()
     console.log(poolLengthV2_3)
-    poolLengthV2_3 = 6;
+    poolLengthV2_3 = 6
     return poolLengthV2_3
   }
 
   async loadFarmReinvest(i) {
-    let poolAddress = (await this.state.bavaMasterFarmerV2_3.methods.poolInfo(i).call()).poolContract
-    let bavaCompoundPool = new window.web3Ava.eth.Contract(BavaCompoundPool.abi, poolAddress)
-    let reinvestAmount = await bavaCompoundPool.methods.checkReward().call()
-    reinvestAmount = reinvestAmount * this.state.PNGPrice / this.state.AVAXPrice
-    return (reinvestAmount.toFixed(0)).toString()
+    let reinvestAmount
+    let finalReinvestAmount = 0
+    let bonusReinvestAmount = 0
+    let bonusRewardPrice = 0
+    if (i <= 5) {
+      let poolAddress = (await this.state.bavaMasterFarmerV2_3.methods.poolInfo(i).call()).poolContract
+      let bavaCompoundPool = new window.web3Ava.eth.Contract(BavaCompoundPool.abi, poolAddress)
+      reinvestAmount = await bavaCompoundPool.methods.checkReward().call()
+      finalReinvestAmount = reinvestAmount * this.state.PNGPrice / this.state.AVAXPrice
+    } else {
+      let poolAddress = (await this.state.bavaMasterFarmerV2_3.methods.poolInfo(i).call()).poolContract
+      let bavaCompoundPool = new window.web3Ava.eth.Contract(BavaCompoundPoolVariable.abi, poolAddress)
+      reinvestAmount = await bavaCompoundPool.methods.checkReward().call()
+
+      if (reinvestAmount["1"].length > 0) {
+        for (let n = 0; n < reinvestAmount["1"].length; n++) {
+          if (this.state.farmV2_3[i]["bonusReward"][n] == "BAVA") {
+            bonusRewardPrice = this.state.BAVAPrice
+          } else if (this.state.farmV2_3[i]["bonusReward"][n] == "QI") {
+            bonusRewardPrice = this.state.QIPrice
+          } else if (this.state.farmV2_3[i]["bonusReward"][n] == "LUNA") {
+            bonusRewardPrice = this.state.LUNAPrice
+          } else if (this.state.farmV2_3[i]["bonusReward"][n] == "WAVAX") {
+            bonusRewardPrice = this.state.AVAXPrice
+          }
+          bonusReinvestAmount += (reinvestAmount["1"][n] * bonusRewardPrice / this.state.AVAXPrice)
+        }
+      }
+      finalReinvestAmount = reinvestAmount["0"] * this.state.PNGPrice / this.state.AVAXPrice + bonusReinvestAmount
+    }
+    return (finalReinvestAmount.toFixed(0)).toString()
   }
 
   // ***************************************** Async Airdrop *************************************************************
@@ -852,6 +878,9 @@ class App extends Component {
     this.setState({ AVAXPrice: parseFloat(tokenPrice[0].avaxPrice).toFixed(5) })
     this.setState({ BAVAPrice: parseFloat(tokenPrice[1].bavaPrice).toFixed(5) })
     this.setState({ PNGPrice: parseFloat(tokenPrice[2].pngPrice).toFixed(5) })
+    this.setState({ LUNAPrice: parseFloat(tokenPrice[3].lunaPrice).toFixed(5) })
+    this.setState({ JOEPrice: parseFloat(tokenPrice[4].joePrice).toFixed(5) })
+    this.setState({ QIPrice: parseFloat(tokenPrice[5].qiPrice).toFixed(5) })
     this.setState({ loading: true })
   }
 
@@ -1693,7 +1722,6 @@ class App extends Component {
       reinvest={this.reinvest}
       reinvestAmount={this.state.reinvestAmount}
       BAVAPrice={this.state.BAVAPrice}
-      PNGPrice={this.state.PNGPrice}
       AVAXPrice={this.state.AVAXPrice}
       tvl={this.state.tvl}
       apr={this.state.apr}

@@ -199,7 +199,7 @@ class TraderJoe extends Component {
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>}</td>
                                                                                 <td className="">{(this.props.wallet || this.props.walletConnect) && this.props.accountLoading ? <div>{parseFloat(window.web3Ava.utils.fromWei(this.props.bavaUserSegmentInfo[1][i], 'Ether')).toLocaleString('en-US', { maximumFractionDigits: 18 })}</div> : <div className="center">
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
-                                                                                <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.bavaReturnRatio[1][i]).toLocaleString('en-US', { maximumFractionDigits: 4 })}</div> : <div className="center">
+                                                                                <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.bavaReturnRatio[1][i]).toLocaleString('en-US', { maximumFractionDigits: 5 })}</div> : <div className="center">
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
                                                                                 <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.bavaapr[1][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })}%</div> : <div className="center">
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
@@ -355,7 +355,7 @@ class TraderJoe extends Component {
                                                                                         <div className="lds-facebook"><div></div><div></div><div></div></div></div>}</td>
                                                                                     <td className="">{(this.props.wallet || this.props.walletConnect) && this.props.accountLoading ? <div>{parseFloat(window.web3Ava.utils.fromWei(this.props.userSegmentInfo[1][i], 'Ether')).toLocaleString('en-US', { maximumFractionDigits: 18 })}</div> : <div className="center">
                                                                                         <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
-                                                                                    <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.returnRatio[1][i]).toLocaleString('en-US', { maximumFractionDigits: 4 })}</div> : <div className="center">
+                                                                                    <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.returnRatio[1][i]).toLocaleString('en-US', { maximumFractionDigits: 5 })}</div> : <div className="center">
                                                                                         <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
                                                                                     <td className="">{this.props.aprloading ? <div>{(parseFloat(this.props.apr[1][i]) + + parseFloat(this.props.poolSegmentInfo[1][i].total3rdPartyAPR)).toLocaleString('en-US', { maximumFractionDigits: 0 })}%</div> : <div className="center">
                                                                                         <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
@@ -457,7 +457,8 @@ class TraderJoe extends Component {
                             </div>
                         }
                     </div>
-                </div><Footer/>
+                </div><br/>
+                <Footer/>
             </div >
         );
     }
