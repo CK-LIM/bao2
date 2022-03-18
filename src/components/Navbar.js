@@ -3,11 +3,6 @@ import Buttons from 'react-bootstrap/Button'
 import baklava from '../baklava.png'
 import { Link } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
-// import discord from '../discord.svg'
-// import twitter from '../twitter.svg'
-// import medium from '../medium.svg'
-// import git from '../github.svg'
-// import gitbook from '../docs.svg'
 import fox from '../metamask-fox.svg'
 import coin98 from '../coin98.png'
 import walletconnectLogo from '../walletconnect-logo.svg'
@@ -31,7 +26,7 @@ class Navb extends Component {
           <div
             style={{ marginLeft: "25px"}}
           ><Popup trigger={open => (
-            <NavLink className="textSmallBold1"  activeClassName=" " activeStyle={{ fontWeight: "bold", color: "#ffc400" }} to="/menu/">Farm &#8595;</NavLink>
+            <NavLink className="textSmallBold1"  activeClassName=" " activeStyle={{ fontWeight: "bold", color: "#ffc400" }} to="/menu/v2/">Farm &#8595;</NavLink>
            )}
                 on="hover"
                 position="bottom center"
