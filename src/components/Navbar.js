@@ -134,7 +134,7 @@ class Navb extends Component {
 
             <div>
               {/* <Popup trigger={open => ( */}
-              <Link to="/menu/">
+              <Link to="/menu/v2/">
                 <Buttons className="textWhiteLarge center" style={{ width: '100px', height: '30px' }} variant="secondary" size="lg"> Menu</Buttons>
               </Link>
               {/* )}
