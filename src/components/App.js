@@ -25,6 +25,7 @@ import Navb from './Navbar'
 import Main from './Main'
 import Menu from './Menu'
 import MenuV2 from './MenuV2'
+import Kyber from './Kyber'
 import Stake from './Stake'
 import TraderJoe from './TraderJoe'
 import Airdrop from './Airdrop'
@@ -159,12 +160,12 @@ class App extends Component {
       let bavaPoolSegmentInfo = [[], []]
       let poolSegmentInfo = [[], []]
       let poolSegmentInfoV2_2 = [[], []]
-      let poolSegmentInfoV2_3 = [[], []]
+      let poolSegmentInfoV2_3 = [[], [], []]
       let returnRatio = [[], []]
       let bavaReturnRatio = [[], []]
       let returnRatioV2_2 = [[], []]
-      let returnRatioV2_3 = [[], []]
-      let reinvestAmount = [[], []]
+      let returnRatioV2_3 = [[], [], []]
+      let reinvestAmount = [[], [], []]
       let n = 0
       let b = 0
       let c = 0
@@ -208,10 +209,15 @@ class App extends Component {
           returnRatioV2_3[0][d] = returnRatioArrayV2_3[d]["returnRatio"]
           reinvestAmount[0][d] = await responseV2_3[i]
           d += 1
-        } else {
+        } else if (lpTokenPairsymbol == "JLP") {
           poolSegmentInfoV2_3[1][d] = poolInfo
           returnRatioV2_3[1][d] = returnRatioArrayV2_3[d]["returnRatio"]
           reinvestAmount[1][d] = await responseV2_3[i]
+          d += 1
+        } else {
+          poolSegmentInfoV2_3[2][d] = poolInfo
+          returnRatioV2_3[2][d] = returnRatioArrayV2_3[d]["returnRatio"]
+          reinvestAmount[2][d] = await responseV2_3[i]
           d += 1
         }
       }
@@ -318,7 +324,7 @@ class App extends Component {
 
     let poolSegmentInfo = [[], []]
     let poolSegmentInfoV2_2 = [[], []]
-    let poolSegmentInfoV2_3 = [[], []]
+    // let poolSegmentInfoV2_3 = [[], []]
     let bavaPoolSegmentInfo = [[], []]
     let totalpendingReward = 0
 
@@ -332,10 +338,10 @@ class App extends Component {
     let lpSegmentAllowanceV2_2 = [[], []]
     let pendingSegmentRewardV2_2 = [[], []]
 
-    let userSegmentInfoV2_3 = [[], []]
-    let lpBalanceAccountV2_3 = [[], []]
-    let lpSegmentAllowanceV2_3 = [[], []]
-    let pendingSegmentRewardV2_3 = [[], []]
+    let userSegmentInfoV2_3 = [[], [], []]
+    let lpBalanceAccountV2_3 = [[], [], []]
+    let lpSegmentAllowanceV2_3 = [[], [], []]
+    let pendingSegmentRewardV2_3 = [[], [], []]
 
     let bavaUserSegmentInfo = [[], []]
     let bavaLpBalanceAccount = [[], []]
@@ -434,18 +440,23 @@ class App extends Component {
     for (i = 0; i < this.state.poolLengthV2_3; i++) {
       if (this.state.lpTokenPairsymbolsV2_3[i] == "PGL" || this.state.lpTokenPairsymbolsV2_3[i] == "PNG") {
         userSegmentInfoV2_3[0][d] = await response0V2_3[i]
-        poolSegmentInfoV2_3[0][d] = this.state.farmV2_3[i]
+        // poolSegmentInfoV2_3[0][d] = this.state.farmV2_3[i]
         lpBalanceAccountV2_3[0][d] = await response1V2_3[i]
         lpSegmentAllowanceV2_3[0][d] = await response2V2_3[i]
         pendingSegmentRewardV2_3[0][d] = await response3V2_3[i]
         d += 1
-      } else {
+      } else if (this.state.lpTokenPairsymbolsV2_3[i] == "JLP") {
         userSegmentInfoV2_3[1][d] = await response0V2_3[i]
-        poolSegmentInfoV2_3[1][d] = this.state.farmV2_3[i]
+        // poolSegmentInfoV2_3[1][d] = this.state.farmV2_3[i]
         lpBalanceAccountV2_3[1][d] = await response1V2_3[i]
         lpSegmentAllowanceV2_3[1][d] = await response2V2_3[i]
         pendingSegmentRewardV2_3[1][d] = await response3V2_3[i]
         d += 1
+      } else {
+        userSegmentInfoV2_3[2][d] = await response0V2_3[i]
+        lpBalanceAccountV2_3[2][d] = await response1V2_3[i]
+        lpSegmentAllowanceV2_3[2][d] = await response2V2_3[i]
+        pendingSegmentRewardV2_3[2][d] = await response3V2_3[i]
       }
       totalpendingReward += parseInt(await response3V2_3[i])
     }
@@ -481,7 +492,7 @@ class App extends Component {
     this.setState({ lpSegmentAllowanceV2_2 })
     this.setState({ pendingSegmentRewardV2_2 })
 
-    this.setState({ poolSegmentInfoV2_3 })
+    // this.setState({ poolSegmentInfoV2_3 })
     this.setState({ userSegmentInfoV2_3 })
     this.setState({ lpBalanceAccountV2_3 })
     this.setState({ lpSegmentAllowanceV2_3 })
@@ -633,7 +644,8 @@ class App extends Component {
   // bavaMasterFarmerV2_3
   async loadPoolLengthV2_3() {
     let poolLengthV2_3 = await this.state.bavaMasterFarmerV2_3.methods.poolLength().call()
-    poolLengthV2_3 = 10
+    console.log(poolLengthV2_3)
+    // poolLengthV2_3 = 10
     return poolLengthV2_3
   }
 
@@ -642,11 +654,14 @@ class App extends Component {
     let finalReinvestAmount = 0
     let bonusReinvestAmount = 0
     let bonusRewardPrice = 0
+
     if (i <= 5) {
       let poolAddress = (await this.state.bavaMasterFarmerV2_3.methods.poolInfo(i).call()).poolContract
       let bavaCompoundPool = new window.web3Ava.eth.Contract(BavaCompoundPool.abi, poolAddress)
       reinvestAmount = await bavaCompoundPool.methods.checkReward().call()
       finalReinvestAmount = reinvestAmount * this.state.PNGPrice / this.state.AVAXPrice
+    } else if(i == 10) {
+
     } else {
       let poolAddress = (await this.state.bavaMasterFarmerV2_3.methods.poolInfo(i).call()).poolContract
       let bavaCompoundPool = new window.web3Ava.eth.Contract(BavaCompoundPoolVariable.abi, poolAddress)
@@ -732,9 +747,9 @@ class App extends Component {
     let aprV2_2 = [[], []]
     let apyDailyV2_2 = [[], []]
 
-    let tvlV2_3 = [[], []]
-    let aprV2_3 = [[], []]
-    let apyDailyV2_3 = [[], []]
+    let tvlV2_3 = [[], [], []]
+    let aprV2_3 = [[], [], []]
+    let apyDailyV2_3 = [[], [], []]
 
     let n = 0
     let b = 0
@@ -810,10 +825,15 @@ class App extends Component {
         aprV2_3[0][d] = parseFloat(aprArrayV2_3[d]["apr"])
         apyDailyV2_3[0][d] = ((1 + (aprV2_3[0][d] * 0.05 + parseFloat(this.state.poolSegmentInfoV2_3[0][d].total3rdPartyAPR)) / 36500) ** 365 - 1) * 100 + aprV2_3[0][d]
         d += 1
-      } else {
+      } else if (this.state.lpTokenPairsymbolsV2_3[i] == "JLP") {
         tvlV2_3[1][d] = tvlArrayV2_3[d]["tvl"]
         aprV2_3[1][d] = parseFloat(aprArrayV2_3[d]["apr"])
         apyDailyV2_3[1][d] = ((1 + (aprV2_3[1][d] * 0.05 + parseFloat(this.state.poolSegmentInfoV2_3[1][d].total3rdPartyAPR)) / 36500) ** 365 - 1) * 100 + aprV2_3[1][d]
+        d += 1
+      } else {
+        tvlV2_3[2][d] = tvlArrayV2_3[d]["tvl"]
+        aprV2_3[2][d] = parseFloat(aprArrayV2_3[d]["apr"])
+        apyDailyV2_3[2][d] = ((1 + (aprV2_3[2][d] * 0.05 + parseFloat(this.state.poolSegmentInfoV2_3[2][d].total3rdPartyAPR)) / 36500) ** 365 - 1) * 100 + aprV2_3[2][d]
         d += 1
       }
     }
@@ -831,6 +851,7 @@ class App extends Component {
 
     this.setState({ tvlV2_3 })
     this.setState({ aprV2_3 })
+    console.log(this.state.aprV2_3)
     this.setState({ apyDailyV2_3 })
 
     this.setState({ bavatvl })
@@ -1586,7 +1607,7 @@ class App extends Component {
       pendingSegmentReward: [[], []],
       lpSegmentAllowance: [[], []],
       lpSegmentAllowanceV2_2: [[], []],
-      lpSegmentAllowanceV2_3: [[], []],
+      lpSegmentAllowanceV2_3: [[], [], []],
       bavaLpSegmentAllowance: [[], []],
       bavaLpBalanceAccount: [[], []],
       lpTokenValue: [[], []],
@@ -1596,9 +1617,9 @@ class App extends Component {
       tvlV2_2: [[], []],
       aprV2_2: [[], []],
       apyDailyV2_2: [[], []],
-      tvlV2_3: [[], []],
-      aprV2_3: [[], []],
-      apyDailyV2_3: [[], []],
+      tvlV2_3: [[], [], []],
+      aprV2_3: [[], [], []],
+      apyDailyV2_3: [[], [], []],
       bavatvl: [[], []],
       bavaapr: [[], []],
       bavaapyDaily: [[], []],
@@ -1630,6 +1651,7 @@ class App extends Component {
     let mainContent
     let menuContent
     let menuV2Content
+    let kyberContent
     let traderjoeContent
     let airdropContent
     let stakeContent
@@ -1792,6 +1814,51 @@ class App extends Component {
       returnRatio={this.state.returnRatio}
       bavaReturnRatio={this.state.bavaReturnRatio}
     />
+    kyberContent = <Kyber
+    lpTokenBalance={this.state.lpTokenBalance}
+    bavaTokenBalance={this.state.bavaTokenBalance}
+    deposit={this.deposit}
+    withdraw={this.withdraw}
+    approve={this.approve}
+    setI={this.setI}
+    connectMetamask={this.connectMetamask}
+    lpSegmentAllowance={this.state.lpSegmentAllowance}
+    bavaContract={this.state.bavaContract}
+    bavaTokenTotalSupply={this.state.bavaTokenTotalSupply}
+    totalpendingReward={this.state.totalpendingReward}
+    poolSegmentInfo={this.state.poolSegmentInfo}
+    buttonPopup={this.state.buttonPopup}
+    harvest={this.harvest}
+    reinvest={this.reinvest}
+    reinvestAmount={this.state.reinvestAmount}
+    BAVAPrice={this.state.BAVAPrice}
+    AVAXPrice={this.state.AVAXPrice}
+    tvl={this.state.tvl}
+    apr={this.state.apr}
+    apyDaily={this.state.apyDaily}
+    farmloading={this.state.farmloading}
+    aprloading={this.state.aprloading}
+    walletConnect={this.state.walletConnect}
+    wallet={this.state.wallet}
+    farmV1Open={this.state.farmV1Open}
+    farmV2Open={this.state.farmV2Open}
+    accountLoading={this.state.accountLoading}
+    lockedBavaTokenBalance={this.state.lockedBavaTokenBalance}
+    totalTVL={this.state.totalTVL}
+    returnRatio={this.state.returnRatio}
+    bavaReturnRatio={this.state.bavaReturnRatio}
+    poolSegmentInfoV2_3={this.state.poolSegmentInfoV2_3}
+    lpTokenPairsymbolsV2_3={this.state.lpTokenPairsymbolsV2_3}
+    lpTokenAddressesV2_3={this.state.lpTokenAddressesV2_3}
+    returnRatioV2_3={this.state.returnRatioV2_3}
+    tvlV2_3={this.state.tvlV2_3}
+    aprV2_3={this.state.aprV2_3}
+    apyDailyV2_3={this.state.apyDailyV2_3}
+    userSegmentInfoV2_3={this.state.userSegmentInfoV2_3}
+    lpBalanceAccountV2_3={this.state.lpBalanceAccountV2_3}
+    lpSegmentAllowanceV2_3={this.state.lpSegmentAllowanceV2_3}
+    pendingSegmentRewardV2_3={this.state.pendingSegmentRewardV2_3}
+  />
     airdropContent = <Airdrop
       wallet={this.state.wallet}
       connectMetamask={this.connectMetamask}
@@ -1868,6 +1935,7 @@ class App extends Component {
                   <Route path="/home" exact > {mainContent} </Route>
                   <Route path="/menu" exact > {menuContent} </Route>
                   <Route path="/menu/v2" exact > {menuV2Content} </Route>
+                  <Route path="/menu/v2/kyber" exact > {kyberContent} </Route>
                   <Route path="/menu/traderjoe/" exact > {traderjoeContent} </Route>
                   <Route path="/claim/" exact > {airdropContent} </Route>
                   <Route path="/stake/" exact > {stakeContent} </Route>

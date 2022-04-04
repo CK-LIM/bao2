@@ -134,7 +134,7 @@ class Menu extends Component {
                         <span className="float-left">
                             <ButtonGroup>
                                 <Button variant="outlined" size="small" color="inherit" component={Link} to="/menu/v2">Pangolin</Button>
-                                {/* <Button variant="text" size="small" color="inherit" component={Link} to="/traderjoe/">Trader Joe</Button> */}
+                                <Button variant="text" size="small" color="inherit" component={Link} to="/menu/v2/kyber">KyberSwap</Button>
                             </ButtonGroup>
                         </span>
                     </div>
