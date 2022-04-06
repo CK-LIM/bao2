@@ -182,7 +182,7 @@ class Kyber extends Component {
                                                                                     contentStyle={{ width: '150px' }}
                                                                                 ><div className="textInfo">APR Breakdown: </div><br />
                                                                                     <div className="textInfo">Baklava   : {parseFloat(this.props.aprV2_3[2][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })} %</div><br />
-                                                                                    <div className="textInfo">Pangolin : {parseFloat(this.props.poolSegmentInfoV2_3[2][i].total3rdPartyAPR).toLocaleString('en-US', { maximumFractionDigits: 0 })} %</div>
+                                                                                    <div className="textInfo">Kyber : {parseFloat(this.props.poolSegmentInfoV2_3[2][i].total3rdPartyAPR).toLocaleString('en-US', { maximumFractionDigits: 0 })} %</div>
                                                                                 </Popup></th>
                                                                                 <th scope="col">APY <Popup
                                                                                     trigger={open => (<span><BsFillQuestionCircleFill style={{ marginBottom: "2px" }} size={10} /></span>)}
