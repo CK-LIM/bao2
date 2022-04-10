@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "5a11d76653f0bfc619de",
+    "revision": "26531ef55779106683a9",
     "url": "/static/css/main.ed1ac923.chunk.css"
   },
   {
-    "revision": "5a11d76653f0bfc619de",
-    "url": "/static/js/main.5a11d766.chunk.js"
+    "revision": "26531ef55779106683a9",
+    "url": "/static/js/main.26531ef5.chunk.js"
   },
   {
     "revision": "6116f4f3dac041bebe4d",
@@ -80,7 +80,7 @@ self.__precacheManifest = [
     "url": "/static/media/Litepaper_Protocol(turkish).e0e108cf.pdf"
   },
   {
-    "revision": "dc378d161dc07c4bd00aaa09252d9948",
+    "revision": "97292ff4258a3a17efe4eb1699cd9455",
     "url": "/index.html"
   }
 ];
