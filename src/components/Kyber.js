@@ -113,29 +113,20 @@ class Kyber extends Component {
                     </div>
                 </div>
 
-                <div className="textMiddle center" ><b><big>BAVA Price: $ {this.props.BAVAPrice}&nbsp;&nbsp;
-                    <Popup
-                        trigger={open => (
-                            <span><BsFillQuestionCircleFill size={13} /></span>
-                        )}
-                        on="hover"
-                        offsetY={-10}
-                        offsetX={10}
-                        position="right center"
-                    ><span className="textInfo"><small>Initial BAVA token price to USD will be fixed at the rate $ 0.10 </small></span>
-                    </Popup></big></b></div>
+                <div className="textMiddle center" ><b><big>BAVA Price: $ {this.props.BAVAPrice}&nbsp;&nbsp;</big></b></div>
 
                 <div className="center" style={{ color: 'grey' }}><small>&nbsp;! Attention:&nbsp;Be sure to read <a href="https://baklavaspace.gitbook.io/" target="_blank">baklavaspace.gitbook</a> before using the pools so you are familiar with protocol risks and fees!</small></div>
-                <br />
-                <div className="ml-auto mr-auto" style={{ width: '1000px' }}>
+               
+                <div className="ml-auto mr-auto mt-3" style={{ width: '1000px' }}>
                     <div className="">
                         <div className="textMiddleBold1 float-left" style={{ marginLeft: '2px' }}><big>Select Platform</big></div>
                         <div className="textMiddleBold1 float-right" style={{ marginRight: '5px' }}><big>TVL $ {parseFloat(this.props.totalTVL).toLocaleString('en-US', { maximumFractionDigits: 0 })}</big></div><br /><br />
                         <span className="float-left">
                             <ButtonGroup>
                                 {/* <Button variant="outlined" size="small" color="inherit" component={Link} to="/menu/v2">Pangolin</Button> */}
-                                <Button variant="text" size="small" color="inherit" component={Link} to="/menu/v2">Pangolin</Button>
-                                <Button variant="outlined" size="small" color="inherit" component={Link} to="/menu/v2/kyber">KyberSwap</Button>
+                                <Button className="mr-1" variant="text" size="small" color="inherit" component={Link} to="/menu/v2">Pangolin</Button>
+                                <Button className="mr-1" variant="outlined" size="small" color="inherit" component={Link} to="/menu/v2/kyber">KyberSwap</Button>
+                                <Button variant="text" size="small" color="inherit" component={Link} to="/menu/v2/traderjoe">Trader Joe</Button>
                             </ButtonGroup>
                         </span>
                     </div>
@@ -145,6 +136,16 @@ class Kyber extends Component {
                     <div>
                         {this.props.farmloading ?
                             <div className="" style={{ width: '1000px' }}>
+
+
+
+
+
+
+
+
+
+                                
                                 {this.props.poolSegmentInfoV2_3[2].map((poolSegmentInfoV2_3, key) => {
                                     let i = this.props.poolSegmentInfoV2_3[2].indexOf(poolSegmentInfoV2_3)
                                     return (
@@ -331,7 +332,7 @@ class Kyber extends Component {
                             </div>
                         }
                     </div>
-                </div><br/>
+                </div><br/><br/><br/><br/><br/>
                 <Footer/>
             </div >
         );

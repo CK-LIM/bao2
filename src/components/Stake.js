@@ -290,7 +290,7 @@ class Stake extends Component {
                         </span>
                     </div> :
                     <div>
-                    </div>}<br/><br/><Footer />                
+                    </div>}<br/><br/><br/><Footer />                
             </div >
         );
     }

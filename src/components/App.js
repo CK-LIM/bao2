@@ -28,6 +28,7 @@ import MenuV2 from './MenuV2'
 import Kyber from './Kyber'
 import Stake from './Stake'
 import TraderJoe from './TraderJoe'
+import TraderJoeV2 from './TraderJoeV2'
 import Airdrop from './Airdrop'
 import LitePaper from './LitePaper'
 import Synthetic from './Synthetic'
@@ -134,7 +135,7 @@ class App extends Component {
     let response10 = this.loadPoolLengthV2_3()
 
     let poolLength = await response0
-    
+
     let bavaPoolLength = await response1
     let airdropIteration = await response2
     let airdropAmount = await response3
@@ -658,7 +659,7 @@ class App extends Component {
       let bavaCompoundPool = new window.web3Ava.eth.Contract(BavaCompoundPool.abi, poolAddress)
       reinvestAmount = await bavaCompoundPool.methods.checkReward().call()
       finalReinvestAmount = reinvestAmount * this.state.PNGPrice / this.state.AVAXPrice
-    } else if(i == 10 || i == 6) {
+    } else if (i == 10 || i == 6) {
 
     } else {
       let poolAddress = (await this.state.bavaMasterFarmerV2_3.methods.poolInfo(i).call()).poolContract
@@ -1655,6 +1656,7 @@ class App extends Component {
     let stakeContent
     let litepaperContent
     let syntheticContent
+    let traderjoeV2Content
 
     mainContent = <Main
       lpTokenBalance={this.state.lpTokenBalance}
@@ -1812,51 +1814,95 @@ class App extends Component {
       returnRatio={this.state.returnRatio}
       bavaReturnRatio={this.state.bavaReturnRatio}
     />
+    traderjoeV2Content = <TraderJoeV2
+      lpTokenBalance={this.state.lpTokenBalance}
+      bavaTokenBalance={this.state.bavaTokenBalance}
+      deposit={this.deposit}
+      withdraw={this.withdraw}
+      approve={this.approve}
+      setI={this.setI}
+      connectMetamask={this.connectMetamask}
+      lpSegmentAllowance={this.state.lpSegmentAllowance}
+      bavaContract={this.state.bavaContract}
+      bavaTokenTotalSupply={this.state.bavaTokenTotalSupply}
+      totalpendingReward={this.state.totalpendingReward}
+      userSegmentInfo={this.state.userSegmentInfo}
+      poolSegmentInfo={this.state.poolSegmentInfo}
+      lpBalanceAccount={this.state.lpBalanceAccount}
+      pendingSegmentReward={this.state.pendingSegmentReward}
+      buttonPopup={this.state.buttonPopup}
+      harvest={this.harvest}
+      BAVAPrice={this.state.BAVAPrice}
+      tvl={this.state.tvl}
+      apr={this.state.apr}
+      apyDaily={this.state.apyDaily}
+      farmloading={this.state.farmloading}
+      aprloading={this.state.aprloading}
+      walletConnect={this.state.walletConnect}
+      wallet={this.state.wallet}
+      farmV1Open={this.state.farmV1Open}
+      farmV2Open={this.state.farmV2Open}
+      accountLoading={this.state.accountLoading}
+      lockedBavaTokenBalance={this.state.lockedBavaTokenBalance}
+      totalTVL={this.state.totalTVL}
+      bavaPoolSegmentInfo={this.state.bavaPoolSegmentInfo}
+      bavaLpTokenPairsymbols={this.state.bavaLpTokenPairsymbols}
+      bavaLpTokenAddresses={this.state.bavaLpTokenAddresses}
+      bavaUserSegmentInfo={this.state.bavaUserSegmentInfo}
+      bavaLpBalanceAccount={this.state.bavaLpBalanceAccount}
+      bavaLpSegmentAllowance={this.state.bavaLpSegmentAllowance}
+      bavaPendingSegmentReward={this.state.bavaPendingSegmentReward}
+      bavatvl={this.state.bavatvl}
+      bavaapr={this.state.bavaapr}
+      bavaapyDaily={this.state.bavaapyDaily}
+      returnRatio={this.state.returnRatio}
+      bavaReturnRatio={this.state.bavaReturnRatio}
+    />
     kyberContent = <Kyber
-    lpTokenBalance={this.state.lpTokenBalance}
-    bavaTokenBalance={this.state.bavaTokenBalance}
-    deposit={this.deposit}
-    withdraw={this.withdraw}
-    approve={this.approve}
-    setI={this.setI}
-    connectMetamask={this.connectMetamask}
-    lpSegmentAllowance={this.state.lpSegmentAllowance}
-    bavaContract={this.state.bavaContract}
-    bavaTokenTotalSupply={this.state.bavaTokenTotalSupply}
-    totalpendingReward={this.state.totalpendingReward}
-    poolSegmentInfo={this.state.poolSegmentInfo}
-    buttonPopup={this.state.buttonPopup}
-    harvest={this.harvest}
-    reinvest={this.reinvest}
-    reinvestAmount={this.state.reinvestAmount}
-    BAVAPrice={this.state.BAVAPrice}
-    AVAXPrice={this.state.AVAXPrice}
-    tvl={this.state.tvl}
-    apr={this.state.apr}
-    apyDaily={this.state.apyDaily}
-    farmloading={this.state.farmloading}
-    aprloading={this.state.aprloading}
-    walletConnect={this.state.walletConnect}
-    wallet={this.state.wallet}
-    farmV1Open={this.state.farmV1Open}
-    farmV2Open={this.state.farmV2Open}
-    accountLoading={this.state.accountLoading}
-    lockedBavaTokenBalance={this.state.lockedBavaTokenBalance}
-    totalTVL={this.state.totalTVL}
-    returnRatio={this.state.returnRatio}
-    bavaReturnRatio={this.state.bavaReturnRatio}
-    poolSegmentInfoV2_3={this.state.poolSegmentInfoV2_3}
-    lpTokenPairsymbolsV2_3={this.state.lpTokenPairsymbolsV2_3}
-    lpTokenAddressesV2_3={this.state.lpTokenAddressesV2_3}
-    returnRatioV2_3={this.state.returnRatioV2_3}
-    tvlV2_3={this.state.tvlV2_3}
-    aprV2_3={this.state.aprV2_3}
-    apyDailyV2_3={this.state.apyDailyV2_3}
-    userSegmentInfoV2_3={this.state.userSegmentInfoV2_3}
-    lpBalanceAccountV2_3={this.state.lpBalanceAccountV2_3}
-    lpSegmentAllowanceV2_3={this.state.lpSegmentAllowanceV2_3}
-    pendingSegmentRewardV2_3={this.state.pendingSegmentRewardV2_3}
-  />
+      lpTokenBalance={this.state.lpTokenBalance}
+      bavaTokenBalance={this.state.bavaTokenBalance}
+      deposit={this.deposit}
+      withdraw={this.withdraw}
+      approve={this.approve}
+      setI={this.setI}
+      connectMetamask={this.connectMetamask}
+      lpSegmentAllowance={this.state.lpSegmentAllowance}
+      bavaContract={this.state.bavaContract}
+      bavaTokenTotalSupply={this.state.bavaTokenTotalSupply}
+      totalpendingReward={this.state.totalpendingReward}
+      poolSegmentInfo={this.state.poolSegmentInfo}
+      buttonPopup={this.state.buttonPopup}
+      harvest={this.harvest}
+      reinvest={this.reinvest}
+      reinvestAmount={this.state.reinvestAmount}
+      BAVAPrice={this.state.BAVAPrice}
+      AVAXPrice={this.state.AVAXPrice}
+      tvl={this.state.tvl}
+      apr={this.state.apr}
+      apyDaily={this.state.apyDaily}
+      farmloading={this.state.farmloading}
+      aprloading={this.state.aprloading}
+      walletConnect={this.state.walletConnect}
+      wallet={this.state.wallet}
+      farmV1Open={this.state.farmV1Open}
+      farmV2Open={this.state.farmV2Open}
+      accountLoading={this.state.accountLoading}
+      lockedBavaTokenBalance={this.state.lockedBavaTokenBalance}
+      totalTVL={this.state.totalTVL}
+      returnRatio={this.state.returnRatio}
+      bavaReturnRatio={this.state.bavaReturnRatio}
+      poolSegmentInfoV2_3={this.state.poolSegmentInfoV2_3}
+      lpTokenPairsymbolsV2_3={this.state.lpTokenPairsymbolsV2_3}
+      lpTokenAddressesV2_3={this.state.lpTokenAddressesV2_3}
+      returnRatioV2_3={this.state.returnRatioV2_3}
+      tvlV2_3={this.state.tvlV2_3}
+      aprV2_3={this.state.aprV2_3}
+      apyDailyV2_3={this.state.apyDailyV2_3}
+      userSegmentInfoV2_3={this.state.userSegmentInfoV2_3}
+      lpBalanceAccountV2_3={this.state.lpBalanceAccountV2_3}
+      lpSegmentAllowanceV2_3={this.state.lpSegmentAllowanceV2_3}
+      pendingSegmentRewardV2_3={this.state.pendingSegmentRewardV2_3}
+    />
     airdropContent = <Airdrop
       wallet={this.state.wallet}
       connectMetamask={this.connectMetamask}
@@ -1934,6 +1980,7 @@ class App extends Component {
                   <Route path="/menu" exact > {menuContent} </Route>
                   <Route path="/menu/v2" exact > {menuV2Content} </Route>
                   <Route path="/menu/v2/kyber" exact > {kyberContent} </Route>
+                  <Route path="/menu/v2/traderjoe" exact > {traderjoeV2Content} </Route>
                   <Route path="/menu/traderjoe/" exact > {traderjoeContent} </Route>
                   <Route path="/claim/" exact > {airdropContent} </Route>
                   <Route path="/stake/" exact > {stakeContent} </Route>

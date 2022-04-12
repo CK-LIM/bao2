@@ -112,7 +112,7 @@ class Menu extends Component {
                     </div>
                 </div>
 
-                <div className="textMiddle center" ><b><big>BAVA Price: $ {this.props.BAVAPrice}&nbsp;&nbsp;
+                {/* <div className="textMiddle center" ><b><big>BAVA Price: $ {this.props.BAVAPrice}&nbsp;&nbsp;
                     <Popup
                         trigger={open => (
                             <span><BsFillQuestionCircleFill size={13} /></span>
@@ -122,11 +122,13 @@ class Menu extends Component {
                         offsetX={10}
                         position="right center"
                     ><span className="textInfo"><small>Initial BAVA token price to USD will be fixed at the rate $ 0.10 </small></span>
-                    </Popup></big></b></div>
+                    </Popup></big></b></div> */}
 
-                <div className="center" style={{ color: 'grey' }}><small>&nbsp;! Attention:&nbsp;Be sure to read <a href="https://baklavaspace.gitbook.io/" target="_blank">baklavaspace.gitbook</a> before using the pools so you are familiar with protocol risks and fees!</small></div>
-                <br />
-                <div className="ml-auto mr-auto" style={{ width: '1000px' }}>
+                {/* <div className="center" style={{ color: 'grey' }}><small>&nbsp;! Attention:&nbsp;Be sure to read <a href="https://baklavaspace.gitbook.io/" target="_blank">baklavaspace.gitbook</a> before using the pools so you are familiar with protocol risks and fees!</small></div> */}
+
+                <div className="center mt-4" style={{ color: 'black' }}><big><b>&nbsp;! Attention:&nbsp;Please use Version 2 farm for higher yield!&nbsp;&nbsp;&gt;&gt;&nbsp;<Link to="/menu/v2/"><Buttons className="textDarkMedium" variant="outline" size="sm" >Switch to V2</Buttons></Link></b></big></div>
+            
+                <div className="ml-auto mr-auto mt-3" style={{ width: '1000px' }}>
                     <div className="">
                         <div className="textMiddleBold1 float-left" style={{ marginLeft: '2px' }}><big>Select Platform</big></div>
                         <div className="textMiddleBold1 float-right" style={{ marginRight: '5px' }}><big>TVL $ {parseFloat(this.props.totalTVL).toLocaleString('en-US', { maximumFractionDigits: 0 })}</big></div><br /><br />
@@ -138,8 +140,6 @@ class Menu extends Component {
                         </span>
                     </div>
                     <br /><br />
-
-
 
 
 
@@ -210,7 +210,7 @@ class Menu extends Component {
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
                                                                                 <td className="">{this.props.aprloading ? <div>{(parseFloat(this.props.aprV2_2[0][i]) + parseFloat(this.props.poolSegmentInfoV2_2[0][i].total3rdPartyAPR)).toLocaleString('en-US', { maximumFractionDigits: 0 })}%</div> : <div className="center">
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
-                                                                                <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.apyDailyV2_2[0][i])>100000 ? <div>&#x3e;100,000%</div> : <div>{parseFloat(this.props.apyDailyV2_2[0][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })}%</div>}</div> : <div className="center">
+                                                                                <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.apyDailyV2_2[0][i]) > 100000 ? <div>&#x3e;100,000%</div> : <div>{parseFloat(this.props.apyDailyV2_2[0][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })}%</div>}</div> : <div className="center">
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>}</td>
                                                                                 <td className="">$ {parseFloat(this.props.tvlV2_2[0][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })} </td>
                                                                             </tr>
@@ -369,7 +369,7 @@ class Menu extends Component {
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
                                                                                 <td className="">{this.props.aprloading ? <div>{(parseFloat(this.props.bavaapr[0][i]) + parseFloat(this.props.bavaPoolSegmentInfo[0][i].total3rdPartyAPR)).toLocaleString('en-US', { maximumFractionDigits: 0 })}%</div> : <div className="center">
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
-                                                                                <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.bavaapyDaily[0][i])>100000 ? <div>&#x3e;100,000%</div> : <div>{parseFloat(this.props.bavaapyDaily[0][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })}%</div>}</div> : <div className="center">
+                                                                                <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.bavaapyDaily[0][i]) > 100000 ? <div>&#x3e;100,000%</div> : <div>{parseFloat(this.props.bavaapyDaily[0][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })}%</div>}</div> : <div className="center">
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>}</td>
                                                                                 <td className="">$ {parseFloat(this.props.bavatvl[0][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })} </td>
                                                                             </tr>
@@ -529,7 +529,7 @@ class Menu extends Component {
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
                                                                                 <td className="">{this.props.aprloading ? <div>{(parseFloat(this.props.apr[0][i]) + parseFloat(this.props.poolSegmentInfo[0][i].total3rdPartyAPR)).toLocaleString('en-US', { maximumFractionDigits: 0 })}%</div> : <div className="center">
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>} </td>
-                                                                                <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.apyDaily[0][i])>100000 ? <div>&#x3e;100,000%</div> : <div>{parseFloat(this.props.apyDaily[0][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })}%</div>}</div> : <div className="center">
+                                                                                <td className="">{this.props.aprloading ? <div>{parseFloat(this.props.apyDaily[0][i]) > 100000 ? <div>&#x3e;100,000%</div> : <div>{parseFloat(this.props.apyDaily[0][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })}%</div>}</div> : <div className="center">
                                                                                     <div className="lds-facebook"><div></div><div></div><div></div></div></div>}</td>
                                                                                 <td className="">$ {parseFloat(this.props.tvl[0][i]).toLocaleString('en-US', { maximumFractionDigits: 0 })} </td>
                                                                             </tr>
@@ -623,8 +623,8 @@ class Menu extends Component {
                             </div>
                         }
                     </div>
-                </div><br/>
-                <Footer />              
+                </div><br />
+                <Footer />
             </div >
         );
     }
