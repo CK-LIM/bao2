@@ -43,7 +43,7 @@ class App extends Component {
     this.loadTVLAPR()
     while ((this.state.wallet || this.state.walletConnect) == true) {
       await this.loadBlockchainUserData()
-      await this.delay(10000);
+      await this.delay(5000);
     }
   }
 
