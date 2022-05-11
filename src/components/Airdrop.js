@@ -19,7 +19,7 @@ class Airdrop extends Component {
                 <div className="rowC center">
                     <div className="card cardbody mr-3" style={{ width: '450px', height: '450px', color: 'black' }}>
                         <div className="card-body center">
-                            <span>
+                            <div>
                                 <table className=" textBlackSmall text-center mb-4" style={{ width: '400px', color: 'black' }}>
                                     <thead>
                                         <tr >
@@ -48,14 +48,16 @@ class Airdrop extends Component {
                                         </tr>
                                     </tbody>
                                 </table>
-                                <div className="textBlackMedium ml-3" style={{ color: 'black' }}><b>How to claim token:</b></div>
-                                <ul>
-                                    <li className="textBlackSmall">Make sure web app is connected to the wallet(Avalanche network).</li>
-                                    <li className="textBlackSmall">Check if your address is registered airdrop address.</li>
-                                    <li className="textBlackSmall">Make sure you have AVAX to pay for transaction fees (~1 USD worth of AVAX, paid to the network).</li>
-                                    <li className="textBlackSmall">Click on claim and confirm the transaction to claim your BAVA tokens.</li>
-                                </ul>
-                            </span>
+                                <div className='left'>
+                                    <div className="textBlackMedium ml-3" style={{ color: 'black' }}><b>How to claim token:</b></div>
+                                    <div>
+                                        <li className="textBlackSmall">Make sure web app is connected to the wallet (Avalanche).</li>
+                                        <li className="textBlackSmall">Check if your address is registered airdrop address.</li>
+                                        <li className="textBlackSmall">Make sure you have AVAX to pay for transaction fees (~1 USD worth of AVAX, paid to the network).</li>
+                                        <li className="textBlackSmall">Click on claim and confirm the transaction to claim your BAVA tokens.</li>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
