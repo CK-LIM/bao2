@@ -22,6 +22,7 @@ import FarmV2_3 from './tokens_config/farmV2_3.json'
 import AirdropList from './tokens_config/airdrop.json'
 
 import Navb from './Navbar'
+import NavbMenu from './NavbarMenu'
 import Main from './Main'
 import Menu from './Menu'
 import MenuV2 from './MenuV2'
@@ -1657,7 +1658,37 @@ class App extends Component {
     let litepaperContent
     let syntheticContent
     let traderjoeV2Content
+    let navLandingContent
+    let navMenuContent
 
+    navLandingContent = <Navb
+      account={this.state.account}
+      first4Account={this.state.first4Account}
+      last4Account={this.state.last4Account}
+      wallet={this.state.wallet}
+      setWalletTrigger={this.setWalletTrigger}
+      loadWeb3={this.loadWeb3}
+      connectMetamask={this.connectMetamask}
+      mobileWalletConnect={this.mobileWalletConnect}
+      WalletDisconnect={this.WalletDisconnect}
+      connectCoin98={this.connectCoin98}
+      networkName={this.state.networkName}
+      walletConnect={this.state.walletConnect}
+    />
+    navMenuContent = <NavbMenu
+      account={this.state.account}
+      first4Account={this.state.first4Account}
+      last4Account={this.state.last4Account}
+      wallet={this.state.wallet}
+      setWalletTrigger={this.setWalletTrigger}
+      loadWeb3={this.loadWeb3}
+      connectMetamask={this.connectMetamask}
+      mobileWalletConnect={this.mobileWalletConnect}
+      WalletDisconnect={this.WalletDisconnect}
+      connectCoin98={this.connectCoin98}
+      networkName={this.state.networkName}
+      walletConnect={this.state.walletConnect}
+    />
     mainContent = <Main
       lpTokenBalance={this.state.lpTokenBalance}
       bavaTokenBalance={this.state.bavaTokenBalance}
@@ -1957,38 +1988,35 @@ class App extends Component {
     return (
       <Router>
         <div>
-          <Navb
-            account={this.state.account}
-            first4Account={this.state.first4Account}
-            last4Account={this.state.last4Account}
-            wallet={this.state.wallet}
-            setWalletTrigger={this.setWalletTrigger}
-            loadWeb3={this.loadWeb3}
-            connectMetamask={this.connectMetamask}
-            mobileWalletConnect={this.mobileWalletConnect}
-            WalletDisconnect={this.WalletDisconnect}
-            connectCoin98={this.connectCoin98}
-            networkName={this.state.networkName}
-            walletConnect={this.state.walletConnect}
-          />
-          <div className="container-fluid mt-2">
-            <div className="row">
-              <main role="main" className="content ml-auto mr-auto">
-                <Switch>
-                  <Route path="/" exact > {mainContent} </Route>
-                  <Route path="/home" exact > {mainContent} </Route>
-                  <Route path="/menu" exact > {menuContent} </Route>
-                  <Route path="/menu/v2" exact > {menuV2Content} </Route>
-                  <Route path="/menu/v2/kyber" exact > {kyberContent} </Route>
-                  <Route path="/menu/v2/traderjoe" exact > {traderjoeV2Content} </Route>
-                  <Route path="/menu/traderjoe/" exact > {traderjoeContent} </Route>
-                  <Route path="/claim/" exact > {airdropContent} </Route>
-                  <Route path="/stake/" exact > {stakeContent} </Route>
-                  <Route path="/litepaper" exact > {litepaperContent} </Route>
-                  <Route path="/synthetic" exact > {syntheticContent} </Route>
-                </Switch>
-              </main>
-            </div>
+          <Switch>
+            <Route path="/" exact > {navLandingContent} </Route>
+            <Route path="/home" exact > {navLandingContent} </Route>
+            <Route path="/menu" exact > {navMenuContent} </Route>
+            <Route path="/menu/v2" exact > {navMenuContent} </Route>
+            <Route path="/menu/v2/kyber" exact > {navMenuContent} </Route>
+            <Route path="/menu/v2/traderjoe" exact > {navMenuContent} </Route>
+            <Route path="/menu/traderjoe/" exact > {navMenuContent} </Route>
+            <Route path="/claim/" exact > {navMenuContent} </Route>
+            <Route path="/stake/" exact > {navMenuContent} </Route>
+            <Route path="/litepaper" exact > {navMenuContent} </Route>
+            <Route path="/synthetic" exact > {navMenuContent} </Route>
+          </Switch>
+          <div style={{ marginTop: "80px" }}>
+            <main role="main" className="content ml-auto mr-auto">
+              <Switch>
+                <Route path="/" exact > {mainContent} </Route>
+                <Route path="/home" exact > {mainContent} </Route>
+                <Route path="/menu" exact > {menuContent} </Route>
+                <Route path="/menu/v2" exact > {menuV2Content} </Route>
+                <Route path="/menu/v2/kyber" exact > {kyberContent} </Route>
+                <Route path="/menu/v2/traderjoe" exact > {traderjoeV2Content} </Route>
+                <Route path="/menu/traderjoe/" exact > {traderjoeContent} </Route>
+                <Route path="/claim/" exact > {airdropContent} </Route>
+                <Route path="/stake/" exact > {stakeContent} </Route>
+                <Route path="/litepaper" exact > {litepaperContent} </Route>
+                <Route path="/synthetic" exact > {syntheticContent} </Route>
+              </Switch>
+            </main>
           </div>
         </div>
       </Router>

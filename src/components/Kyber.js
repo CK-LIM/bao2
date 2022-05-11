@@ -223,7 +223,7 @@ class Kyber extends Component {
                                                                         <Buttons variant="outline-secondary" size="sm" style={{ width: '60px' }} onClick={() => {
                                                                             this.clickfarmOpen(i, false)
                                                                         }}>Close</Buttons>&nbsp;&nbsp;&nbsp;</div>
-                                                                    {this.props.wallet || this.props.walletConnect ? <div className="borderTop "><br /><div className="rowC">
+                                                                    {this.props.wallet || this.props.walletConnect ? <div className="borderTop "><div className="rowC mt-3">
                                                                         <div>
                                                                             <div className="card cardbody float-left mr-3 mb-3" style={{ width: '300px' }}>
                                                                                 <div className="card-body" style={{ padding: '0.5rem' }}>
@@ -307,8 +307,7 @@ class Kyber extends Component {
                                                                     </div>
                                                                     </div> :
                                                                         <div className="center borderTop" >
-                                                                            <br /><br />
-                                                                            <span style={{ color: 'black' }}><small>Wallet Connection to Avalanche required</small></span>
+                                                                            <span className="mt-3" style={{ color: 'black' }}><small>Wallet Connection to Avalanche required</small></span>
                                                                         </div>}
                                                                 </div> :
                                                                 <div>

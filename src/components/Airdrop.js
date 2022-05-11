@@ -16,11 +16,11 @@ class Airdrop extends Component {
         return (
             <div id="content" className="mt-4">
                 <label className="textWhite center mb-5" style={{ fontSize: '40px', color: 'black' }}><big><b>BAVA Airdrop</b></big></label>
-                <div className="rowC">
+                <div className="rowC center">
                     <div className="card cardbody mr-3" style={{ width: '450px', height: '450px', color: 'black' }}>
                         <div className="card-body center">
                             <span>
-                                <table className=" textBlackSmall text-center mb-4" style={{ width: '400px', color: 'black'}}>
+                                <table className=" textBlackSmall text-center mb-4" style={{ width: '400px', color: 'black' }}>
                                     <thead>
                                         <tr >
                                             <th scope="col">Start Date</th>
@@ -33,18 +33,18 @@ class Airdrop extends Component {
                                             <td>{this.props.timeConverter(this.props.airdropEnd)}</td>
                                         </tr>
                                     </tbody>
-                                    </table>
-                                    <table className=" textBlackSmall text-center mb-4" style={{ width: '400px', color: 'black' }}>
+                                </table>
+                                <table className=" textBlackSmall text-center mb-4" style={{ width: '400px', color: 'black' }}>
                                     <thead>
                                         <tr>
                                             <th scope="col">Airdrop Amount</th>
-                                            <th scope="col" style={{ border: '0px'}}></th>
+                                            <th scope="col" style={{ border: '0px' }}></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
                                             <td>{parseFloat(window.web3Ava.utils.fromWei(this.props.airdropAmount, 'Ether')).toLocaleString('en-US', { maximumFractionDigits: 0 })} BAVA</td>
-                                            <td style={{ border: '0px'}}></td>
+                                            <td style={{ border: '0px' }}></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -58,9 +58,9 @@ class Airdrop extends Component {
                             </span>
                         </div>
                     </div>
-                    
+
                     {this.props.wallet || this.props.walletConnect ?
-                        
+
                         // <div className="card cardbody" style={{ width: '450px', color: 'white' }}>
                         //     <div className="card-body">
                         //         <div>
@@ -98,24 +98,24 @@ class Airdrop extends Component {
                         //             }</div>
                         //             : <div></div>                                    
                         //         }
-                                    
+
                         //         </div>
                         //     </div>
                         // </div>
-                        <div className="card cardbody" style={{ width: '450px', height: '150px'}}>
-                        <div className="card-body">
-                            <div>
-                            <div className="center textBlackMedium mt-2" style={{ color: 'black', fontSize: '18px' }}><b><big>First airdrop claim period has ended!</big></b></div>
-                            <div className="center comingSoon mt-4" style={{ color: '#ffae00', fontSize: '18px', opacity: "0"  }}><b><big>2ND AIRDROP IS COMING SOON!</big></b></div>
-                            </div>
-                        </div>
-                    </div>
-                        :
-                        <div className="card cardbody" style={{ width: '450px', height: '150px'}}>
+                        <div className="card cardbody" style={{ width: '450px', height: '150px' }}>
                             <div className="card-body">
                                 <div>
-                                <div className="center textBlackMedium mt-2" style={{ color: 'black', fontSize: '18px' }}><b><big>First airdrop claim period has ended!</big></b></div>
-                                <div className="center comingSoon mt-4" style={{ color: '#ffae00', fontSize: '18px', opacity: "0"  }}><b><big>2ND AIRDROP IS COMING SOON!</big></b></div>
+                                    <div className="center textBlackMedium mt-2" style={{ color: 'black', fontSize: '18px' }}><b><big>First airdrop claim period has ended!</big></b></div>
+                                    <div className="center comingSoon mt-4" style={{ color: '#ffae00', fontSize: '18px', opacity: "0" }}><b><big>2ND AIRDROP IS COMING SOON!</big></b></div>
+                                </div>
+                            </div>
+                        </div>
+                        :
+                        <div className="card cardbody" style={{ width: '450px', height: '150px' }}>
+                            <div className="card-body">
+                                <div>
+                                    <div className="center textBlackMedium mt-2" style={{ color: 'black', fontSize: '18px' }}><b><big>First airdrop claim period has ended!</big></b></div>
+                                    <div className="center comingSoon mt-4" style={{ color: '#ffae00', fontSize: '18px', opacity: "0" }}><b><big>2ND AIRDROP IS COMING SOON!</big></b></div>
                                     {/* <div className="center textBlackMedium mt-2 mb-3"><b>Connect wallet to claim BAVA airdrop</b></div> */}
                                     {/* <div className="center mt-4"><button type="submit" className="btn btn-primary btn-lg mt-3" onClick={async () => {
                                         await this.props.connectMetamask()
@@ -124,9 +124,8 @@ class Airdrop extends Component {
                             </div>
                         </div>
                     }
-                </div><br/><br/><br/><Footer/>
+                </div><br /><br /><br /><Footer />
             </div >
-
         );
     }
 }

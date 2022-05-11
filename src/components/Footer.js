@@ -12,10 +12,10 @@ class Footer extends Component {
     render() {
         return (
             <footer id="content" className="mt-5">
-                <div className="">
+                <div style={{ marginTop: '18px' }}>
                     <div className="rowS center ">
-                        <img className="center" src={baklava} width="30" alt="" />&nbsp;&nbsp;
-                        <div className="center" style={{ color: "black", fontSize: '20px', marginRight: "25px" }}><b>BAKLAVA.SPACE</b></div>
+                        <img className="center" src={baklava} width="25" alt="" />&nbsp;&nbsp;
+                        <div className="center" style={{ color: "black", fontSize: '16px', marginRight: "25px" }}><b>BAKLAVA.SPACE © 2022 </b></div>
                     </div>
                     <div className="center" style={{ color: "black", fontSize: '14px', marginTop: "5px" }}>Tools for defi users.</div>
                     <div className="center" style={{ color: "black", fontSize: '14px', marginTop: "5px" }}>Baklava Farms autocompound farm rewards.</div>
@@ -45,7 +45,7 @@ class Footer extends Component {
                             </div>
                         </div>
                     </div>
-                </div><br/> 
+                </div><br/>
             </footer>
         );
     }
