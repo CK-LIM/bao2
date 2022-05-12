@@ -529,7 +529,7 @@ tr:nth-child(even) {
 /* burger-menu */
 /* Color/shape of burger icon bars */
 .bm-burger-button {
-  position: absolute;
+  position: static;
   width: 20px;
   height: 16px;
   left: 16px;
@@ -563,28 +563,28 @@ tr:nth-child(even) {
   color: #000000;
 }
 .topleft {
-  position: absolute;
+  position: static;
   top: 20px;
   left: 15px;
 }
 .topleft1 {
-  position: absolute;
+  position: static;
   top: 22px;
   left: 55px;
 }
 .topleft2 {
-  position: absolute;
+  position: static;
   top: 26px;
   left: 235px;
 }
 
 .topright {
-  position: absolute;
+  position: static;
   top: 21px;
   right: 15px;
 }
 .topright1 {
-  position: absolute;
+  position: static;
   top: 29px;
   right: 235px;
 }

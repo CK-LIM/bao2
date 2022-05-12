@@ -1,7 +1,7 @@
 {
-  "main.css": "/static/css/main.d0123a9e.chunk.css",
-  "main.js": "/static/js/main.0ea46445.chunk.js",
-  "main.js.map": "/static/js/main.0ea46445.chunk.js.map",
+  "main.css": "/static/css/main.019c42f4.chunk.css",
+  "main.js": "/static/js/main.dacad57f.chunk.js",
+  "main.js.map": "/static/js/main.dacad57f.chunk.js.map",
   "static/css/1.6874739a.chunk.css": "/static/css/1.6874739a.chunk.css",
   "static/js/1.9e8ab1a9.chunk.js": "/static/js/1.9e8ab1a9.chunk.js",
   "static/js/1.9e8ab1a9.chunk.js.map": "/static/js/1.9e8ab1a9.chunk.js.map",
@@ -22,9 +22,9 @@
   "static/media/baklava_mainBottom.png": "/static/media/baklava_mainBottom.06deafb4.png",
   "static/media/Litepaper_Protocol.pdf": "/static/media/Litepaper_Protocol.55022142.pdf",
   "static/media/Litepaper_Protocol(turkish).pdf": "/static/media/Litepaper_Protocol(turkish).e0e108cf.pdf",
+  "static/css/main.019c42f4.chunk.css.map": "/static/css/main.019c42f4.chunk.css.map",
   "static/css/1.6874739a.chunk.css.map": "/static/css/1.6874739a.chunk.css.map",
-  "static/css/main.d0123a9e.chunk.css.map": "/static/css/main.d0123a9e.chunk.css.map",
   "index.html": "/index.html",
-  "precache-manifest.c6ec7533e4a9e0fc1a55b920a504a752.js": "/precache-manifest.c6ec7533e4a9e0fc1a55b920a504a752.js",
+  "precache-manifest.8d4a240221f1ea23433741205e531394.js": "/precache-manifest.8d4a240221f1ea23433741205e531394.js",
   "service-worker.js": "/service-worker.js"
 }
