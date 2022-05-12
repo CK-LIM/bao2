@@ -529,7 +529,7 @@ tr:nth-child(even) {
 /* burger-menu */
 /* Color/shape of burger icon bars */
 .bm-burger-button {
-  position: static;
+  position: absolute;
   width: 20px;
   height: 16px;
   left: 16px;
