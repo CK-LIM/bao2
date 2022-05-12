@@ -563,28 +563,28 @@ tr:nth-child(even) {
   color: #000000;
 }
 .topleft {
-  position: static;
+  position: absolute;
   top: 20px;
   left: 15px;
 }
 .topleft1 {
-  position: static;
+  position: absolute;
   top: 22px;
   left: 55px;
 }
 .topleft2 {
-  position: static;
+  position: absolute;
   top: 26px;
   left: 235px;
 }
 
 .topright {
-  position: static;
+  position: absolute;
   top: 21px;
   right: 15px;
 }
 .topright1 {
-  position: static;
+  position: absolute;
   top: 29px;
   right: 235px;
 }
