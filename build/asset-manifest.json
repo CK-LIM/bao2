@@ -1,7 +1,7 @@
 {
-  "main.css": "/static/css/main.4d8e3216.chunk.css",
-  "main.js": "/static/js/main.cf257d2a.chunk.js",
-  "main.js.map": "/static/js/main.cf257d2a.chunk.js.map",
+  "main.css": "/static/css/main.d0123a9e.chunk.css",
+  "main.js": "/static/js/main.40ed413a.chunk.js",
+  "main.js.map": "/static/js/main.40ed413a.chunk.js.map",
   "static/css/1.6874739a.chunk.css": "/static/css/1.6874739a.chunk.css",
   "static/js/1.9e8ab1a9.chunk.js": "/static/js/1.9e8ab1a9.chunk.js",
   "static/js/1.9e8ab1a9.chunk.js.map": "/static/js/1.9e8ab1a9.chunk.js.map",
@@ -23,8 +23,8 @@
   "static/media/Litepaper_Protocol.pdf": "/static/media/Litepaper_Protocol.55022142.pdf",
   "static/media/Litepaper_Protocol(turkish).pdf": "/static/media/Litepaper_Protocol(turkish).e0e108cf.pdf",
   "static/css/1.6874739a.chunk.css.map": "/static/css/1.6874739a.chunk.css.map",
-  "static/css/main.4d8e3216.chunk.css.map": "/static/css/main.4d8e3216.chunk.css.map",
+  "static/css/main.d0123a9e.chunk.css.map": "/static/css/main.d0123a9e.chunk.css.map",
   "index.html": "/index.html",
-  "precache-manifest.5e7615fc591f313cab7d51d8e7820cb4.js": "/precache-manifest.5e7615fc591f313cab7d51d8e7820cb4.js",
+  "precache-manifest.dffd58f20b233ca759936ab41381c26d.js": "/precache-manifest.dffd58f20b233ca759936ab41381c26d.js",
   "service-worker.js": "/service-worker.js"
 }
