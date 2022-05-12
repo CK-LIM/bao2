@@ -21,6 +21,7 @@ import './App.css';
 class Navb extends Component {
   render() {
     return (
+      <Navbar>
       <Nav style={{ minWidth: '250px' }}>
         <MediaQuery maxWidth={1250}>
           <Menu >
@@ -167,6 +168,7 @@ class Navb extends Component {
           </div>
         </div>
       </Nav>
+      </Navbar>
     );
   }
 }

@@ -2001,7 +2001,7 @@ class App extends Component {
             <Route path="/litepaper" exact > {navMenuContent} </Route>
             <Route path="/synthetic" exact > {navMenuContent} </Route>
           </Switch>
-          <div style={{ marginTop: "80px" }}>
+          <div>
             <main role="main" className="content ml-auto mr-auto">
               <Switch>
                 <Route path="/" exact > {mainContent} </Route>
