@@ -206,7 +206,6 @@ class App extends Component {
         let lpTokenPairsymbol = poolInfo.lpTokenPairsymbol
         lpTokenPairsymbolsV2_3[i] = lpTokenPairsymbol
         lpTokenAddressesV2_3[i] = lpTokenAddress
-        // console.log(reinvestAmount[2][d])
         if (lpTokenPairsymbol == "PGL" || lpTokenPairsymbol == "PNG") {
           poolSegmentInfoV2_3[0][d] = poolInfo
           returnRatioV2_3[0][d] = returnRatioArrayV2_3[d]["returnRatio"]
@@ -223,9 +222,7 @@ class App extends Component {
           reinvestAmount[2][d] = await responseV2_3[i]
           d += 1
         }
-        // console.log(reinvestAmount[2][d])
       }
-
       for (let i = 0; i < this.state.bavaPoolLength; i++) {
         let bavaPoolInfo = this.state.farmBava[i]
         let bavaLpTokenAddress = bavaPoolInfo.lpAddresses[farmNetworkId]
@@ -660,13 +657,12 @@ class App extends Component {
       let bavaCompoundPool = new window.web3Ava.eth.Contract(BavaCompoundPool.abi, poolAddress)
       reinvestAmount = await bavaCompoundPool.methods.checkReward().call()
       finalReinvestAmount = reinvestAmount * this.state.PNGPrice / this.state.AVAXPrice
-    } else if (i == 10 || i == 6) {
+    } else if (i == 10 || i == 6 || i == 7) {
 
     } else {
       let poolAddress = (await this.state.bavaMasterFarmerV2_3.methods.poolInfo(i).call()).poolContract
       let bavaCompoundPool = new window.web3Ava.eth.Contract(BavaCompoundPoolVariable.abi, poolAddress)
       reinvestAmount = await bavaCompoundPool.methods.checkReward().call()
-
 
       if (reinvestAmount["1"].length > 0) {
         for (let n = 0; n < reinvestAmount["1"].length; n++) {
@@ -1196,12 +1192,9 @@ class App extends Component {
       lpTokenAddress = this.state.poolSegmentInfoV2_2[n][i].lpAddresses[this.state.farmNetworkId]
       bavaMasterFarmerAddress = this.state.bavaMasterFarmerV2_2._address
     } else if (v == 4) {
-      console.log(i)
       let bavaMasterFarmer = new window.web3.eth.Contract(BavaMasterFarmerV2_3.abi, process.env.REACT_APP_bavamasterfarmv2_3address)
       lpTokenAddress = (await bavaMasterFarmer.methods.poolInfo(i).call()).lpToken
       bavaMasterFarmerAddress = (await bavaMasterFarmer.methods.poolInfo(i).call()).poolContract
-      console.log(bavaMasterFarmerAddress)
-      console.log(lpTokenAddress)
     }
     if (this.state.walletConnect == true) {
       lpToken = new window.web3Con.eth.Contract(LpToken.abi, lpTokenAddress)
@@ -1332,7 +1325,6 @@ class App extends Component {
           bavaMasterFarmer = new window.web3.eth.Contract(BavaMasterFarmerV2_3.abi, process.env.REACT_APP_bavamasterfarmv2_3address)
           let poolAddress = (await bavaMasterFarmer.methods.poolInfo(i).call()).poolContract
           bavaCompoundPool = new window.web3.eth.Contract(BavaCompoundPool.abi, poolAddress)
-          console.log(this.state.pendingSegmentRewardV2_3[n][i])
           if (this.state.pendingSegmentRewardV2_3[n][i] <= 0) {
             alert("No token to harvest! Please deposit LP to earn BAVA")
             return
