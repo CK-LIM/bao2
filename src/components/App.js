@@ -223,6 +223,7 @@ class App extends Component {
           d += 1
         }
       }
+
       for (let i = 0; i < this.state.bavaPoolLength; i++) {
         let bavaPoolInfo = this.state.farmBava[i]
         let bavaLpTokenAddress = bavaPoolInfo.lpAddresses[farmNetworkId]
@@ -652,12 +653,12 @@ class App extends Component {
     let bonusReinvestAmount = 0
     let bonusRewardPrice = 0
 
-    if (i <= 5) {
+    if (i <= 4) {
       let poolAddress = (await this.state.bavaMasterFarmerV2_3.methods.poolInfo(i).call()).poolContract
       let bavaCompoundPool = new window.web3Ava.eth.Contract(BavaCompoundPool.abi, poolAddress)
       reinvestAmount = await bavaCompoundPool.methods.checkReward().call()
       finalReinvestAmount = reinvestAmount * this.state.PNGPrice / this.state.AVAXPrice
-    } else if (i == 10 || i == 6 || i == 7) {
+    } else if (i == 10 || i == 6 || i == 7 || i==5) {
 
     } else {
       let poolAddress = (await this.state.bavaMasterFarmerV2_3.methods.poolInfo(i).call()).poolContract
