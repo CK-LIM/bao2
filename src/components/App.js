@@ -888,16 +888,34 @@ class App extends Component {
     // window.web3Ava = new Web3(`https://api.avax-test.network/ext/bc/C/rpc`);
 
     let responseMongo = await fetch(`https://ap-southeast-1.aws.data.mongodb-api.com/app/bdl-uyejj/endpoint/tvl`);
+    let responseGecko = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=joe%2Cwrapped-avax%2Cpangolin%2Cweth%2Cbaklava%2Cusd-coin%2Ctether%2Cbenqi%2Cterra-luna&vs_currencies=usd`);
     const myJsonMongo = await responseMongo.json();
+    const myJsonGecko = await responseGecko.json();
     this.setState({ myJsonMongo })
 
-    let tokenPrice = myJsonMongo["TokenPrice"]
-    this.setState({ AVAXPrice: parseFloat(tokenPrice[0].avaxPrice).toFixed(5) })
-    this.setState({ BAVAPrice: parseFloat(tokenPrice[1].bavaPrice).toFixed(5) })
-    this.setState({ PNGPrice: parseFloat(tokenPrice[2].pngPrice).toFixed(5) })
-    this.setState({ LUNAPrice: parseFloat(tokenPrice[3].lunaPrice).toFixed(5) })
-    this.setState({ JOEPrice: parseFloat(tokenPrice[4].joePrice).toFixed(5) })
-    this.setState({ QIPrice: parseFloat(tokenPrice[5].qiPrice).toFixed(5) })
+    // let gasPrice = await window.web3Fx.eth.getGasPrice();
+    // console.log(gasPrice)
+    // gasPrice = await window.web3Eth.eth.getGasPrice();
+    // console.log(gasPrice)
+    // gasPrice = await window.web3Ava.eth.getGasPrice();
+    // console.log(gasPrice)
+
+    let AVAXPrice = myJsonGecko["wrapped-avax"]["usd"]
+    let BAVAPrice = myJsonGecko["baklava"]["usd"]
+    let PNGPrice = myJsonGecko["pangolin"]["usd"]
+    let LUNAPrice = myJsonGecko["terra-luna"]["usd"]
+    let WETHPrice = myJsonGecko["weth"]["usd"]
+    let USDTPrice = myJsonGecko["tether"]["usd"]
+    let USDCPrice = myJsonGecko["usd-coin"]["usd"]
+    let JOEPrice = myJsonGecko["joe"]["usd"]
+    let QIPrice = myJsonGecko["benqi"]["usd"]
+
+    this.setState({ AVAXPrice: AVAXPrice.toFixed(5) })
+    this.setState({ BAVAPrice: BAVAPrice.toFixed(5) })
+    this.setState({ PNGPrice: PNGPrice.toFixed(5) })
+    this.setState({ LUNAPrice: LUNAPrice.toFixed(5) })
+    this.setState({ JOEPrice: JOEPrice.toFixed(5) })
+    this.setState({ QIPrice: QIPrice.toFixed(5) })
     this.setState({ loading: true })
   }
 
