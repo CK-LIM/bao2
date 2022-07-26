@@ -38,13 +38,13 @@ class Main extends Component {
             </Link>
           </div>
           <MediaQuery minHeight={700}>
-            <img src={baklava_mainBottom} height="8%" width="100%" className="fixed-bottom" alt="" />
+            <img src={baklava_mainBottom} height="8%" width="100%" loading="lazy" className="fixed-bottom" alt="" />
           </MediaQuery>
         </MediaQuery>
 
 
         <MediaQuery minWidth={301} maxWidth={770}>
-          <div style={{ minWidth: "300px" }} style={{ marginTop: "120px" }}>
+          <div style={{ minWidth: "300px", marginTop: "120px" }}>
             <div className="center">
               <img src={baklava} width="160" height="160" className="" alt="" />
             </div>
@@ -109,7 +109,7 @@ class Main extends Component {
 
 
         <MediaQuery maxWidth={300}>
-          <div style={{ minWidth: "300px" }} style={{ marginTop: "100px" }}>
+          <div style={{ minWidth: "300px", marginTop: "100px" }}>
             <div className="text-center">
               <img src={baklava} width="140" height="140" className="" alt="" />
             </div>

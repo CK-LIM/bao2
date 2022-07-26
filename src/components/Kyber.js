@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
-import Button from '@material-ui/core/Button';
 import exlink from '../link.png'
 import Buttons from 'react-bootstrap/Button'
 import { BsFillQuestionCircleFill } from 'react-icons/bs';
@@ -124,9 +123,9 @@ class Kyber extends Component {
                         <span className="float-left">
                             <ButtonGroup>
                                 {/* <Button variant="outlined" size="small" color="inherit" component={Link} to="/menu/v2">Pangolin</Button> */}
-                                <Button className="mr-1" variant="text" size="small" color="inherit" component={Link} to="/menu/v2">Pangolin</Button>
-                                <Button className="mr-1" variant="outlined" size="small" color="inherit" component={Link} to="/menu/v2/kyber">KyberSwap</Button>
-                                <Button variant="text" size="small" color="inherit" component={Link} to="/menu/v2/traderjoe">Trader Joe</Button>
+                                <Buttons className="mr-1" variant="text" size="small" color="inherit" component={Link} to="/menu/v2">Pangolin</Buttons>
+                                <Buttons className="mr-1" variant="outlined" size="small" color="inherit" component={Link} to="/menu/v2/kyber">KyberSwap</Buttons>
+                                <Buttons variant="text" size="small" color="inherit" component={Link} to="/menu/v2/traderjoe">Trader Joe</Buttons>
                             </ButtonGroup>
                         </span>
                     </div>

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
-import Button from '@material-ui/core/Button';
 import exlink from '../link.png'
 import Buttons from 'react-bootstrap/Button'
 import { BsFillQuestionCircleFill } from 'react-icons/bs';
@@ -134,8 +133,8 @@ class Menu extends Component {
                         <div className="textMiddleBold1 float-right" style={{ marginRight: '5px' }}><big>TVL $ {parseFloat(this.props.totalTVL).toLocaleString('en-US', { maximumFractionDigits: 0 })}</big></div><br /><br />
                         <span className="float-left">
                             <ButtonGroup>
-                                <Button variant="outlined" size="small" color="inherit" component={Link} to="/menu/">Pangolin</Button>
-                                <Button variant="text" size="small" color="inherit" component={Link} to="/menu/traderjoe/">Trader Joe</Button>
+                                <Buttons variant="outlined" size="small" color="inherit" component={Link} to="/menu/">Pangolin</Buttons>
+                                <Buttons variant="text" size="small" color="inherit" component={Link} to="/menu/traderjoe/">Trader Joe</Buttons>
                             </ButtonGroup>
                         </span>
                     </div>
