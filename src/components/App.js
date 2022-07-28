@@ -1693,8 +1693,8 @@ class App extends Component {
       loadWeb3={this.loadWeb3}
       connectMetamask={this.connectMetamask}
       mobileWalletConnect={this.mobileWalletConnect}
-      WalletDisconnect={this.WalletDisconnect}
       connectCoin98={this.connectCoin98}
+      WalletDisconnect={this.WalletDisconnect}
       networkName={this.state.networkName}
       walletConnect={this.state.walletConnect}
       BAVAPrice={this.state.BAVAPrice}
@@ -1719,6 +1719,8 @@ class App extends Component {
       approve={this.approve}
       setI={this.setI}
       connectMetamask={this.connectMetamask}
+      mobileWalletConnect={this.mobileWalletConnect}
+      connectCoin98={this.connectCoin98}
       lpSegmentAllowance={this.state.lpSegmentAllowance}
       bavaContract={this.state.bavaContract}
       bavaTokenTotalSupply={this.state.bavaTokenTotalSupply}
@@ -1774,6 +1776,8 @@ class App extends Component {
       approve={this.approve}
       setI={this.setI}
       connectMetamask={this.connectMetamask}
+      mobileWalletConnect={this.mobileWalletConnect}
+      connectCoin98={this.connectCoin98}
       lpSegmentAllowance={this.state.lpSegmentAllowance}
       bavaContract={this.state.bavaContract}
       bavaTokenTotalSupply={this.state.bavaTokenTotalSupply}
@@ -1819,6 +1823,8 @@ class App extends Component {
       approve={this.approve}
       setI={this.setI}
       connectMetamask={this.connectMetamask}
+      mobileWalletConnect={this.mobileWalletConnect}
+      connectCoin98={this.connectCoin98}
       lpSegmentAllowance={this.state.lpSegmentAllowance}
       bavaContract={this.state.bavaContract}
       bavaTokenTotalSupply={this.state.bavaTokenTotalSupply}
@@ -1863,6 +1869,8 @@ class App extends Component {
       approve={this.approve}
       setI={this.setI}
       connectMetamask={this.connectMetamask}
+      mobileWalletConnect={this.mobileWalletConnect}
+      connectCoin98={this.connectCoin98}
       lpSegmentAllowance={this.state.lpSegmentAllowance}
       bavaContract={this.state.bavaContract}
       bavaTokenTotalSupply={this.state.bavaTokenTotalSupply}
@@ -1907,6 +1915,8 @@ class App extends Component {
       approve={this.approve}
       setI={this.setI}
       connectMetamask={this.connectMetamask}
+      mobileWalletConnect={this.mobileWalletConnect}
+      connectCoin98={this.connectCoin98}
       lpSegmentAllowance={this.state.lpSegmentAllowance}
       bavaContract={this.state.bavaContract}
       bavaTokenTotalSupply={this.state.bavaTokenTotalSupply}
@@ -1947,6 +1957,8 @@ class App extends Component {
     airdropContent = <Airdrop
       wallet={this.state.wallet}
       connectMetamask={this.connectMetamask}
+      mobileWalletConnect={this.mobileWalletConnect}
+      connectCoin98={this.connectCoin98}
       claimAirdrop={this.claimAirdrop}
       checkAirdrop={this.checkAirdrop}
       timeConverter={this.timeConverter}
@@ -1983,6 +1995,8 @@ class App extends Component {
       bavaTokenAllowance={this.state.bavaTokenAllowance}
       farmloading={this.state.farmloading}
       connectMetamask={this.connectMetamask}
+      mobileWalletConnect={this.mobileWalletConnect}
+      connectCoin98={this.connectCoin98}
       approveStake={this.approveStake}
       stake={this.stake}
       unstake={this.unstake}
