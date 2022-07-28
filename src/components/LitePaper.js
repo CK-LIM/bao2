@@ -1,15 +1,10 @@
 import React, { Component } from 'react'
 import litepaper from './images/Litepaper_Protocol.pdf'
 import litepaper_turkish from './images/Litepaper_Protocol(turkish).pdf'
-import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import Buttons from 'react-bootstrap/Button'
 import './App.css';
-import baklava from './images/baklava.webp';
-import discord from './images/discord.svg'
-import twitter from './images/twitter.svg'
-import medium from './images/medium.svg'
-import git from './images/github.svg'
-import gitbook from './images/docs.svg'
+import Footer from './Footer'
+
 
 class LitePaper extends Component {
 
@@ -60,8 +55,9 @@ class LitePaper extends Component {
                         </div>}
                 </span>
                 <div className="center textMiddle">
-                    {this.state.turkish ? <object data={litepaper_turkish} type="application/pdf" width="1000px" height="950px"></object> : <object data={litepaper} type="application/pdf" width="1000px" height="950px"></object>}
+                    {this.state.turkish ? <object data={litepaper_turkish} type="application/pdf" width="100%" height="700px"></object> : <object data={litepaper} type="application/pdf" width="100%" height="700px"></object>}
                 </div>
+                <Footer />
             </div>
 
         );
