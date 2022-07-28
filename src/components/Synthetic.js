@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import './App.css';
 import Footer from './Footer'
+import MediaQuery from 'react-responsive';
 
 class Airdrop extends Component {
 
@@ -16,7 +17,13 @@ class Airdrop extends Component {
                     <img src="https://whitelist.mirror.finance/images/ABNB.png" width="50" height="50" alt="" />&nbsp;&nbsp;
                 </div>
                 <div className="center comingSoon" style={{ color: '#ffae00', fontSize: '40px', marginTop: "80px", opacity: "0" }}><b><big>Coming Soon!</big></b></div>
-                <div className='center fixed-bottom'><Footer /></div>                
+                <MediaQuery minHeight={751}>
+                    <div className='center fixed-bottom'><Footer /></div>
+                </MediaQuery>
+                <MediaQuery maxHeight={750}>
+                    <div className='center'><Footer /></div>
+                </MediaQuery>
+
             </div>
         );
     }
