@@ -44,7 +44,7 @@ class App extends Component {
     this.loadTVLAPR()
     while ((this.state.wallet || this.state.walletConnect) == true) {
       await this.loadBlockchainUserData()
-      await this.delay(5000);
+      await this.delay(10000);
     }
   }
 
@@ -884,7 +884,9 @@ class App extends Component {
     if (window.ethereum) {
       window.web3 = new Web3(window.ethereum)
     }
-    window.web3Ava = new Web3(`https://api.avax.network/ext/bc/C/rpc`);
+    // window.web3Ava = new Web3(`https://api.avax.network/ext/bc/C/rpc`);
+    window.web3Ava = new Web3(`https://rpc.ankr.com/avalanche`);
+    // window.web3Ava = new Web3(`https://ava-mainnet.public.blastapi.io/ext/bc/C/rpc`);
     // window.web3Ava = new Web3(`https://api.avax-test.network/ext/bc/C/rpc`);
 
     let responseMongo = await fetch(`https://ap-southeast-1.aws.data.mongodb-api.com/app/bdl-uyejj/endpoint/tvl`);
@@ -930,7 +932,7 @@ class App extends Component {
           if (chainId == process.env.REACT_APP_chainid) {
             // await this.WalletDisconnect()
             await this.setWalletTrigger(true)
-            this.componentWillMount()
+            this.loadBlockchainUserData()
           }
         })
         .catch((err) => {
@@ -1000,7 +1002,7 @@ class App extends Component {
     this.setState({ last4Account: last4Account })
     this.setState({ walletConnect: true })
     this.setWalletTrigger(false)
-    this.componentWillMount()
+    this.loadBlockchainUserData()
 
     // Subscribe to accounts change
     window.provider.on("accountsChanged", this.handleAccountsChanged);
@@ -1021,7 +1023,7 @@ class App extends Component {
       this.setState({ walletConnect: false })
       this.setState({ accountLoading: false })
     }
-    this.componentWillMount()
+    this.loadBlockchainUserData()
   }
 
   switchNetwork = async () => {
@@ -1091,7 +1093,7 @@ class App extends Component {
       this.setState({ first4Account: first4Account })
       this.setState({ last4Account: last4Account })
       this.setState({ airdropCheck: false })
-      this.loadBlockchainData()
+      this.loadBlockchainUserData()
       // Do any other work!
     }
   }
@@ -1172,7 +1174,7 @@ class App extends Component {
       }
     } if (v == 4) {
       await bavaCompoundPool.methods.deposit(amount).send({ from: this.state.account }).then(async (result) => {
-        this.componentWillMount()
+        this.loadBlockchainUserData()
       }).catch((err) => {
         if (err.code === 4001) {
           // EIP-1193 userRejectedRequest error
@@ -1184,7 +1186,7 @@ class App extends Component {
       });
     } else {
       await bavaMasterFarmer.methods.deposit(i, amount).send({ from: this.state.account }).then(async (result) => {
-        this.componentWillMount()
+        this.loadBlockchainUserData()
       }).catch((err) => {
         if (err.code === 4001) {
           // EIP-1193 userRejectedRequest error
@@ -1221,7 +1223,7 @@ class App extends Component {
       lpToken = new window.web3.eth.Contract(LpToken.abi, lpTokenAddress)
     }
     await lpToken.methods.approve(bavaMasterFarmerAddress, "115792089237316195423570985008687907853269984665640564039457584007913129639935").send({ from: this.state.account }).then(async (result) => {
-      this.componentWillMount()
+      this.loadBlockchainUserData()
     }).catch((err) => {
       if (err.code === 4001) {
         // EIP-1193 userRejectedRequest error
@@ -1262,7 +1264,7 @@ class App extends Component {
       }
     } if (v == 4) {
       await bavaCompoundPool.methods.withdraw(amount).send({ from: this.state.account }).then(async (result) => {
-        this.componentWillMount()
+        this.loadBlockchainUserData()
       }).catch((err) => {
         if (err.code === 4001) {
           // EIP-1193 userRejectedRequest error
@@ -1274,7 +1276,7 @@ class App extends Component {
       });
     } else {
       await bavaMasterFarmer.methods.withdraw(i, amount).send({ from: this.state.account }).then(async (result) => {
-        this.componentWillMount()
+        this.loadBlockchainUserData()
       }).catch((err) => {
         if (err.code === 4001) {
           // EIP-1193 userRejectedRequest error
@@ -1352,7 +1354,7 @@ class App extends Component {
       }
       if (v == 4) {
         bavaCompoundPool.methods.claimReward().send({ from: this.state.account }).then(async (result) => {
-          this.componentWillMount()
+          this.loadBlockchainUserData()
         }).catch((err) => {
           if (err.code === 4001) {
             // EIP-1193 userRejectedRequest error
@@ -1364,7 +1366,7 @@ class App extends Component {
         });
       } else {
         bavaMasterFarmer.methods.claimReward(i).send({ from: this.state.account }).then(async (result) => {
-          this.componentWillMount()
+          this.loadBlockchainUserData()
         }).catch((err) => {
           if (err.code === 4001) {
             // EIP-1193 userRejectedRequest error
@@ -1399,7 +1401,7 @@ class App extends Component {
         bavaCompoundPool = new window.web3.eth.Contract(BavaCompoundPool.abi, poolAddress)
       }
       bavaCompoundPool.methods.reinvest().send({ from: this.state.account }).then(async (result) => {
-        this.componentWillMount()
+        this.loadBlockchainUserData()
       }).catch((err) => {
         if (err.code === 4001) {
           // EIP-1193 userRejectedRequest error
@@ -1468,7 +1470,7 @@ class App extends Component {
       bavaToken = new window.web3.eth.Contract(BavaToken.abi, process.env.REACT_APP_bavatoken_address)
     }
     await bavaToken.methods.approve(process.env.REACT_APP_staking_rewards_address, "115792089237316195423570985008687907853269984665640564039457584007913129639935").send({ from: this.state.account }).then(async (result) => {
-      this.componentWillMount()
+      this.loadBlockchainUserData()
     }).catch((err) => {
       if (err.code === 4001) {
         // EIP-1193 userRejectedRequest error
@@ -1488,7 +1490,7 @@ class App extends Component {
       bavaStake = new window.web3.eth.Contract(StakingRewards.abi, process.env.REACT_APP_staking_rewards_address)
     }
     await bavaStake.methods.stake(amount).send({ from: this.state.account }).then((result) => {
-      this.componentWillMount()
+      this.loadBlockchainUserData()
     }).catch((err) => {
       if (err.code === 4001) {
         // EIP-1193 userRejectedRequest error
@@ -1497,7 +1499,6 @@ class App extends Component {
       } else {
         console.error(err);
       }
-      // this.componentWillMount()
     });
   }
 
@@ -1509,7 +1510,7 @@ class App extends Component {
       bavaStake = new window.web3.eth.Contract(StakingRewards.abi, process.env.REACT_APP_staking_rewards_address)
     }
     await bavaStake.methods.withdraw(amount).send({ from: this.state.account }).then(async (result) => {
-      this.componentWillMount()
+      this.loadBlockchainUserData()
     }).catch((err) => {
       if (err.code === 4001) {
         // EIP-1193 userRejectedRequest error
@@ -1518,7 +1519,6 @@ class App extends Component {
       } else {
         console.error(err);
       }
-      this.componentWillMount()
     });
   }
 
@@ -1530,7 +1530,7 @@ class App extends Component {
       bavaStake = new window.web3.eth.Contract(StakingRewards.abi, process.env.REACT_APP_staking_rewards_address)
     }
     await bavaStake.methods.getReward().send({ from: this.state.account }).then(async (result) => {
-      this.componentWillMount()
+      this.loadBlockchainUserData()
     }).catch((err) => {
       if (err.code === 4001) {
         // EIP-1193 userRejectedRequest error
@@ -1539,7 +1539,6 @@ class App extends Component {
       } else {
         console.error(err);
       }
-      this.componentWillMount()
     });
   }
 
@@ -1551,7 +1550,7 @@ class App extends Component {
       bavaStake = new window.web3.eth.Contract(StakingRewards.abi, process.env.REACT_APP_staking_rewards_address)
     }
     await bavaStake.methods.exit().send({ from: this.state.account }).then(async (result) => {
-      this.componentWillMount()
+      this.loadBlockchainUserData()
     }).catch((err) => {
       if (err.code === 4001) {
         // EIP-1193 userRejectedRequest error
@@ -1560,7 +1559,6 @@ class App extends Component {
       } else {
         console.error(err);
       }
-      this.componentWillMount()
     });
   }
 
@@ -1699,6 +1697,7 @@ class App extends Component {
       connectCoin98={this.connectCoin98}
       networkName={this.state.networkName}
       walletConnect={this.state.walletConnect}
+      BAVAPrice={this.state.BAVAPrice}
     />
     mainContent = <Main
       lpTokenBalance={this.state.lpTokenBalance}
@@ -1994,8 +1993,6 @@ class App extends Component {
     />
     syntheticContent = <Synthetic
     />
-
-
     return (
       <Router>
         <div>
@@ -2012,8 +2009,8 @@ class App extends Component {
             <Route path="/litepaper" exact > {navMenuContent} </Route>
             <Route path="/synthetic" exact > {navMenuContent} </Route>
           </Switch>
-          <div style={{ marginTop: "80px" }}>
-            <main role="main" className="content ml-auto mr-auto">
+          <div className="container-fluid" style={{ position: "relative", top: "100px", marginTop: "0px" }}>
+            <main role="main" className="content ml-auto mr-auto" style={{ maxWidth: '1000px' }}>
               <Switch>
                 <Route path="/" exact > {mainContent} </Route>
                 <Route path="/home" exact > {mainContent} </Route>

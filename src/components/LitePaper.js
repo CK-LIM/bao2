@@ -1,15 +1,15 @@
 import React, { Component } from 'react'
-import litepaper from '../Litepaper_Protocol.pdf'
-import litepaper_turkish from '../Litepaper_Protocol(turkish).pdf'
+import litepaper from './images/Litepaper_Protocol.pdf'
+import litepaper_turkish from './images/Litepaper_Protocol(turkish).pdf'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import Buttons from 'react-bootstrap/Button'
 import './App.css';
-import baklava from '../baklava.png'
-import discord from '../discord.svg'
-import twitter from '../twitter.svg'
-import medium from '../medium.svg'
-import git from '../github.svg'
-import gitbook from '../docs.svg'
+import baklava from './images/baklava.webp';
+import discord from './images/discord.svg'
+import twitter from './images/twitter.svg'
+import medium from './images/medium.svg'
+import git from './images/github.svg'
+import gitbook from './images/docs.svg'
 
 class LitePaper extends Component {
 
@@ -41,20 +41,23 @@ class LitePaper extends Component {
         return (
             <div id="content">
                 <span className="center mb-3">
-                    {this.state.turkish ? <div>
-                        <Buttons variant="text" size="small" color="inherit" onClick={async () => {
-                            await this.clickLanguage("english", true)
-                        }}>English</Buttons>
-                        <Buttons variant="outlined" size="small" color="inherit" onClick={async () => {
-                            await this.clickLanguage("turkish", true)
-                        }}>Turkish</Buttons></div> :
+                    {this.state.turkish ?
                         <div>
-                            <Buttons variant="outlined" size="small" color="inherit" onClick={async () => {
+                            <Buttons style={{ color: "black", fontSize: "16px" }} variant="link" size="sm" onClick={async () => {
                                 await this.clickLanguage("english", true)
                             }}>English</Buttons>
-                            <Buttons variant="text" size="small" color="inherit" onClick={async () => {
+                            <Buttons style={{ color: "#ff9a04", border: "1px solid #ff9a04", fontSize: "16px" }} variant="link" size="sm" onClick={async () => {
                                 await this.clickLanguage("turkish", true)
-                            }}>Turkish</Buttons></div>}
+                            }}>Turkish</Buttons>
+                        </div>
+                        : <div>
+                            <Buttons style={{ color: "#ff9a04", border: "1px solid #ff9a04", fontSize: "16px" }} variant="link" size="sm" onClick={async () => {
+                                await this.clickLanguage("english", true)
+                            }}>English</Buttons>
+                            <Buttons style={{ color: "black", fontSize: "16px" }} variant="link" size="sm" onClick={async () => {
+                                await this.clickLanguage("turkish", true)
+                            }}>Turkish</Buttons>
+                        </div>}
                 </span>
                 <div className="center textMiddle">
                     {this.state.turkish ? <object data={litepaper_turkish} type="application/pdf" width="1000px" height="950px"></object> : <object data={litepaper} type="application/pdf" width="1000px" height="950px"></object>}

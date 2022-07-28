@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import './App.css';
-import baklava from '../baklava.png'
-import discord from '../discord.svg'
-import twitter from '../twitter.svg'
-import medium from '../medium.svg'
-import git from '../github.svg'
-import gitbook from '../docs.svg'
+import baklava from './images/baklava.webp';
+import discord from './images/discord.svg'
+import twitter from './images/twitter.svg'
+import medium from './images/medium.svg'
+import git from './images/github.svg'
+import gitbook from './images/docs.svg'
 
 class Footer extends Component {
 

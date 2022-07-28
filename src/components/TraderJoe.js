@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
-import exlink from '../link.png'
+import exlink from './images/link.webp'
 import Buttons from 'react-bootstrap/Button'
 import { BsFillQuestionCircleFill } from 'react-icons/bs';
 import Popup from 'reactjs-popup';

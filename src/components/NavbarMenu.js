@@ -5,11 +5,17 @@ import { Link } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import Popup from 'reactjs-popup';
+import ImgNextGen from './ImgNextGen';
 import { slide as Menu } from 'react-burger-menu'
-import NavDropdown from 'react-bootstrap/NavDropdown';
 import Dropdown from 'react-bootstrap/Dropdown'
 import 'reactjs-popup/dist/index.css';
 import './App.css';
+
+import baklava from './images/baklava.webp';
+import coin98 from './images/coin98.webp';
+import logo from './images/logo.webp';
+import fox from './images/metamask-fox.svg';
+import walletconnectlogo from './images/walletconnect-logo.svg';
 
 
 class Navb extends Component {
@@ -53,32 +59,36 @@ class Navb extends Component {
 
     return (
       <Navbar className="navbar top" style={{ height: "80px", position: "fixed", width: "100%", top: "0", zIndex: "999", backgroundColor: "#fffae6" }}>
-        {/* <Navbar className="navbar navbar-fixed-top" style={{topmargin:"0", padding: "0", minWidth: '350px' }}> */}
         <Nav>
-          <MediaQuery maxWidth={900}  >
+          <MediaQuery maxWidth={1050}  >
             <Menu>
               <div className='dropdown0'><NavLink className='dropdown' to='/menu/v2/' activeStyle={{ fontWeight: "bold", color: "#ffae00" }}>Farm</NavLink></div>
               <div className='dropdown0'><NavLink className='dropdown' to='/stake/' activeStyle={{ fontWeight: "bold", color: "#ffae00" }}>Stake</NavLink></div>
               {/* <div className='dropdown0'><NavLink className='dropdown' to='/claim/' activeStyle={{ fontWeight: "bold", color: "#ffae00" }}>Claim</NavLink></div> */}
-              <div className='dropdown0'><NavLink className='dropdown' to='/collateral/' activeStyle={{ fontWeight: "bold", color: "#ffae00" }}>Collateral</NavLink></div>
-              <div className='dropdown0'><NavLink className='dropdown' to='/synthetic/' activeStyle={{ fontWeight: "bold", color: "#ffae00" }}>Synthetic</NavLink></div>
+              {/* <div className='dropdown0'><NavLink className='dropdown' to='/collateral/' activeStyle={{ fontWeight: "bold", color: "#ffae00" }}>Collateral</NavLink></div> */}
               <div className='dropdown0'><NavLink className='dropdown' to='/litepaper/' activeStyle={{ fontWeight: "bold", color: "#ffae00" }}>LitePaper</NavLink></div>
+              <div className='dropdown0'><NavLink className='dropdown' to='/synthetic/' activeStyle={{ fontWeight: "bold", color: "#ffae00" }}>Synthetic</NavLink></div>
             </Menu>
           </MediaQuery>
 
-          <MediaQuery minWidth={901}>
-            <NavLink className="topleft" to="/"><img src="/images/baklava.png" width="35" alt="" /></NavLink>
+          <MediaQuery minWidth={1051}>
+            <NavLink className="topleft" to="/">
+              <ImgNextGen
+                srcWebp={baklava}
+                width="35" alt=""
+              />
+            </NavLink>
           </MediaQuery>
-          <MediaQuery minWidth={351}>
+          <MediaQuery minWidth={501}>
             <NavLink className="topleft1 textMiddleBold2 reallyBold" to="/"><b>BAKLAVA.SPACE</b></NavLink>
           </MediaQuery>
-          <MediaQuery minWidth={280} maxWidth={350}>
+          <MediaQuery minWidth={280} maxWidth={500}>
             <NavLink className="topleft1 textMiddleBold2 reallyBold" to="/"><b>BAKLAVA</b></NavLink>
           </MediaQuery>
 
 
           <div className="rowS topleft2" style={{ textDecoration: 'none' }}>
-            <MediaQuery minWidth={901}>
+            <MediaQuery minWidth={1051}>
               <div style={{ marginLeft: "25px" }} >
                 <Dropdown style={{ padding: "0px" }}
                   onMouseEnter={this.showDropdown}
@@ -101,20 +111,20 @@ class Navb extends Component {
               </div>
 
               <div
-                style={{ marginLeft: "15px" }}
+                style={{ marginLeft: "10px" }}
               ><NavLink className="textSmallBold1" activeClassName=" " activeStyle={{ fontWeight: "bold", color: "#ffae00" }} to="/stake/">Stake</NavLink></div>
               {/* <div
-                style={{ marginLeft: "25px" }}
+                style={{ marginLeft: "20px" }}
               ><NavLink className="textSmallBold1" activeClassName=" " activeStyle={{ fontWeight: "bold", color: "#ffae00" }} to="/claim/">Claim</NavLink></div> */}
+              {/* <div
+                style={{ marginLeft: "20px" }}
+              ><NavLink className="textSmallBold1" activeClassName=" " activeStyle={{ fontWeight: "bold", color: "#ffae00" }} to="/collateral/">Collateral</NavLink></div> */}
               <div
-                style={{ marginLeft: "25px" }}
-              ><NavLink className="textSmallBold1" activeClassName=" " activeStyle={{ fontWeight: "bold", color: "#ffae00" }} to="/collateral/">Collateral</NavLink></div>
-              <div
-                style={{ marginLeft: "25px" }}
-              ><NavLink className="textSmallBold1" activeClassName=" " activeStyle={{ fontWeight: "bold", color: "#ffae00" }} to="/synthetic/">Synthetic</NavLink></div>
-              <div
-                style={{ marginLeft: "25px" }}
+                style={{ marginLeft: "20px" }}
               ><NavLink className="textSmallBold1" activeClassName=" " activeStyle={{ fontWeight: "bold", color: "#ffae00" }} to="/litepaper/">LitePaper</NavLink></div>
+              <div
+                style={{ marginLeft: "20px" }}
+              ><NavLink className="textSmallBold1" activeClassName=" " activeStyle={{ fontWeight: "bold", color: "#ffae00" }} to="/synthetic/">Synthetic</NavLink></div>
             </MediaQuery>
           </div>
 
@@ -122,16 +132,24 @@ class Navb extends Component {
           <div>
             <div >
               <ul className="topright rowC">
-                <MediaQuery minWidth={500}>
+                <MediaQuery minWidth={401}>
+                  <div className="center" style={{ marginTop: '2px', marginRight: '12px' }}>
+                    <ImgNextGen
+                      srcWebp={logo}
+                      style={{ marginLeft: '0px', marginRight: '5px' }} width="25" height="25" alt=""
+                    />
+                    <div className="textbavaPriceBold" onClick={() => {
+                      window.open(`https://kyberswap.com/swap/avalanche/avax-to-bava`, '_blank')
+                    }}><b>${this.props.BAVAPrice}</b></div>
+                  </div>
+                </MediaQuery>
+                <MediaQuery minWidth={601}>
                   <div>
-                    <div>
-                      <Buttons className="textWhiteLarge center" style={{ width: '110px', height: '30px', marginRight: '10px' }} variant="secondary" size="lg"> Avalanche</Buttons>
-                    </div>
+                    <Buttons className="textWhiteLarge center" style={{ height: '30px', marginRight: '8px' }} variant="secondary" size="lg">&nbsp;Avalanche&nbsp;</Buttons>
                   </div>
                 </MediaQuery>
                 <div>
                   {this.props.wallet || this.props.walletConnect ?
-
                     <Dropdown
                       onMouseEnter={this.show2Dropdown}
                       onMouseLeave={this.hide2Dropdown}
@@ -139,7 +157,7 @@ class Navb extends Component {
                       autoClose="outside"
                       style={{ padding: '0px', paddingBottom: "5px" }}
                     >
-                      <Dropdown.Toggle className='textWhiteLarge center cell2' variant="warning" size="sm" style={{ backgroundColor:"#ffc107", width: '110px', height: '30px' }}>
+                      <Dropdown.Toggle className='textWhiteLarge center cell2' variant="warning" size="sm" style={{ backgroundColor: "#ffc107", width: '110px', height: '30px' }}>
                         <div>{this.props.first4Account}...{this.props.last4Account}</div>
                       </Dropdown.Toggle>
 
@@ -161,7 +179,7 @@ class Navb extends Component {
                       </Dropdown.Menu>
                     </Dropdown>
                     : <div>
-                      <Popup trigger={open => (<Buttons className="textWhiteLarge center" style={{ width: '110px', height: '30px' }} variant="warning" size="lg" >CONNECT</Buttons>)} modal {...{ contentStyle }}>
+                      <Popup trigger={open => (<Buttons className="textWhiteLarge center" style={{ width: '110px', height: '30px' }} variant="warning" size="lg" >Connect</Buttons>)} modal {...{ contentStyle }}>
                         {close => (
                           <div>
                             <Buttons className="close cell2" style={{ background: "#fffae6", borderRadius: "12px", padding: "2px 5px", fontSize: "18px" }} onClick={close}>
@@ -171,17 +189,22 @@ class Navb extends Component {
                             <div className="center mt-4 mb-2">
                               <Buttons type="button" variant="secondary" style={{ height: "50px", width: "100%", minWidth: "150px", maxWidth: "300px", padding: "6px 25px" }} onClick={async () => {
                                 await this.props.connectMetamask()
-                              }}><img src="/images/metamask-fox.svg" width="23" height="23" className="float-right" alt="" /><span className="float-left">Metamask</span></Buttons>
+                              }}><img src={fox} width="23" height="23" className="float-right" alt="" /><span className="float-left">Metamask</span></Buttons>
                             </div>
                             <div className="center mt-2 mb-2">
                               <Buttons type="button" variant="secondary" style={{ height: "50px", width: "100%", minWidth: "150px", maxWidth: "300px", padding: "6px 25px" }} onClick={async () => {
                                 await this.props.connectCoin98()
-                              }}><img src="/images/coin98.png" width="23" height="23" className="float-right" alt="" /><span className="float-left">Coin98</span></Buttons>
+                              }}>
+                                <ImgNextGen
+                                  srcWebp={coin98}
+                                  width="23" height="23" className="float-right" alt=""
+                                />
+                                <span className="float-left">Coin98</span></Buttons>
                             </div>
                             <div className="center mt-2 mb-4">
                               <Buttons type="button" variant="secondary" style={{ height: "50px", width: "100%", minWidth: "150px", maxWidth: "300px", padding: "6px 25px" }} onClick={async () => {
                                 await this.props.mobileWalletConnect()
-                              }}><img src="/images/walletconnect-logo.svg" width="26" height="23" className="float-right" alt="" /><span className="float-left">WalletConnect</span></Buttons>
+                              }}><img src={walletconnectlogo} width="26" height="23" className="float-right" alt="" /><span className="float-left">WalletConnect</span></Buttons>
                             </div>
                           </div>
                         )}
