@@ -84,7 +84,7 @@ class Main extends Component {
                 <div className="center mb-2">
                   <ImgNextGen
                     srcWebp={joe}
-                    width="45" height="45" align="right" alt="" 
+                    width="45" height="45" align="right" alt=""
                   />
                 </div>
               </Link>
@@ -127,29 +127,29 @@ class Main extends Component {
               </div>
             </MediaQuery>
             <MediaQuery maxHeight={700}>
-              <div className="center" style={{ marginBottom: "30px", marginTop: "80px" }}>
+              <div className="center" style={{ marginTop: "60px" }}>
                 <div className="rowC">
                   <Link className="exLink0" style={{ marginRight: '40px' }} to={{ pathname: "https://baklavaspace.gitbook.io/" }} target="_blank">
-                    <div className="center mb-2"><img src="/images/docs.svg" width="20" height="20" align="right" alt="" /></div>
+                    <div className="center mb-2"><img src={docs} width="20" height="20" align="right" alt="" /></div>
                   </Link>
                   <Link className="exLink0" style={{ marginRight: '40px' }} to={{ pathname: "https://twitter.com/baklavaspace" }} target="_blank">
-                    <div className="center mb-2"><img src="/images/twitter.svg" width="20" height="20" align="right" alt="" /></div>
+                    <div className="center mb-2"><img src={twitter} width="20" height="20" align="right" alt="" /></div>
                   </Link>
                   <Link className="exLink0" style={{ marginRight: '40px' }} to={{ pathname: "https://medium.com/@baklavaspace" }} target="_blank">
-                    <div className="center mb-2"><img src="/images/medium.svg" width="20" height="20" align="right" alt="" /></div>
+                    <div className="center mb-2"><img src={medium} width="20" height="20" align="right" alt="" /></div>
                   </Link>
                   <Link className="exLink0" style={{ marginRight: '40px' }} to={{ pathname: "https://github.com/baklavaspace" }} target="_blank">
-                    <div className="center mb-2"><img src="/images/github.svg" width="20" height="20" align="right" alt="" /></div>
+                    <div className="center mb-2"><img src={github} width="20" height="20" align="right" alt="" /></div>
                   </Link>
                   <Link className="exLink0" style={{ marginRight: '' }} to={{ pathname: "https://discord.gg/E6aYX5ukAw" }} target="_blank">
-                    <div className="center mb-2"><img src="/images/discord.svg" width="20" height="20" align="right" alt="" /></div>
+                    <div className="center mb-2"><img src={discord} width="20" height="20" align="right" alt="" /></div>
                   </Link>
                 </div>
               </div>
+              <br/>
             </MediaQuery>
           </div>
         </MediaQuery>
-
 
         <MediaQuery maxWidth={300}>
           <div style={{ minWidth: "300px" }}>
