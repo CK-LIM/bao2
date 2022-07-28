@@ -185,14 +185,14 @@ class Stake extends Component {
                 <label className="textWhite center mb-3" style={{ fontSize: '40px', color: 'black' }}><big><b>BAVA Staking</b></big></label>
                 <div className="center mb-4" style={{ color: 'grey' }}>Deposit and stake your BAVA tokens to maximize your yield. No Impermanent Loss.</div>
                 <MediaQuery minWidth={701}>
-                    <div className="ml-auto mr-auto card cardbody" style={{ marginBottom: '12px', height: '120px', color: 'black' }}>
+                    <div className="card cardbody" style={{ marginBottom: '12px', height: '120px', color: 'black' }}>
                         <div className="card-body">
                             <div className="center">
                                 <ImgNextGen
                                     srcWebp={logo}
                                     style={{ marginLeft: '70px', marginRight: '50px' }} width="50" height="50" alt=""
                                 />
-                                <table style={{ width: "900px" }}>
+                                <table>
                                     <thead className="textBlackSmall" style={{ color: 'black' }}>
                                         <tr>
                                             <th scope="col" width="120">BAVA Balance</th>
@@ -221,7 +221,7 @@ class Stake extends Component {
                                     srcWebp={logo}
                                     style={{ marginLeft: '70px', marginRight: '50px' }} width="50" height="50" alt=""
                                 />
-                                <table style={{ width: "900px" }}>
+                                <table>
                                     <thead className="textBlackSmall" style={{ color: 'black' }}>
                                         <tr>
                                             <th scope="col" width="120">Total BAVA Staked</th>
@@ -248,7 +248,7 @@ class Stake extends Component {
                         <div className="ml-auto mr-auto card cardbody" style={{ marginBottom: '12px', height: '120px', color: 'black' }}>
                             <div className="card-body">
                                 <div className="center">
-                                    <table style={{ width: "900px" }}>
+                                    <table>
                                         <thead className="textBlackSmall" style={{ color: 'black' }}>
                                             <tr>
                                                 <th scope="col" width="120">BAVA Balance</th>
@@ -273,7 +273,7 @@ class Stake extends Component {
                         <div className="ml-auto mr-auto card cardbody" style={{ marginBottom: '12px', height: '120px', color: 'black' }}>
                             <div className="card-body ">
                                 <div className="center ">
-                                    <table style={{ width: "900px" }}>
+                                    <table>
                                         <thead className="textBlackSmall" style={{ color: 'black' }}>
                                             <tr>
                                                 <th scope="col" width="120">Total BAVA Staked</th>
@@ -300,7 +300,7 @@ class Stake extends Component {
                                 <span className="ml-auto card cardbody" style={{ marginBottom: '12px', marginRight: '5px', color: 'black' }}>
                                     <div className="card-body">
                                         <div className="center">
-                                            <table style={{ width: "900px" }}>
+                                            <table>
                                                 <thead className="textBlackSmall" style={{ color: 'black' }}>
                                                     <tr>
                                                         <th scope="col" width="120" >BAVA Balance</th>
@@ -341,7 +341,7 @@ class Stake extends Component {
                                 <span className="mr-auto card cardbody" style={{ marginBottom: '12px', marginLeft: '5px', color: 'black' }}>
                                     <div className="card-body ">
                                         <div className="center ">
-                                            <table style={{ width: "900px" }}>
+                                            <table>
                                                 <thead className="textBlackSmall" style={{ color: 'black' }}>
                                                     <tr>
                                                         <th scope="col" width="120" >Total BAVA Staked</th>
@@ -384,7 +384,7 @@ class Stake extends Component {
                                 <span className="ml-auto card cardbody" style={{ marginBottom: '12px', marginRight: '5px', color: 'black' }}>
                                     <div className="card-body" style={{ padding: '10px' }}>
                                         <div className="center">
-                                            <table style={{ width: "900px" }}>
+                                            <table>
                                                 <thead className="textBlackSmall" style={{ color: 'black' }}>
                                                     <tr>
                                                         <th scope="col" width="120">BAVA Balance</th>
@@ -425,7 +425,7 @@ class Stake extends Component {
                                 <span className="mr-auto card cardbody" style={{ marginBottom: '12px', marginLeft: '5px', color: 'black' }}>
                                     <div className="card-body" style={{ padding: '10px' }}>
                                         <div className="center ">
-                                            <table style={{ width: "900px" }}>
+                                            <table>
                                                 <thead className="textBlackSmall" style={{ color: 'black' }}>
                                                     <tr>
                                                         <th scope="col" width="120">Total BAVA Staked</th>
