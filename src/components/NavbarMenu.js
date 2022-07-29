@@ -25,6 +25,7 @@ class Navb extends Component {
     this.state = {
       show2: false,
       show: false,
+      color: false
     }
     this.showDropdown = this.showDropdown.bind(this)
     this.hideDropdown = this.hideDropdown.bind(this)
@@ -51,16 +52,28 @@ class Navb extends Component {
     this.setState({ show2: false })  //do ntg, just to push react setstate
   }
 
-  delay = ms => new Promise(res => setTimeout(res, ms));
+  setColor(bool) {
+    this.setState({ color: bool })  //do ntg, just to push react setstate
+  }
 
   render() {
-
     const contentStyle = { background: '#fffae6', border: "1px solid #596169", width: "30%", borderRadius: "15px", minWidth: "320px" };
 
+    const changeColor = () => {
+      if (window.scrollY >= 40) {
+        this.setColor(true)
+      } else {
+        this.setColor(false)
+      }
+      window.removeEventListener('scroll', changeColor, true)
+    }
+
+    window.addEventListener('scroll', changeColor, true)
+
     return (
-      <Navbar className="navbar top" style={{ height: "80px", position: "fixed", width: "100%", top: "0", zIndex: "999", backgroundColor: "#fffae6" }}>
+      <Navbar className="navbar top" style={this.state.color ? { height: "70px", position: "fixed", width: "100%", top: "0", zIndex: "999", backgroundColor: "#fffae6", borderBottom: "0.5px solid rgb(224, 224, 224)" } : { height: "70px", position: "fixed", width: "100%", top: "0", zIndex: "999", backgroundColor: "#fffae6" }}>
         <Nav>
-          <MediaQuery maxWidth={1050}  >
+          <MediaQuery maxWidth={1050}>
             <Menu>
               <div className='dropdown0'><NavLink className='dropdown' to='/menu/v2/' activeStyle={{ fontWeight: "bold", color: "#ffae00" }}>Farm</NavLink></div>
               <div className='dropdown0'><NavLink className='dropdown' to='/stake/' activeStyle={{ fontWeight: "bold", color: "#ffae00" }}>Stake</NavLink></div>
