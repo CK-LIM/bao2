@@ -19,10 +19,18 @@ import twitter from './images/twitter.svg';
 
 class Main extends Component {
 
+  // componentDidMount() {
+  //   var imageList = [baklava, baklava_mainBottom_removebg, joe, pangolin, kyber]
+  //   imageList.forEach((image) => {
+  //     new Image().src = image
+  //   });
+  // }
+
   componentDidMount() {
-    let imageList = [baklava, baklava_mainBottom_removebg, joe, pangolin, kyber]
-    imageList.forEach((image) => {
-      new Image().src = image
+    const pictures = [baklava, baklava_mainBottom_removebg, joe, pangolin, kyber]
+    pictures.forEach((picture) => {
+        const img = new Image();
+        img.src = picture.fileName;
     });
   }
 

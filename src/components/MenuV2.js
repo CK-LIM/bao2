@@ -41,6 +41,14 @@ class Menu extends Component {
         this.setAction = this.setAction.bind(this)
     }
 
+    componentDidMount() {
+        const pictures = [fox, coin98, walletconnectlogo]
+        pictures.forEach((picture) => {
+            const img = new Image();
+            img.src = picture.fileName;
+        });
+      }
+
     clickfarmOpen(i) {
         let ntg = 0
         this.state.farmV2_3Open[i] = !(this.state.farmV2_3Open[i])
