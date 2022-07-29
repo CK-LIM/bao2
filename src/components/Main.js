@@ -2,13 +2,14 @@ import React, { Component } from 'react'
 import MediaQuery from 'react-responsive';
 import { Link } from 'react-router-dom';
 import ImgNextGen from './ImgNextGen';
+import { IMAGES } from "./Images"
 import './App.css';
 
-import baklava from './images/baklava.webp';
-import baklava_mainBottom_removebg from './images/baklava_mainBottom_removebg.webp';
-import joe from './images/joe.webp';
-import pangolin from './images/pangolin.webp';
-import kyber from './images/kyber.webp';
+// import baklava from './images/baklava.webp';
+// import baklava_mainBottom_removebg from './images/baklava_mainBottom_removebg.webp';
+// import joe from './images/joe.webp';
+// import pangolin from './images/pangolin.webp';
+// import kyber from './images/kyber.webp';
 
 import discord from './images/discord.svg';
 import docs from './images/docs.svg';
@@ -19,28 +20,39 @@ import twitter from './images/twitter.svg';
 
 class Main extends Component {
 
-  // componentDidMount() {
-  //   var imageList = [baklava, baklava_mainBottom_removebg, joe, pangolin, kyber]
-  //   imageList.forEach((image) => {
-  //     new Image().src = image
-  //   });
-  // }
+  constructor(props) {
+    super(props)
+    this.state = {
+      imgsLoaded: true
+    }
+  }
 
-  componentDidMount() {
-    const pictures = [baklava, baklava_mainBottom_removebg, joe, pangolin, kyber]
-    pictures.forEach((picture) => {
-        const img = new Image();
-        img.src = picture.fileName;
-    });
+  setImgsLoaded(bool) {
+    let imgsLoaded
+    this.setState(imgsLoaded = bool)
   }
 
   render() {
+    const loadImage = image => {
+      return new Promise((resolve, reject) => {
+        const loadImg = new Image()
+        loadImg.src = image.url
+        // wait 2 seconds to simulate loading time
+        loadImg.onload = () =>
+          setTimeout(() => {
+            resolve(image.url)
+          }, 1000)
+
+        loadImg.onerror = err => reject(err)
+      })
+    }
+
     return (
       <div id="content">
         <MediaQuery minWidth={771}>
           <div className="text-center" style={{ marginTop: "35px" }}>
             <ImgNextGen
-              srcWebp={baklava}
+              srcWebp={IMAGES[0].url}
               width="200" height="200" className="" alt=""
             />
           </div>
@@ -52,7 +64,7 @@ class Main extends Component {
             <Link className="exLink0" style={{ marginRight: '35px' }} to={{ pathname: "https://traderjoexyz.com/#/home" }} target="_blank">
               <div className="center mb-2">
                 <ImgNextGen
-                  srcWebp={joe}
+                  srcWebp={IMAGES[2].url}
                   width="50" height="50" align="right" alt=""
                 />
               </div>
@@ -60,7 +72,7 @@ class Main extends Component {
             <Link className="exLink0" style={{ marginRight: '33px' }} to={{ pathname: "https://app.pangolin.exchange/" }} target="_blank">
               <div className="center mb-2">
                 <ImgNextGen
-                  srcWebp={pangolin}
+                  srcWebp={IMAGES[3].url}
                   width="50" height="50" align="right" alt=""
                 />
               </div>
@@ -68,7 +80,7 @@ class Main extends Component {
             <Link className="exLink0" to={{ pathname: "https://kyberswap.com/#/about/" }} target="_blank">
               <div className="center mb-2">
                 <ImgNextGen
-                  srcWebp={kyber}
+                  srcWebp={IMAGES[4].url}
                   width="50" height="50" align="right" alt=""
                 />
               </div>
@@ -76,7 +88,7 @@ class Main extends Component {
           </div>
           <MediaQuery minHeight={700}>
             <ImgNextGen
-              srcWebp={baklava_mainBottom_removebg}
+              srcWebp={IMAGES[1].url}
               alt=""
               height="8%" width="100%" className="fixed-bottom"
             />
@@ -88,7 +100,7 @@ class Main extends Component {
           <div style={{ minWidth: "300px" }} >
             <div className="center">
               <ImgNextGen
-                srcWebp={baklava}
+                srcWebp={IMAGES[0].url}
                 width="180" height="180" className="" alt=""
               />
             </div>
@@ -99,7 +111,7 @@ class Main extends Component {
               <Link className="exLink0" style={{ marginRight: '35px' }} to={{ pathname: "https://traderjoexyz.com/#/home" }} target="_blank">
                 <div className="center mb-2">
                   <ImgNextGen
-                    srcWebp={joe}
+                    srcWebp={IMAGES[2].url}
                     width="45" height="45" align="right" alt=""
                   />
                 </div>
@@ -107,7 +119,7 @@ class Main extends Component {
               <Link className="exLink0" style={{ marginRight: '33px' }} to={{ pathname: "https://app.pangolin.exchange/" }} target="_blank">
                 <div className="center mb-2">
                   <ImgNextGen
-                    srcWebp={pangolin}
+                    srcWebp={IMAGES[3].url}
                     width="45" height="45" align="right" alt=""
                   />
                 </div>
@@ -115,7 +127,7 @@ class Main extends Component {
               <Link className="exLink0" to={{ pathname: "https://kyberswap.com/#/about/" }} target="_blank">
                 <div className="center mb-2">
                   <ImgNextGen
-                    srcWebp={kyber}
+                    srcWebp={IMAGES[4].url}
                     width="45" height="45" align="right" alt=""
                   />
                 </div>
@@ -179,7 +191,7 @@ class Main extends Component {
           <div style={{ minWidth: "300px" }}>
             <div className="text-center">
               <ImgNextGen
-                srcWebp={baklava}
+                srcWebp={IMAGES[0].url}
                 width="180" height="180" className="" alt=""
               />
             </div>
@@ -190,7 +202,7 @@ class Main extends Component {
               <Link className="exLink0" style={{ marginRight: '35px' }} to={{ pathname: "https://traderjoexyz.com/#/home" }} target="_blank">
                 <div className="center mb-2">
                   <ImgNextGen
-                    srcWebp={joe}
+                    srcWebp={IMAGES[2].url}
                     width="40" height="40" align="right" alt=""
                   />
                 </div>
@@ -198,7 +210,7 @@ class Main extends Component {
               <Link className="exLink0" style={{ marginRight: '33px' }} to={{ pathname: "https://app.pangolin.exchange/" }} target="_blank">
                 <div className="center mb-2">
                   <ImgNextGen
-                    srcWebp={pangolin}
+                    srcWebp={IMAGES[3].url}
                     width="40" height="40" align="right" alt=""
                   />
                 </div>
@@ -206,7 +218,7 @@ class Main extends Component {
               <Link className="exLink0" to={{ pathname: "https://kyberswap.com/#/about/" }} target="_blank">
                 <div className="center mb-2">
                   <ImgNextGen
-                    srcWebp={kyber}
+                    srcWebp={IMAGES[4].url}
                     width="40" height="40" align="right" alt=""
                   />
                 </div>

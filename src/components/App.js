@@ -35,6 +35,12 @@ import LitePaper from './LitePaper'
 import Synthetic from './Synthetic'
 import './App.css';
 
+import baklava from './images/baklava.webp';
+import baklava_mainBottom_removebg from './images/baklava_mainBottom_removebg.webp';
+import joe from './images/joe.webp';
+import pangolin from './images/pangolin.webp';
+import kyber from './images/kyber.webp';
+
 class App extends Component {
 
   async componentWillMount() {
@@ -59,6 +65,9 @@ class App extends Component {
     this.setState({ farmV2_3 })
     const airdropList = AirdropList
     this.setState({ airdropList })
+    const pictures = [baklava, baklava_mainBottom_removebg, joe, pangolin, kyber]
+    this.setState({pictures})
+    console.log(this.state.pictures)
   }
 
   async loadBlockchainData() {
@@ -1607,6 +1616,7 @@ class App extends Component {
       walletConnect: false,
       farmV1Open: [],
       farmV2Open: [],
+      pictures: [],
       userSegmentInfo: [[], []],
       poolSegmentInfo: [[], []],
       poolSegmentInfoV2_2: [[], []],
@@ -1710,6 +1720,7 @@ class App extends Component {
       bavaTokenTotalSupply={this.state.bavaTokenTotalSupply}
       bavaTokenCapSupply={this.state.bavaTokenCapSupply}
       bavaTokenLock={this.state.bavaTokenLock}
+      pictures={this.state.pictures}
     />
     menuContent = <Menu
       lpTokenBalance={this.state.lpTokenBalance}
