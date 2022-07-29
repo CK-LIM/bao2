@@ -3,6 +3,7 @@ import MediaQuery from 'react-responsive';
 import { Link } from 'react-router-dom';
 import ImgNextGen from './ImgNextGen';
 import './App.css';
+
 import baklava from './images/baklava.webp';
 import baklava_mainBottom_removebg from './images/baklava_mainBottom_removebg.webp';
 import joe from './images/joe.webp';
@@ -17,6 +18,13 @@ import twitter from './images/twitter.svg';
 
 
 class Main extends Component {
+
+  componentDidMount() {
+    let imageList = [baklava, baklava_mainBottom_removebg, joe, pangolin, kyber]
+    imageList.forEach((image) => {
+      new Image().src = image
+    });
+  }
 
   render() {
     return (
