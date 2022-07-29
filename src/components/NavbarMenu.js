@@ -92,10 +92,10 @@ class Navb extends Component {
               />
             </NavLink>
           </MediaQuery>
-          <MediaQuery minWidth={501}>
+          <MediaQuery minWidth={351}>
             <NavLink className="topleft1 textMiddleBold2 reallyBold" to="/"><b>BAKLAVA.SPACE</b></NavLink>
           </MediaQuery>
-          <MediaQuery minWidth={280} maxWidth={500}>
+          <MediaQuery minWidth={280} maxWidth={350}>
             <NavLink className="topleft1 textMiddleBold2 reallyBold" to="/"><b>BAKLAVA</b></NavLink>
           </MediaQuery>
 
