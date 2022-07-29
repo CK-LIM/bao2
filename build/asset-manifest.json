@@ -1,10 +1,10 @@
 {
-  "main.css": "/static/css/main.6de1b7ab.chunk.css",
-  "main.js": "/static/js/main.1f8d626a.chunk.js",
-  "main.js.map": "/static/js/main.1f8d626a.chunk.js.map",
+  "main.css": "/static/css/main.6bd66c87.chunk.css",
+  "main.js": "/static/js/main.6b3cb3f1.chunk.js",
+  "main.js.map": "/static/js/main.6b3cb3f1.chunk.js.map",
   "static/css/1.d6e254ec.chunk.css": "/static/css/1.d6e254ec.chunk.css",
-  "static/js/1.c74660d1.chunk.js": "/static/js/1.c74660d1.chunk.js",
-  "static/js/1.c74660d1.chunk.js.map": "/static/js/1.c74660d1.chunk.js.map",
+  "static/js/1.abaeefdf.chunk.js": "/static/js/1.abaeefdf.chunk.js",
+  "static/js/1.abaeefdf.chunk.js.map": "/static/js/1.abaeefdf.chunk.js.map",
   "runtime~main.js": "/static/js/runtime~main.229c360f.js",
   "runtime~main.js.map": "/static/js/runtime~main.229c360f.js.map",
   "static/media/link.webp": "/static/media/link.c82cc2aa.webp",
@@ -31,9 +31,9 @@
   "static/media/baklava_mainBottom_removebg.webp": "/static/media/baklava_mainBottom_removebg.61e23e03.webp",
   "static/media/Litepaper_Protocol.pdf": "/static/media/Litepaper_Protocol.55022142.pdf",
   "static/media/Litepaper_Protocol(turkish).pdf": "/static/media/Litepaper_Protocol(turkish).e0e108cf.pdf",
-  "static/css/main.6de1b7ab.chunk.css.map": "/static/css/main.6de1b7ab.chunk.css.map",
+  "static/css/main.6bd66c87.chunk.css.map": "/static/css/main.6bd66c87.chunk.css.map",
   "static/css/1.d6e254ec.chunk.css.map": "/static/css/1.d6e254ec.chunk.css.map",
   "index.html": "/index.html",
-  "precache-manifest.bf6649e26394e8adcfd8bff6138fc791.js": "/precache-manifest.bf6649e26394e8adcfd8bff6138fc791.js",
+  "precache-manifest.606171918f5b0efd54bd24b349c07927.js": "/precache-manifest.606171918f5b0efd54bd24b349c07927.js",
   "service-worker.js": "/service-worker.js"
 }

@@ -653,6 +653,10 @@ input:checked+.slider:before {
   font-size: 15px;
 }
 
+.textWhiteLarge:hover {
+  color: black;
+}
+
 .textBlackButton {
   color: #666666;
   font-weight: 900;
@@ -936,6 +940,18 @@ tr:nth-child(even) {
   left: 225px;
 }
 
+.topright0 {
+  position: absolute;
+  top: 20px;
+  right: 40px;
+}
+
+.topright00 {
+  position: absolute;
+  top: 20px;
+  right: 10px;
+}
+
 .topright {
   position: absolute;
   top: 23px;
@@ -945,7 +961,7 @@ tr:nth-child(even) {
 .topright1 {
   position: absolute;
   top: 29px;
-  right: 210px;
+  right: 180px;
 }
 
 .fixed-bottom {

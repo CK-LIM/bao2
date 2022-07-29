@@ -186,102 +186,16 @@ class Navb extends Component {
             </MediaQuery>
 
             <div>
-              <ul className="topright rowC">
-                <MediaQuery minWidth={500}>
-                  <div>
-                    <Link to="/menu/v2/">
-                      <Buttons className="textWhiteLarge center" style={{ minWidth: '80px', height: '30px', marginRight: '8px' }} variant="secondary" size="lg"> Menu</Buttons>
-                    </Link>
-                  </div>
-                </MediaQuery>
-                <div>
-                  {this.props.wallet || this.props.walletConnect ?
-                    // <div>
-                    //   <Popup trigger={open => (
-                    //     <Buttons className="textWhiteLarge center" style={{ width: '100px', height: '30px' }} variant="warning" size="sm" > {this.props.first4Account}...{this.props.last4Account}</Buttons>
-                    //   )}
-                    //     on="hover"
-                    //     position="bottom right"
-                    //     offsetY={5}
-                    //     offsetX={0}
-                    //     mouseLeaveDelay={100}
-                    //     contentStyle={{ padding: '5px' }}
-                    //     arrow={false}
-                    //   ><div>
-                    //       <div className='dropdown0' onClick={() => {
-                    //         window.open(`https://snowtrace.io/address/${this.props.account}`, '_blank')
-                    //       }}>Wallet</div>
-                    //       <div className='dropdown' onClick={() => {
-                    //         this.props.setWalletTrigger(false)
-                    //         if (this.props.walletConnect == true) {
-                    //           this.props.WalletDisconnect()
-                    //         }
-                    //       }}>Disconnect</div>
-                    //     </div>
-                    //   </Popup>
-                    // </div>
-
-                    <Dropdown
-                      onMouseEnter={this.show2Dropdown}
-                      onMouseLeave={this.hide2Dropdown}
-                      show={this.state.show2}
-                      autoClose="outside"
-                      style={{ padding: '0px', paddingBottom: "5px" }}
-                    >
-                      <Dropdown.Toggle className='textWhiteLarge center cell2' variant="warning" size="sm" style={{ width: '110px', height: '30px' }}>
-                        <div>{this.props.first4Account}...{this.props.last4Account}</div>
-                      </Dropdown.Toggle>
-
-                      <Dropdown.Menu style={{ backgroundColor: "#fffae6", margin: "0px", padding: '5px', minWidth: '110px', maxWidth: '110px' }}>
-                        <Dropdown.Item className="cell2 dropdown0" style={{ margin: '0px', padding: '5px', fontSize: '16px' }}>
-                          <div onClick={() => {
-                            window.open(`https://snowtrace.io/address/${this.props.account}`, '_blank')
-                          }}>Wallet</div>
-                        </Dropdown.Item>
-                        <Dropdown.Item className="cell2 dropdown" style={{ margin: '0px', padding: '5px', fontSize: '16px' }}>
-                          <div onClick={() => {
-                            this.props.setWalletTrigger(false)
-                            if (this.props.walletConnect == true) {
-                              this.props.WalletDisconnect()
-                            }
-                          }}>Disconnect</div>
-                        </Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>
-                    : <div>
-                      <Popup trigger={open => (<Buttons className="textWhiteLarge center" style={{ width: '110px', height: '30px' }} variant="warning" size="lg" >Connect</Buttons>)} modal {...{ contentStyle }}>
-                        {close => (
-                          <div>
-                            <Buttons className="close cell2" style={{ background: "#fffae6", borderRadius: "12px", padding: "2px 5px", fontSize: "18px" }} onClick={close}>
-                              &times;
-                            </Buttons>
-                            <div className="textWhiteMedium mb-2" style={{ borderBottom: "1px Solid Gray", padding: "10px" }}> Connect a Wallet </div>
-                            <div className="center mt-4 mb-2">
-                              <Buttons type="button" variant="secondary" style={{ height: "50px", width: "100%", minWidth: "150px", maxWidth: "300px", padding: "6px 25px" }} onClick={async () => {
-                                await this.props.connectMetamask()
-                              }}><img src={fox} width="23" height="23" className="float-right" alt="" /><span className="float-left">Metamask</span></Buttons>
-                            </div>
-                            <div className="center mt-2 mb-2">
-                              <Buttons type="button" variant="secondary" style={{ height: "50px", width: "100%", minWidth: "150px", maxWidth: "300px", padding: "6px 25px" }} onClick={async () => {
-                                await this.props.connectCoin98()
-                              }}>
-                                <ImgNextGen
-                                  srcWebp={coin98}
-                                  width="23" height="23" className="float-right" alt=""
-                                />
-                                <span className="float-left">Coin98</span></Buttons>
-                            </div>
-                            <div className="center mt-2 mb-4">
-                              <Buttons type="button" variant="secondary" style={{ height: "50px", width: "100%", minWidth: "150px", maxWidth: "300px", padding: "6px 25px" }} onClick={async () => {
-                                await this.props.mobileWalletConnect()
-                              }}><img src={walletconnectlogo} width="26" height="23" className="float-right" alt="" /><span className="float-left">WalletConnect</span></Buttons>
-                            </div>
-                          </div>
-                        )}
-                      </Popup>
-                    </div>}
-                </div>&nbsp;
-              </ul>
+              <MediaQuery minWidth={501}>
+                <ul className="topright0">
+                  <div className=' center'><NavLink className='dropdown textWhiteLarge center' to='/menu/v2/' style={{ width: '125px', borderRadius: "10px", height: '35px', background: "#ffae00" }}>Launch App</NavLink></div>
+                </ul>
+              </MediaQuery>
+              <MediaQuery maxWidth={500}>
+                <ul className="topright00">
+                  <div className=' center'><NavLink className='dropdown textWhiteLarge center' to='/menu/v2/' style={{ width: '125px', borderRadius: "10px", height: '35px', background: "#ffae00" }}>Launch App</NavLink></div>
+                </ul>
+              </MediaQuery>
             </div>
           </div>
         </Nav>
