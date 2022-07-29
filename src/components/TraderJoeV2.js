@@ -272,28 +272,55 @@ class TraderJoe extends Component {
                         }
                     </div>
                 </MediaQuery>
+                <MediaQuery maxWidth={400}>
+                    <div className="center" style={{ marginBottom: '5px' }}>
+                        <div>
+                            <ImgNextGen
+                                style={{ marginRight: '5px' }} srcWebp={bava} width="25" height="25" alt=""
+                            /></div>
+                        <div className="textbavaPriceBold" style={{ fontSize: '20px' }} onClick={() => {
+                            window.open(`https://kyberswap.com/swap/avalanche/avax-to-bava`, '_blank')
+                        }}><b>${this.props.BAVAPrice}</b></div>
+                    </div>
+                </MediaQuery>
 
                 <div className="center" style={{ color: 'grey' }}><small>&nbsp;! Attention:&nbsp;Be sure to read <a href="https://baklavaspace.gitbook.io/" target="_blank">baklavaspace.gitbook</a> before using the pools so you are familiar with protocol risks and fees!</small></div>
                 <div className="ml-auto mr-auto mt-3">
-                    <div className="mb-4">
-                        <div className="textMiddleBold1 float-right" style={{ marginRight: '5px' }}><big>TVL $ {parseFloat(this.props.totalTVL).toLocaleString('en-US', { maximumFractionDigits: 0 })}</big></div>
-                        <div className="textMiddleBold1 left" style={{ marginLeft: '2px', marginBottom: '5px' }}><big>Select Platform</big></div>
-                        <div className="left">
-                            <ButtonGroup>
+                     <MediaQuery minWidth={501}>
+                        <div className="mb-4">
+                            <div className="float-right">
+                                <div className="textMiddleBold1 right" style={{ marginRight: '5px' }}><big>TVL</big></div>
+                                <div className="textMiddleBold1 float-right" style={{ marginTop: '3px', marginRight: '5px' }}>$ {parseFloat(this.props.totalTVL).toLocaleString('en-US', { maximumFractionDigits: 0 })}</div>
+                            </div>
+                            <div className="textMiddleBold1 left" style={{ marginLeft: '2px', marginBottom: '5px' }}><big>Select Platform</big></div>
+                            <div className="left">
                                 <Buttons style={{ color: "#ff9a04" }} variant="link" size="sm" as={Link} to="/menu/v2">PANGOLIN</Buttons>
                                 <Buttons style={{ color: "#ff9a04" }} variant="link" size="sm" as={Link} to="/menu/v2/kyber">KYBERSWAP</Buttons>
                                 <Buttons style={{ color: "#ff9a04", border: "1px solid #ff9a04" }} variant="link" size="sm" as={Link} to="/menu/v2/traderjoe">TRADER JOE</Buttons>
-                            </ButtonGroup>
+                            </div>
                         </div>
-
-                        {/* <span className="float-right mr-4">
-                            <ButtonGroup>
-                                <Button variant="text" size="small" color="inherit" >Sort by</Button>
-                            </ButtonGroup>
-                        </span> */}
-                    </div>
-
-
+                    </MediaQuery>
+                    <MediaQuery maxWidth={500}>
+                        <div className="mb-4">
+                            <div className="left mb-1">
+                                <div className="textMiddleBold1 left"><big>TVL</big></div>
+                                <div className="textMiddleBold1 left">$ {parseFloat(this.props.totalTVL).toLocaleString('en-US', { maximumFractionDigits: 0 })}</div>
+                            </div>
+                            <div className="textMiddleBold1 left" style={{ marginLeft: '2px', marginBottom: '5px' }}><big>Select Platform</big></div>
+                            <div className="left">
+                                <MediaQuery minWidth={401}>
+                                    <Buttons style={{ color: "#ff9a04" }} variant="link" size="sm" as={Link} to="/menu/v2">PANGOLIN</Buttons>
+                                    <Buttons style={{ color: "#ff9a04" }} variant="link" size="sm" as={Link} to="/menu/v2/kyber">KYBERSWAP</Buttons>
+                                    <Buttons style={{ color: "#ff9a04", border: "1px solid #ff9a04" }} variant="link" size="sm" as={Link} to="/menu/v2/traderjoe">TRADER JOE</Buttons>
+                                </MediaQuery>
+                                <MediaQuery maxWidth={400}>
+                                    <Buttons style={{ color: "#ff9a04", fontSize: "0.8rem" }} variant="link" size="sm" as={Link} to="/menu/v2">PANGOLIN</Buttons>
+                                    <Buttons style={{ color: "#ff9a04", fontSize: "0.8rem" }} variant="link" size="sm" as={Link} to="/menu/v2/kyber">KYBERSWAP</Buttons>
+                                    <Buttons style={{ color: "#ff9a04", fontSize: "0.8rem", border: "1px solid #ff9a04" }} variant="link" size="sm" as={Link} to="/menu/v2/traderjoe">TRADER JOE</Buttons>
+                                </MediaQuery>
+                            </div>
+                        </div>
+                    </MediaQuery>
 
 
 

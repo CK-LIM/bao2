@@ -136,7 +136,7 @@ class Navb extends Component {
                   <div className="center" style={{ marginTop: '2px', marginRight: '12px' }}>
                     <ImgNextGen
                       srcWebp={logo}
-                      style={{ marginLeft: '0px', marginRight: '5px' }} width="25" height="25" alt=""
+                      style={{ marginRight: '5px' }} width="25" height="25" alt=""
                     />
                     <div className="textbavaPriceBold" onClick={() => {
                       window.open(`https://kyberswap.com/swap/avalanche/avax-to-bava`, '_blank')
