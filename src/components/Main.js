@@ -5,48 +5,14 @@ import ImgNextGen from './ImgNextGen';
 import { IMAGES } from "./Images"
 import './App.css';
 
-// import baklava from './images/baklava.webp';
-// import baklava_mainBottom_removebg from './images/baklava_mainBottom_removebg.webp';
-// import joe from './images/joe.webp';
-// import pangolin from './images/pangolin.webp';
-// import kyber from './images/kyber.webp';
-
 import discord from './images/discord.svg';
 import docs from './images/docs.svg';
 import github from './images/github.svg';
 import medium from './images/medium.svg';
 import twitter from './images/twitter.svg';
 
-
 class Main extends Component {
-
-  constructor(props) {
-    super(props)
-    this.state = {
-      imgsLoaded: true
-    }
-  }
-
-  setImgsLoaded(bool) {
-    let imgsLoaded
-    this.setState(imgsLoaded = bool)
-  }
-
   render() {
-    const loadImage = image => {
-      return new Promise((resolve, reject) => {
-        const loadImg = new Image()
-        loadImg.src = image.url
-        // wait 2 seconds to simulate loading time
-        loadImg.onload = () =>
-          setTimeout(() => {
-            resolve(image.url)
-          }, 1000)
-
-        loadImg.onerror = err => reject(err)
-      })
-    }
-
     return (
       <div id="content">
         <MediaQuery minWidth={771}>

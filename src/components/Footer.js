@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import './App.css';
 import baklava from './images/baklava.webp';
+
 import discord from './images/discord.svg'
 import twitter from './images/twitter.svg'
 import medium from './images/medium.svg'
